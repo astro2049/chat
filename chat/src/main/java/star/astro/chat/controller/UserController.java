@@ -1,9 +1,6 @@
 package star.astro.chat.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import star.astro.chat.model.Chatroom;
 import star.astro.chat.model.Friend;
 import star.astro.chat.model.User;
@@ -54,7 +51,21 @@ public class UserController {
         return userService.addFriend(username, friendName);
     }
 
-    @GetMapping("/private/room")
+    @PostMapping("/chatroom")
+    public boolean createChatroom(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String chatroomName = (String) params.get("chatroomName");
+        return userService.createChatroom(username, chatroomName);
+    }
+
+    @PutMapping("/chatroom")
+    public boolean joinChatroom(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String chatroomId = (String) params.get("chatroomId");
+        return userService.joinChatroom(username, chatroomId);
+    }
+
+    @GetMapping("/user/room")
     public List<Friend> getPrivateChatroom(@RequestParam Map<String, Object> params) {
         String username = (String) params.get("username");
         return userService.getFriends(username);

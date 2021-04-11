@@ -104,4 +104,24 @@ public class UserService {
         return chatrooms;
     }
 
+    public boolean createChatroom(String username, String chatroomName) {
+        Chatroom chatroom = new Chatroom();
+        chatroom.setName(chatroomName);
+        chatroom = chatroomRepository.save(chatroom);
+        String chatroomId = chatroom.getId();
+        ChatroomUserLink chatroomUserLink = new ChatroomUserLink();
+        chatroomUserLink.setChatroom(chatroomId);
+        chatroomUserLink.setUser(username);
+        chatroomUserLinkRepository.save(chatroomUserLink);
+        return true;
+    }
+
+    public boolean joinChatroom(String username, String chatroomId) {
+        ChatroomUserLink chatroomUserLink = new ChatroomUserLink();
+        chatroomUserLink.setChatroom(chatroomId);
+        chatroomUserLink.setUser(username);
+        chatroomUserLinkRepository.save(chatroomUserLink);
+        return true;
+    }
+
 }
