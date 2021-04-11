@@ -16,7 +16,11 @@ import java.util.Map;
 @RestController
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/user")
     public boolean addUserByEmail(@RequestParam Map<String, Object> params) {
@@ -31,7 +35,7 @@ public class UserController {
         return userService.retrieveUserByName(username);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public boolean login(@RequestParam Map<String, Object> params, HttpServletRequest request) {
         String username = (String) params.get("username");
         String password = (String) params.get("password");
@@ -41,6 +45,13 @@ public class UserController {
             request.getSession().setAttribute("username", username);
         }
         return granted;
+    }
+
+    @PostMapping("/user/friend")
+    public boolean addFriend(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String friendName = (String) params.get("friendName");
+        return userService.addFriend(username, friendName);
     }
 
     @GetMapping("/private/room")
