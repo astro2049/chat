@@ -37,6 +37,7 @@ public class UserService {
             return false;
         } else {
             User user = new User(name, password);
+            userRepository.save(user);
             return true;
         }
     }
@@ -56,6 +57,17 @@ public class UserService {
         return granted;
     }
 
+    public boolean addFriend(String username, String friendName) {
+        if (userRepository.findUserByName(friendName) == null) {
+            return false;
+        }
+        FriendLink friendLink = new FriendLink();
+        friendLink.setUsername0(username);
+        friendLink.setUsername1(friendName);
+        friendLinkRepository.save(friendLink);
+        return true;
+    }
+
     public void userOnline(String username) {
         User user = userRepository.findUserByName(username);
         user.setOnline();
@@ -71,7 +83,7 @@ public class UserService {
     public List<Friend> getFriends(String username) {
         List<Friend> friends = new LinkedList<>();
         List<FriendLink> friendLinks = friendLinkRepository.findFriendLinkByUsername0(username);
-        for (FriendLink friendLink: friendLinks) {
+        for (FriendLink friendLink : friendLinks) {
             String username1 = friendLink.getUsername1();
             User user = userRepository.findUserByName(username1);
             String chatroomId = friendLink.getId();
