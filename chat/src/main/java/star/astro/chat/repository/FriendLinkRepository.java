@@ -1,0 +1,14 @@
+package star.astro.chat.repository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+import star.astro.chat.model.link.FriendLink;
+
+import java.util.List;
+
+@Repository
+public interface FriendLinkRepository extends MongoRepository<FriendLink, String> {
+
+    List<FriendLink> findFriendLinkByUsername0(String username0);
+
+}

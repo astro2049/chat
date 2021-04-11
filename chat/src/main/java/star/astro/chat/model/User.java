@@ -3,27 +3,17 @@ package star.astro.chat.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Document
 public class User {
+
     @Id
-    String id;
     String name;
     String password;
-    List<String> friends;
+    boolean online;
 
     public User(String name, String password) {
         this.name = name;
         this.password = password;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -42,12 +32,16 @@ public class User {
         this.password = password;
     }
 
-    public List<String> getFriends() {
-        return friends;
+    public boolean isOnline() {
+        return online;
     }
 
-    public void setFriends(List<String> friends) {
-        this.friends = friends;
+    public void setOnline() {
+        this.online = true;
+    }
+
+    public void setOffline() {
+        this.online = false;
     }
 
 }

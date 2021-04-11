@@ -6,4 +6,5 @@ spring:
       port: 27017
       repositories:
         enabled: true
-
+  session:
+    store-type: MongoDB
