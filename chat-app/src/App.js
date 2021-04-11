@@ -1,9 +1,10 @@
-import SignIn from './sign-in/SignIn'
+import React from "react";
+import SignIn from "./sign-in/SignIn";
 
-function App() {
-  return (
-    <SignIn></SignIn>
-  );
+class App extends React.Component {
+  render() {
+    return <SignIn></SignIn>;
+  }
 }
 
 export default App;
