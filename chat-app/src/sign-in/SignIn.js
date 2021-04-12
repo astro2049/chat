@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -56,17 +56,18 @@ export default function SignIn() {
     let formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-    let granted;
     fetch("http://localhost:8080/login", {
       method: "POST",
       body: formData,
     }).then((response) => {
       response.json().then((data) => {
-        granted = data;
-        if (granted) {
-          console.log("yes");
+        if (data.success === true) {
+          let user = props.user;
+          let setUser = props.setUser;
+          user.name = data.username;
+          setUser(user);
         } else {
-          console.log("no");
+          console.log("nope");
         }
       });
     });
