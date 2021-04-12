@@ -2,19 +2,19 @@ package star.astro.chat.model;
 
 public class Friend {
 
-    private User friend;
+    private String friend;
     private String chatroomId;
 
-    public Friend(User friend, String chatroomId) {
+    public Friend(String friend, String chatroomId) {
         this.friend = friend;
         this.chatroomId = chatroomId;
     }
 
-    public User getFriend() {
+    public String getFriend() {
         return friend;
     }
 
-    public void setFriend(User friend) {
+    public void setFriend(String friend) {
         this.friend = friend;
     }
 

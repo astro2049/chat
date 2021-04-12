@@ -87,7 +87,7 @@ public class UserService {
             String username1 = friendLink.getUsername1();
             User user = userRepository.findUserByName(username1);
             String chatroomId = friendLink.getId();
-            Friend friend = new Friend(user, chatroomId);
+            Friend friend = new Friend(user.getName(), chatroomId);
             friends.add(friend);
         }
         return friends;

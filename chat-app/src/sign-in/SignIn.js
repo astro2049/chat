@@ -14,134 +14,134 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {"Copyright © "}
+            <Link color="inherit" href="https://material-ui.com/">
+                Your Website
+            </Link>{" "}
+            {new Date().getFullYear()}
+            {"."}
+        </Typography>
+    );
 }
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
 }));
 
 export default function SignIn(props) {
-  const classes = useStyles();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+    const classes = useStyles();
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    let formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-    fetch("http://localhost:8080/login", {
-      method: "POST",
-      body: formData,
-    }).then((response) => {
-      response.json().then((data) => {
-        if (data.success === true) {
-          let user = props.user;
-          let setUser = props.setUser;
-          user.name = data.username;
-          setUser(user);
-        } else {
-          console.log("nope");
-        }
-      });
-    });
-    setUsername("");
-    setPassword("");
-  };
+    const onSubmit = (e) => {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("username", username);
+        formData.append("password", password);
+        fetch("http://localhost:8080/login", {
+            method: "POST",
+            body: formData,
+        }).then((response) => {
+            response.json().then((data) => {
+                if (data.success === true) {
+                    let user = props.user;
+                    let setUser = props.setUser;
+                    user.name = data.username;
+                    setUser(user);
+                } else {
+                    console.log("nope");
+                }
+            });
+        });
+        setUsername("");
+        setPassword("");
+    };
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="Username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            autoFocus
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
-  );
+    return (
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign in
+                </Typography>
+                <form className={classes.form} noValidate onSubmit={onSubmit}>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="Username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <FormControlLabel
+                        control={<Checkbox value="remember" color="primary" />}
+                        label="Remember me"
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Sign In
+                    </Button>
+                    <Grid container>
+                        <Grid item xs>
+                            <Link href="#" variant="body2">
+                                Forgot password?
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link href="#" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </form>
+            </div>
+            <Box mt={8}>
+                <Copyright />
+            </Box>
+        </Container>
+    );
 }
