@@ -1,5 +1,6 @@
 package star.astro.chat.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import star.astro.chat.model.Chatroom;
 import star.astro.chat.model.Friend;
@@ -33,7 +34,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestParam Map<String, Object> params, HttpServletRequest request) {
+    public JSONObject login(@RequestParam Map<String, Object> params, HttpServletRequest request) {
+        JSONObject ret = new JSONObject();
         String username = (String) params.get("username");
         String password = (String) params.get("password");
         boolean granted = userService.login(username, password);
@@ -41,7 +43,10 @@ public class UserController {
             userService.userOnline(username);
             request.getSession().setAttribute("username", username);
         }
-        return granted;
+        ret.put("success", granted);
+        ret.put("username", username);
+        ret.put("exc", "");
+        return ret;
     }
 
     @PostMapping("/user/friend")
