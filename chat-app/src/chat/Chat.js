@@ -6,17 +6,18 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import { Button, Hidden, List, ListItem } from "@material-ui/core";
+import { Button, List, ListItem, TextField } from "@material-ui/core";
+import SockJsClient from "react-stomp";
 
 const appBarHeight = 80;
-const drawerWidth = 360;
+const drawerWidth = "25%";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
     },
     appBar: {
-        width: `calc(100% - ${drawerWidth}px)`,
+        width: `calc(100% - ${drawerWidth})`,
         height: appBarHeight,
         marginLeft: drawerWidth,
     },
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 40,
     },
     friendCard: {
-        width: drawerWidth,
+        width: "100%",
         height: 120,
         display: "flex",
         justifyContent: "center",
@@ -62,6 +63,26 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3),
     },
+    containerOnRight: {
+        height: "900px",
+    },
+    inputContainer: {
+        zIndex: 1300,
+        position: "fixed",
+        bottom: 10,
+        right: 0,
+        width: `calc(100% - ${drawerWidth})`,
+        height: 240,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "flex-end",
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderTop: "2px solid vanilla",
+    },
+    forTextField: {},
 }));
 
 export default function Chat(props) {
@@ -70,6 +91,7 @@ export default function Chat(props) {
     const username = props.user.name;
     const [rooms, setRooms] = useState([]);
     const [currentChatroom, setCurrentChatroom] = useState("");
+    const [chatText, setChatText] = useState("");
 
     useEffect(() => {
         fetch("http://localhost:8080/user/room?username=" + username, {
@@ -85,6 +107,8 @@ export default function Chat(props) {
         let friend = e.target.firstChild.data;
         console.log(friend);
     };
+
+    const sendChatMessage = () => {};
 
     return (
         <div className={classes.root}>
@@ -137,40 +161,66 @@ export default function Chat(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Rhoncus dolor purus non enim praesent elementum
-                    facilisis leo vel. Risus at ultrices mi tempus imperdiet.
-                    Semper risus in hendrerit gravida rutrum quisque non tellus.
-                    Convallis convallis tellus id interdum velit laoreet id
-                    donec ultrices. Odio morbi quis commodo odio aenean sed
-                    adipiscing. Amet nisl suscipit adipiscing bibendum est
-                    ultricies integer quis. Cursus euismod quis viverra nibh
-                    cras. Metus vulputate eu scelerisque felis imperdiet proin
-                    fermentum leo. Mauris commodo quis imperdiet massa
-                    tincidunt. Cras tincidunt lobortis feugiat vivamus at augue.
-                    At augue eget arcu dictum varius duis at consectetur lorem.
-                    Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-                    sapien faucibus et molestie ac.
-                </Typography>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla
-                    est ullamcorper eget nulla facilisi etiam dignissim diam.
-                    Pulvinar elementum integer enim neque volutpat ac tincidunt.
-                    Ornare suspendisse sed nisi lacus sed viverra tellus. Purus
-                    sit amet volutpat consequat mauris. Elementum eu facilisis
-                    sed odio morbi. Euismod lacinia at quis risus sed vulputate
-                    odio. Morbi tincidunt ornare massa eget egestas purus
-                    viverra accumsan in. In hendrerit gravida rutrum quisque non
-                    tellus orci ac. Pellentesque nec nam aliquam sem et tortor.
-                    Habitant morbi tristique senectus et. Adipiscing elit duis
-                    tristique sollicitudin nibh sit. Ornare aenean euismod
-                    elementum nisi quis eleifend. Commodo viverra maecenas
-                    accumsan lacus vel facilisis. Nulla posuere sollicitudin
-                    aliquam ultrices sagittis orci a.
-                </Typography>
+                <div className={classes.containerOnRight}>
+                    <div>
+                        <Typography paragraph>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua. Rhoncus dolor purus non enim
+                            praesent elementum facilisis leo vel. Risus at
+                            ultrices mi tempus imperdiet. Semper risus in
+                            hendrerit gravida rutrum quisque non tellus.
+                            Convallis convallis tellus id interdum velit laoreet
+                            id donec ultrices. Odio morbi quis commodo odio
+                            aenean sed adipiscing. Amet nisl suscipit adipiscing
+                            bibendum est ultricies integer quis. Cursus euismod
+                            quis viverra nibh cras. Metus vulputate eu
+                            scelerisque felis imperdiet proin fermentum leo.
+                            Mauris commodo quis imperdiet massa tincidunt. Cras
+                            tincidunt lobortis feugiat vivamus at augue. At
+                            augue eget arcu dictum varius duis at consectetur
+                            lorem. Velit sed ullamcorper morbi tincidunt. Lorem
+                            donec massa sapien faucibus et molestie ac.
+                        </Typography>
+                        <Typography paragraph>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua. Rhoncus dolor purus non enim
+                            praesent elementum facilisis leo vel. Risus at
+                            ultrices mi tempus imperdiet. Semper risus in
+                            hendrerit gravida rutrum quisque non tellus.
+                            Convallis convallis tellus id interdum velit laoreet
+                            id donec ultrices. Odio morbi quis commodo odio
+                            aenean sed adipiscing. Amet nisl suscipit adipiscing
+                            bibendum est ultricies integer quis. Cursus euismod
+                            quis viverra nibh cras. Metus vulputate eu
+                            scelerisque felis imperdiet proin fermentum leo.
+                            Mauris commodo quis imperdiet massa tincidunt. Cras
+                            tincidunt lobortis feugiat vivamus at augue. At
+                            augue eget arcu dictum varius duis at consectetur
+                            lorem. Velit sed ullamcorper morbi tincidunt. Lorem
+                            donec massa sapien faucibus et molestie ac.
+                        </Typography>
+                    </div>
+                </div>
             </main>
+            <div className={classes.inputContainer}>
+                <TextField
+                    variant="outlined"
+                    fullWidth="true"
+                    multiline="true"
+                    rows="8"
+                    className={classes.forTextField}
+                    onChange={(e) => setChatText(e.target.value)}
+                ></TextField>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={sendChatMessage}
+                >
+                    Send
+                </Button>
+            </div>
         </div>
     );
 }
