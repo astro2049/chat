@@ -7,7 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { Button, List, ListItem, TextField } from "@material-ui/core";
-import SockJS from "sockjs-client";
+import MessageBox from "../message/Message";
 
 const appBarHeight = 80;
 const drawerWidth = "25%";
@@ -47,10 +47,11 @@ const useStyles = makeStyles((theme) => ({
     },
     friendCard: {
         width: "100%",
-        height: 120,
+        height: 100,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        textTransform: "none",
     },
     userInfo: {
         zIndex: 1250,
@@ -90,9 +91,11 @@ export default function Chat(props) {
     const classes = useStyles();
 
     const username = props.user.name;
-    const [rooms, setRooms] = useState([]);
-    const [currentChatroom, setCurrentChatroom] = useState("");
     const [chatText, setChatText] = useState("");
+    const [rooms, setRooms] = useState([]);
+    const [activeChat, setActiveChat] = useState({});
+    const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
+    const [receivedMessages, setReceivedMessages] = useState([]);
 
     useEffect(() => {
         fetch("http://localhost:8080/user/room?username=" + username, {
@@ -105,6 +108,25 @@ export default function Chat(props) {
         connect();
     }, [username]);
 
+    const refreshChatroomMessages = () => {
+        let msgs = findChatMessages(activeChat.friend);
+        setCurrentChatroomMessages(msgs);
+    };
+
+    const findChatMessages = () => {
+        let messages = [];
+        for (let i = 0; i < receivedMessages.length; i++) {
+            let message = receivedMessages[i];
+            if (
+                message.sender === activeChat.friend ||
+                message.receiver === activeChat.friend
+            ) {
+                messages.push(message);
+            }
+        }
+        return messages;
+    };
+
     const connect = () => {
         const Stomp = require("stompjs");
         var SockJS = require("sockjs-client");
@@ -115,19 +137,49 @@ export default function Chat(props) {
 
     const onConnected = () => {
         console.log("connected");
-        console.log(username);
+        subscribeChatrooms();
+    };
+
+    const subscribeChatrooms = () => {
+        rooms.map((room) =>
+            stompClient.subscribe(
+                "/topic/private." + room.chatroomId,
+                onMessageReceived
+            )
+        );
+    };
+
+    const onMessageReceived = (msg) => {
+        let message = JSON.parse(msg.body);
+        let messages = receivedMessages;
+        messages.push(message);
+        setReceivedMessages(messages);
+        refreshChatroomMessages();
     };
 
     const onError = (err) => {
         console.log(err);
     };
 
-    const switchChatroom = (e) => {
-        let friend = e.target.firstChild.data;
-        console.log(friend);
+    const sendChatMessage = () => {
+        setChatText("");
+        let msg = chatText;
+        if (msg.trim() !== "") {
+            let friendName = activeChat.friend;
+            let chatroomId = activeChat.chatroomId;
+            const message = {
+                sender: username,
+                receiver: friendName,
+                content: msg,
+                time: new Date(),
+            };
+            stompClient.send(
+                "/app/private/" + chatroomId,
+                {},
+                JSON.stringify(message)
+            );
+        }
     };
-
-    const sendChatMessage = () => {};
 
     return (
         <div className={classes.root}>
@@ -136,7 +188,7 @@ export default function Chat(props) {
                 <Toolbar>
                     <div className={classes.chatroomName}>
                         <Typography variant="h4" noWrap>
-                            {currentChatroom}
+                            {activeChat.friend}
                         </Typography>
                     </div>
                 </Toolbar>
@@ -160,7 +212,9 @@ export default function Chat(props) {
                     {rooms.map((room) => (
                         <ListItem>
                             <Button
-                                onClick={switchChatroom}
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => setActiveChat(room)}
                                 className={classes.friendCard}
                             >
                                 <Typography
@@ -182,54 +236,23 @@ export default function Chat(props) {
                 <div className={classes.toolbar} />
                 <div className={classes.containerOnRight}>
                     <div>
-                        <Typography paragraph>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Rhoncus dolor purus non enim
-                            praesent elementum facilisis leo vel. Risus at
-                            ultrices mi tempus imperdiet. Semper risus in
-                            hendrerit gravida rutrum quisque non tellus.
-                            Convallis convallis tellus id interdum velit laoreet
-                            id donec ultrices. Odio morbi quis commodo odio
-                            aenean sed adipiscing. Amet nisl suscipit adipiscing
-                            bibendum est ultricies integer quis. Cursus euismod
-                            quis viverra nibh cras. Metus vulputate eu
-                            scelerisque felis imperdiet proin fermentum leo.
-                            Mauris commodo quis imperdiet massa tincidunt. Cras
-                            tincidunt lobortis feugiat vivamus at augue. At
-                            augue eget arcu dictum varius duis at consectetur
-                            lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                            donec massa sapien faucibus et molestie ac.
-                        </Typography>
-                        <Typography paragraph>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. Rhoncus dolor purus non enim
-                            praesent elementum facilisis leo vel. Risus at
-                            ultrices mi tempus imperdiet. Semper risus in
-                            hendrerit gravida rutrum quisque non tellus.
-                            Convallis convallis tellus id interdum velit laoreet
-                            id donec ultrices. Odio morbi quis commodo odio
-                            aenean sed adipiscing. Amet nisl suscipit adipiscing
-                            bibendum est ultricies integer quis. Cursus euismod
-                            quis viverra nibh cras. Metus vulputate eu
-                            scelerisque felis imperdiet proin fermentum leo.
-                            Mauris commodo quis imperdiet massa tincidunt. Cras
-                            tincidunt lobortis feugiat vivamus at augue. At
-                            augue eget arcu dictum varius duis at consectetur
-                            lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                            donec massa sapien faucibus et molestie ac.
-                        </Typography>
+                        {currentChatroomMessages.map((message) => (
+                            <MessageBox
+                                username={message.sender}
+                                content={message.content}
+                            ></MessageBox>
+                        ))}
                     </div>
                 </div>
             </main>
             <div className={classes.inputContainer}>
                 <TextField
                     variant="outlined"
-                    fullWidth="true"
-                    multiline="true"
+                    fullWidth
+                    multiline
                     rows="8"
                     className={classes.forTextField}
+                    value={chatText}
                     onChange={(e) => setChatText(e.target.value)}
                 ></TextField>
                 <Button
