@@ -7,7 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { Button, List, ListItem, TextField } from "@material-ui/core";
-import SockJsClient from "react-stomp";
+import SockJS from "sockjs-client";
 
 const appBarHeight = 80;
 const drawerWidth = "25%";
@@ -80,10 +80,11 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 10,
         paddingLeft: 10,
         paddingRight: 10,
-        borderTop: "2px solid vanilla",
     },
     forTextField: {},
 }));
+
+var stompClient = null;
 
 export default function Chat(props) {
     const classes = useStyles();
@@ -101,7 +102,25 @@ export default function Chat(props) {
                 setRooms(data);
             });
         });
+        connect();
     }, [username]);
+
+    const connect = () => {
+        const Stomp = require("stompjs");
+        var SockJS = require("sockjs-client");
+        SockJS = new SockJS("http://localhost:8080/chat");
+        stompClient = Stomp.over(SockJS);
+        stompClient.connect({}, onConnected, onError);
+    };
+
+    const onConnected = () => {
+        console.log("connected");
+        console.log(username);
+    };
+
+    const onError = (err) => {
+        console.log(err);
+    };
 
     const switchChatroom = (e) => {
         let friend = e.target.firstChild.data;
