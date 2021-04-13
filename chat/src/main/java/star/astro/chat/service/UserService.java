@@ -82,6 +82,8 @@ public class UserService {
 
     public List<Friend> getFriends(String username) {
         List<Friend> friends = new LinkedList<>();
+
+        //get friends as user0
         List<FriendLink> friendLinks = friendLinkRepository.findFriendLinkByUsername0(username);
         for (FriendLink friendLink : friendLinks) {
             String username1 = friendLink.getUsername1();
@@ -90,6 +92,17 @@ public class UserService {
             Friend friend = new Friend(user.getName(), chatroomId);
             friends.add(friend);
         }
+
+        //get friends as user1
+        friendLinks = friendLinkRepository.findFriendLinkByUsername1(username);
+        for (FriendLink friendLink : friendLinks) {
+            String username0 = friendLink.getUsername0();
+            User user = userRepository.findUserByName(username0);
+            String chatroomId = friendLink.getId();
+            Friend friend = new Friend(user.getName(), chatroomId);
+            friends.add(friend);
+        }
+
         return friends;
     }
 

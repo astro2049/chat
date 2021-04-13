@@ -11,4 +11,6 @@ public interface FriendLinkRepository extends MongoRepository<FriendLink, String
 
     List<FriendLink> findFriendLinkByUsername0(String username0);
 
+    List<FriendLink> findFriendLinkByUsername1(String username1);
+
 }

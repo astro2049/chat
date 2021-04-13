@@ -19,7 +19,6 @@ class App extends React.Component {
             user: user,
             online: true,
         });
-        console.log(user);
     };
 
     render() {
