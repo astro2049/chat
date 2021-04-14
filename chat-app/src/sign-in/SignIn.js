@@ -26,7 +26,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        marginTop: theme.spacing(12),
+        marginTop: theme.spacing(16),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn(props) {
     const classes = useStyles();
+    const setPage = props.setPage;
+    const setUser = props.setUser;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -64,7 +66,6 @@ export default function SignIn(props) {
                         name: "",
                     };
                     user.name = data.username;
-                    let setUser = props.setUser;
                     setUser(user);
                 } else {
                     console.log("nope");
@@ -112,6 +113,7 @@ export default function SignIn(props) {
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
+                        disabled
                     />
                     <Button
                         type="submit"
@@ -133,7 +135,7 @@ export default function SignIn(props) {
                                 href="#"
                                 variant="body2"
                                 onClick={() => {
-                                    props.setPage("sign-up");
+                                    setPage("sign-up");
                                 }}
                             >
                                 {"Don't have an account? Sign Up"}
