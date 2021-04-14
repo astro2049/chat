@@ -93,7 +93,10 @@ export default function Chat(props) {
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
     const [rooms, setRooms] = useState([]);
-    const [activeChat, setActiveChat] = useState({});
+    const [activeChat, setActiveChat] = useState({
+        friend: "",
+        chatroomId: "",
+    });
     const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
     const [receivedMessages, setReceivedMessages] = useState([]);
 
@@ -105,12 +108,30 @@ export default function Chat(props) {
                 setRooms(data);
             });
         });
-        connect();
     }, [username]);
 
+    useEffect(() => {
+        if (rooms === undefined) {
+            return;
+        } else {
+            if (rooms.length > 0) {
+                setActiveChat(rooms[0]);
+            }
+            connect();
+        }
+    }, [rooms]);
+
+    useEffect(() => {
+        refreshChatroomMessages();
+    }, [activeChat]);
+
+    useEffect(() => {
+        refreshChatroomMessages();
+    }, [receivedMessages]);
+
     const refreshChatroomMessages = () => {
-        let msgs = findChatMessages(activeChat.friend);
-        setCurrentChatroomMessages(msgs);
+        let messages = findChatMessages(activeChat.friend);
+        setCurrentChatroomMessages(messages);
     };
 
     const findChatMessages = () => {
@@ -151,10 +172,7 @@ export default function Chat(props) {
 
     const onMessageReceived = (msg) => {
         let message = JSON.parse(msg.body);
-        let messages = receivedMessages;
-        messages.push(message);
-        setReceivedMessages(messages);
-        refreshChatroomMessages();
+        setReceivedMessages((messages) => [...messages, message]);
     };
 
     const onError = (err) => {
