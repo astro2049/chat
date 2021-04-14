@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,18 +8,14 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import AcUnitIcon from "@material-ui/icons/AcUnit";
 
-function Copyright(props) {
+function Copyright() {
     return (
-        <Typography
-            variant="body2"
-            color="textSecondary"
-            align="center"
-            {...props}
-        >
+        <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
             <Link color="inherit" href="https://material-ui.com/">
                 Your Website
@@ -30,66 +26,106 @@ function Copyright(props) {
     );
 }
 
-export default function SignUp() {
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
+
+export default function SignUp(props) {
+    const classes = useStyles();
+    const setPage = props.setPage;
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("username", username);
+        formData.append("password", password);
+        fetch("http://localhost:8080/user", {
+            method: "POST",
+            body: formData,
+        }).then((response) => {
+            response.json().then((data) => {
+                if (data.success === true) {
+                    setPage("sign-in");
+                } else {
+                    console.log("nope");
+                }
+            });
+        });
+        setUsername("");
+        setPassword("");
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
-            >
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
+            <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                    <AcUnitIcon />
                 </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h3">
                     Sign up
                 </Typography>
-                <Box
-                    component="form"
-                    noValidate
-                    sx={{
-                        width: "100%", // Fix IE11 issue.
-                        mt: 3,
-                    }}
-                >
+                <form className={classes.form} noValidate onSubmit={onSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="fname"
                                 name="firstName"
+                                variant="outlined"
                                 required
                                 fullWidth
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                disabled
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                variant="outlined"
                                 required
                                 fullWidth
                                 id="lastName"
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="lname"
+                                disabled
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                variant="outlined"
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
+                                id="username"
+                                label="Nickname"
+                                name="username"
+                                autoComplete="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                variant="outlined"
                                 required
                                 fullWidth
                                 name="password"
@@ -97,6 +133,8 @@ export default function SignUp() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -105,6 +143,7 @@ export default function SignUp() {
                                     <Checkbox
                                         value="allowExtraEmails"
                                         color="primary"
+                                        disabled
                                     />
                                 }
                                 label="I want to receive inspiration, marketing promotions and updates via email."
@@ -115,20 +154,29 @@ export default function SignUp() {
                         type="submit"
                         fullWidth
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
+                        color="primary"
+                        className={classes.submit}
                     >
                         Sign Up
                     </Button>
-                    <Grid container justifyContent="flex-end">
+                    <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link
+                                href="#"
+                                variant="body2"
+                                onClick={() => {
+                                    setPage("sign-in");
+                                }}
+                            >
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
                     </Grid>
-                </Box>
+                </form>
+            </div>
+            <Box mt={5}>
+                <Copyright />
             </Box>
-            <Copyright sx={{ mt: 5 }} />
         </Container>
     );
 }

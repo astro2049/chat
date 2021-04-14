@@ -21,10 +21,14 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public boolean addUserByEmail(@RequestParam Map<String, Object> params) {
+    public JSONObject addUserByNickname(@RequestParam Map<String, Object> params) {
+        JSONObject ret = new JSONObject();
         String username = (String) params.get("username");
         String password = (String) params.get("password");
-        return userService.createUserByName(username, password);
+        boolean granted = userService.createUserByName(username, password);
+        ret.put("success", granted);
+        ret.put("exc", "");
+        return ret;
     }
 
     @GetMapping("/user")

@@ -36,17 +36,16 @@ class App extends React.Component {
 
         function Main(props) {
             if (props.online === false) {
-                if (displaySignUpPage) {
-                    return <SignUp setPage={props.setPage}></SignUp>;
-                }
                 if (displaySignInPage) {
                     return (
                         <SignIn
-                            user={props.user}
                             setUser={props.setUser}
                             setPage={props.setPage}
                         ></SignIn>
                     );
+                }
+                if (displaySignUpPage) {
+                    return <SignUp setPage={props.setPage}></SignUp>;
                 }
             } else {
                 return <Chat user={props.user}></Chat>;
