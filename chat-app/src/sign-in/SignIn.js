@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -8,7 +7,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -28,7 +26,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(12),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -62,9 +60,11 @@ export default function SignIn(props) {
         }).then((response) => {
             response.json().then((data) => {
                 if (data.success === true) {
-                    let user = props.user;
-                    let setUser = props.setUser;
+                    let user = {
+                        name: "",
+                    };
                     user.name = data.username;
+                    let setUser = props.setUser;
                     setUser(user);
                 } else {
                     console.log("nope");
@@ -79,11 +79,8 @@ export default function SignIn(props) {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign in
+                <Typography component="h1" variant="h3">
+                    Chat!
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={onSubmit}>
                     <TextField
@@ -132,7 +129,13 @@ export default function SignIn(props) {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link
+                                href="#"
+                                variant="body2"
+                                onClick={() => {
+                                    props.setPage("sign-up");
+                                }}
+                            >
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
