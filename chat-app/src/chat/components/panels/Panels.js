@@ -1,5 +1,4 @@
-import React from "react";
-import Typography from "@material-ui/core/Typography";
+import React, { useState } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core";
@@ -16,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        paddingBottom: 20,
+        paddingBottom: 28,
         borderTop: "1px solid black",
         borderBottom: "1px solid black",
     },
     container: {
         width: panelsWidth,
-        height: 50,
+        height: 62,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -31,13 +30,14 @@ const useStyles = makeStyles((theme) => ({
     forBreadcrumb: {},
 }));
 
-function handleClick(event) {
-    event.preventDefault();
-    console.info("You clicked a breadcrumb.");
-}
-
 export default function SimpleBreadcrumbs() {
     const classes = useStyles();
+
+    const [activeOption, setActiveOption] = useState("");
+
+    function handleSwitchOption(value) {
+        setActiveOption(value);
+    }
 
     return (
         <div className={classes.outerContainer}>
@@ -46,20 +46,27 @@ export default function SimpleBreadcrumbs() {
                     aria-label="breadcrumb"
                     className={classes.forBreadcrumb}
                 >
-                    <Link color="inherit" href="/" onClick={handleClick}>
+                    <Link
+                        color="inherit"
+                        onClick={(e) => handleSwitchOption("Create Chatroom")}
+                    >
                         Create Chatroom
                     </Link>
                     <Link
                         color="inherit"
-                        href="/getting-started/installation/"
-                        onClick={handleClick}
+                        onClick={(e) => handleSwitchOption("Join Chatroom")}
                     >
                         Join Chatroom
                     </Link>
-                    <Typography color="textPrimary">New Friend</Typography>
+                    <Link
+                        color="inherit"
+                        onClick={(e) => handleSwitchOption("New Friend")}
+                    >
+                        New Friend
+                    </Link>
                 </Breadcrumbs>
             </div>
-            <InputBox></InputBox>
+            <InputBox activeOption={activeOption}></InputBox>
         </div>
     );
 }

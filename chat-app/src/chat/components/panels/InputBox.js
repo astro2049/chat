@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
 const panelsWidth = "95%";
 
@@ -32,15 +32,30 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CustomizedInputBase() {
+export default function CustomizedInputBase(props) {
     const classes = useStyles();
+
+    const activeOption = props.activeOption;
+    const [inputPlaceholder, setInputPlaceholder] = useState("");
+
+    useEffect(() => {
+        if (activeOption === "Create Chatroom") {
+            setInputPlaceholder("create a new chatroom...");
+        }
+        if (activeOption === "Join Chatroom") {
+            setInputPlaceholder("join a chatroom...");
+        }
+        if (activeOption === "New Friend") {
+            setInputPlaceholder("add a new friend...");
+        }
+    }, [activeOption]);
 
     return (
         <div className={classes.container}>
             <Paper component="form" className={classes.root}>
                 <InputBase
                     className={classes.input}
-                    placeholder="Search Google Maps"
+                    placeholder={inputPlaceholder}
                     inputProps={{ "aria-label": "search google maps" }}
                 />
                 <IconButton
@@ -48,7 +63,7 @@ export default function CustomizedInputBase() {
                     className={classes.iconButton}
                     aria-label="search"
                 >
-                    <SearchIcon />
+                    <ArrowForwardIcon />
                 </IconButton>
             </Paper>
         </div>
