@@ -10,6 +10,8 @@ const panelsWidth = "95%";
 const useStyles = makeStyles((theme) => ({
     container: {
         width: panelsWidth,
+        marginTop: 14,
+        marginBottom: 14,
         display: "flex",
         alignItems: "center",
     },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core";
@@ -8,14 +8,13 @@ const panelsWidth = "95%";
 
 const useStyles = makeStyles((theme) => ({
     outerContainer: {
-        width: "25%",
+        width: "26%",
         position: "fixed",
         bottom: 110,
         left: 0,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        paddingBottom: 28,
         borderTop: "1px solid lightgray",
         borderBottom: "1px solid lightgray",
     },
@@ -26,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        borderBottom: "1px solid lightgray",
     },
     forBreadcrumb: {},
 }));
@@ -35,6 +35,14 @@ export default function SimpleBreadcrumbs(props) {
 
     const setChatrooms = props.setChatrooms;
     const [activeOption, setActiveOption] = useState("");
+
+    const createChatroomIsActive = activeOption === "Create Chatroom";
+    const joinChatroomIsActive = activeOption === "Join Chatroom";
+    const addNewFriendIsActive = activeOption === "New Friend";
+
+    useEffect(() => {
+        setActiveOption("New Friend");
+    }, []);
 
     function handleSwitchOption(value) {
         setActiveOption(value);
@@ -48,19 +56,22 @@ export default function SimpleBreadcrumbs(props) {
                     className={classes.forBreadcrumb}
                 >
                     <Link
-                        color="inherit"
+                        color={createChatroomIsActive ? "secondary" : "inherit"}
+                        underline={createChatroomIsActive ? "none" : "hover"}
                         onClick={(e) => handleSwitchOption("Create Chatroom")}
                     >
                         Create Chatroom
                     </Link>
                     <Link
-                        color="inherit"
+                        color={joinChatroomIsActive ? "secondary" : "inherit"}
+                        underline={joinChatroomIsActive ? "none" : "hover"}
                         onClick={(e) => handleSwitchOption("Join Chatroom")}
                     >
                         Join Chatroom
                     </Link>
                     <Link
-                        color="inherit"
+                        color={addNewFriendIsActive ? "secondary" : "inherit"}
+                        underline={addNewFriendIsActive ? "none" : "hover"}
                         onClick={(e) => handleSwitchOption("New Friend")}
                     >
                         New Friend
