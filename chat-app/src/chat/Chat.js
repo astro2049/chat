@@ -7,7 +7,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { Button, List, ListItem, TextField } from "@material-ui/core";
-import MessageBox from "../message/Message";
+import MessageBox from "./components/message/Message";
+import Panels from "./components/panels/Panels";
 
 const appBarHeight = 80;
 const drawerWidth = "25%";
@@ -29,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
-        border: "1px solid blue",
     },
     drawerPaper: {
         width: drawerWidth,
@@ -40,14 +40,21 @@ const useStyles = makeStyles((theme) => ({
         height: 80,
         display: "flex",
         alignItems: "center",
+        borderTop: "1px solid black",
     },
     title: {
         marginLeft: 40,
         fontSize: 40,
     },
+    panelsContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingBottom: 20,
+    },
     friendCard: {
         width: "100%",
-        height: 100,
+        height: 60,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -70,17 +77,19 @@ const useStyles = makeStyles((theme) => ({
     inputContainer: {
         zIndex: 1300,
         position: "fixed",
-        bottom: 10,
+        bottom: 20,
         right: 0,
         width: `calc(100% - ${drawerWidth})`,
-        height: 240,
+        height: 245,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "flex-end",
-        paddingTop: 10,
+        paddingTop: 15,
         paddingLeft: 10,
         paddingRight: 10,
+        borderTop: "1px dashed grey",
+        backgroundColor: "white",
     },
     forTextField: {},
 }));
@@ -246,6 +255,11 @@ export default function Chat(props) {
                         </ListItem>
                     ))}
                 </List>
+
+                <div className={classes.panelsContainer}>
+                    <Panels></Panels>
+                </div>
+
                 <div className={classes.userInfo}>
                     <Typography variant="h4">{username}</Typography>
                 </div>
