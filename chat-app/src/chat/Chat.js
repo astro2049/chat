@@ -11,7 +11,7 @@ import MessageBox from "./components/message/Message";
 import Panels from "./components/panels/Panels";
 
 const appBarHeight = 80;
-const drawerWidth = "25%";
+const drawerWidth = "26%";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        paddingBottom: 20,
     },
     friendCard: {
         width: "100%",
