@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
         paddingBottom: 28,
-        borderTop: "1px solid black",
-        borderBottom: "1px solid black",
+        borderTop: "1px solid lightgray",
+        borderBottom: "1px solid lightgray",
     },
     container: {
         width: panelsWidth,
@@ -30,9 +30,10 @@ const useStyles = makeStyles((theme) => ({
     forBreadcrumb: {},
 }));
 
-export default function SimpleBreadcrumbs() {
+export default function SimpleBreadcrumbs(props) {
     const classes = useStyles();
 
+    const setChatrooms = props.setChatrooms;
     const [activeOption, setActiveOption] = useState("");
 
     function handleSwitchOption(value) {
@@ -66,7 +67,11 @@ export default function SimpleBreadcrumbs() {
                     </Link>
                 </Breadcrumbs>
             </div>
-            <InputBox activeOption={activeOption}></InputBox>
+            <InputBox
+                activeOption={activeOption}
+                username={props.username}
+                setChatrooms={setChatrooms}
+            ></InputBox>
         </div>
     );
 }

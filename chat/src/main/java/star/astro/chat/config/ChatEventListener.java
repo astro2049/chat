@@ -26,8 +26,13 @@ public class ChatEventListener {
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-        String username = (String) Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("username");
-        userService.userOffline(username);
+        try {
+            String username = (String) Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("username");
+            userService.userOffline(username);
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

@@ -77,18 +77,19 @@ const useStyles = makeStyles((theme) => ({
     inputContainer: {
         zIndex: 1300,
         position: "fixed",
-        bottom: 20,
+        bottom: 0,
         right: 0,
         width: `calc(100% - ${drawerWidth})`,
-        height: 245,
+        height: 250,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "flex-end",
-        paddingTop: 15,
+        paddingTop: 10,
         paddingLeft: 10,
         paddingRight: 10,
-        borderTop: "1px dashed grey",
+        paddingBottom: 12,
+        borderTop: "1px solid lightgray",
         backgroundColor: "white",
     },
     forTextField: {},
@@ -110,6 +111,10 @@ export default function Chat(props) {
     const [receivedMessages, setReceivedMessages] = useState([]);
 
     useEffect(() => {
+        setChatrooms();
+    }, [username]);
+
+    const setChatrooms = () => {
         fetch("http://localhost:8080/user/room?username=" + username, {
             method: "GET",
         }).then((response) => {
@@ -117,14 +122,16 @@ export default function Chat(props) {
                 setRooms(data);
             });
         });
-    }, [username]);
+    };
 
     useEffect(() => {
         if (rooms === undefined) {
             return;
         } else {
             if (rooms.length > 0) {
-                setActiveChat(rooms[0]);
+                if (activeChat.chatroomId === "") {
+                    setActiveChat(rooms[0]);
+                }
             }
             connect();
         }
@@ -257,7 +264,10 @@ export default function Chat(props) {
                 </List>
 
                 <div className={classes.panelsContainer}>
-                    <Panels></Panels>
+                    <Panels
+                        username={username}
+                        setChatrooms={setChatrooms}
+                    ></Panels>
                 </div>
 
                 <div className={classes.userInfo}>

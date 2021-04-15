@@ -35,8 +35,11 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedInputBase(props) {
     const classes = useStyles();
 
+    const username = props.username;
     const activeOption = props.activeOption;
+    const setChatrooms = props.setChatrooms;
     const [inputPlaceholder, setInputPlaceholder] = useState("");
+    const [inputText, setInputText] = useState("");
 
     useEffect(() => {
         if (activeOption === "Create Chatroom") {
@@ -50,13 +53,43 @@ export default function CustomizedInputBase(props) {
         }
     }, [activeOption]);
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (activeOption === "New Friend") {
+            addANewFriend(username, inputText);
+        }
+    };
+
+    const addANewFriend = (username, friendName) => {
+        let formData = new FormData();
+        formData.append("username", username);
+        formData.append("friendName", friendName);
+        fetch("http://localhost:8080/user/friend", {
+            method: "POST",
+            body: formData,
+        }).then((response) => {
+            response.json().then((data) => {
+                if (data.success === true) {
+                    setChatrooms();
+                } else {
+                    console.log("nope");
+                }
+            });
+        });
+    };
+
     return (
         <div className={classes.container}>
-            <Paper component="form" className={classes.root}>
+            <Paper
+                component="form"
+                className={classes.root}
+                onSubmit={(e) => onSubmit(e)}
+            >
                 <InputBase
                     className={classes.input}
                     placeholder={inputPlaceholder}
                     inputProps={{ "aria-label": "search google maps" }}
+                    onChange={(e) => setInputText(e.target.value)}
                 />
                 <IconButton
                     type="submit"
