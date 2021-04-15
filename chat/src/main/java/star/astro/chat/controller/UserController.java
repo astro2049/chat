@@ -54,10 +54,14 @@ public class UserController {
     }
 
     @PostMapping("/user/friend")
-    public boolean addFriend(@RequestParam Map<String, Object> params) {
+    public JSONObject addFriend(@RequestParam Map<String, Object> params) {
+        JSONObject ret = new JSONObject();
         String username = (String) params.get("username");
         String friendName = (String) params.get("friendName");
-        return userService.addFriend(username, friendName);
+        boolean success = userService.addFriend(username, friendName);
+        ret.put("success", success);
+        ret.put("exc", "");
+        return ret;
     }
 
     @PostMapping("/chatroom")
