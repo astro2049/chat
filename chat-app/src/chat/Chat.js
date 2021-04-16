@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     },
     friendCard: {
         width: "100%",
-        height: 60,
+        height: 50,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -70,8 +70,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3),
     },
-    containerOnRight: {
-        height: "900px",
+    messagesArea: {
+        width: "100%",
+        minHeight: "900px",
+        display: "flex",
+        flexDirection: "column",
     },
     inputContainer: {
         zIndex: 1300,
@@ -187,6 +190,11 @@ export default function Chat(props) {
 
     const onMessageReceived = (msg) => {
         let message = JSON.parse(msg.body);
+        if (message.sender === username) {
+            message.mine = true;
+        } else {
+            message.mine = false;
+        }
         setReceivedMessages((messages) => [...messages, message]);
     };
 
@@ -275,15 +283,14 @@ export default function Chat(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <div className={classes.containerOnRight}>
-                    <div>
-                        {currentChatroomMessages.map((message) => (
-                            <MessageBox
-                                username={message.sender}
-                                content={message.content}
-                            ></MessageBox>
-                        ))}
-                    </div>
+                <div className={classes.messagesArea}>
+                    {currentChatroomMessages.map((message) => (
+                        <MessageBox
+                            username={message.sender}
+                            content={message.content}
+                            mine={message.mine}
+                        ></MessageBox>
+                    ))}
                 </div>
             </main>
             <div className={classes.inputContainer}>
