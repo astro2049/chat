@@ -112,10 +112,6 @@ export default function Chat(props) {
     const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
     const [receivedMessages, setReceivedMessages] = useState([]);
 
-    useEffect(() => {
-        setChatrooms();
-    }, [username]);
-
     const setChatrooms = () => {
         fetch("http://localhost:8080/user/room?username=" + username, {
             method: "GET",
@@ -125,6 +121,8 @@ export default function Chat(props) {
             });
         });
     };
+
+    useEffect(setChatrooms, []); // set chatrooms after entering the chat page
 
     useEffect(() => {
         if (rooms === undefined) {
@@ -139,18 +137,12 @@ export default function Chat(props) {
         }
     }, [rooms]);
 
-    useEffect(() => {
-        refreshChatroomMessages();
-    }, [activeChat]);
-
-    useEffect(() => {
-        refreshChatroomMessages();
-    }, [receivedMessages]);
-
     const refreshChatroomMessages = () => {
         let messages = findChatMessages(activeChat.friend);
         setCurrentChatroomMessages(messages);
     };
+
+    useEffect(refreshChatroomMessages, [activeChat, receivedMessages]);
 
     const findChatMessages = () => {
         let messages = [];
