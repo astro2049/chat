@@ -2,8 +2,8 @@ package star.astro.chat.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
-import star.astro.chat.model.Chatroom;
-import star.astro.chat.model.Friend;
+import star.astro.chat.model.GroupChat;
+import star.astro.chat.model.wrapper.Chatroom;
 import star.astro.chat.model.User;
 import star.astro.chat.service.UserService;
 
@@ -78,16 +78,16 @@ public class UserController {
         return userService.joinChatroom(username, chatroomId);
     }
 
-    @GetMapping("/user/room")
-    public List<Friend> getPrivateChatroom(@RequestParam Map<String, Object> params) {
+    @GetMapping("/user/private/room")
+    public List<Chatroom> getPrivateChatrooms(@RequestParam Map<String, Object> params) {
         String username = (String) params.get("username");
-        return userService.getFriends(username);
+        return userService.getPrivateChatrooms(username);
     }
 
-    @GetMapping("/chatroom")
-    public List<Chatroom> getUserChatrooms(@RequestParam Map<String, Object> params) {
+    @GetMapping("/user/group/room")
+    public List<GroupChat> getGroupChatrooms(@RequestParam Map<String, Object> params) {
         String username = (String) params.get("username");
-        return userService.getChatrooms(username);
+        return userService.getGroupChatrooms(username);
     }
 
 }

@@ -106,14 +106,14 @@ export default function Chat(props) {
     const [chatText, setChatText] = useState("");
     const [rooms, setRooms] = useState([]);
     const [activeChat, setActiveChat] = useState({
-        friend: "",
         chatroomId: "",
+        name: "",
     });
     const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
     const [receivedMessages, setReceivedMessages] = useState([]);
 
     const setChatrooms = () => {
-        fetch("http://localhost:8080/user/room?username=" + username, {
+        fetch("http://localhost:8080/user/private/room?username=" + username, {
             method: "GET",
         }).then((response) => {
             response.json().then((data) => {
@@ -138,7 +138,7 @@ export default function Chat(props) {
     }, [rooms]);
 
     const refreshChatroomMessages = () => {
-        let messages = findChatMessages(activeChat.friend);
+        let messages = findChatMessages(activeChat.name);
         setCurrentChatroomMessages(messages);
     };
 
@@ -149,8 +149,8 @@ export default function Chat(props) {
         for (let i = 0; i < receivedMessages.length; i++) {
             let message = receivedMessages[i];
             if (
-                message.sender === activeChat.friend ||
-                message.receiver === activeChat.friend
+                message.sender === activeChat.name ||
+                message.receiver === activeChat.name
             ) {
                 messages.push(message);
             }
@@ -198,8 +198,8 @@ export default function Chat(props) {
         setChatText("");
         let msg = chatText;
         if (msg.trim() !== "") {
-            let friendName = activeChat.friend;
             let chatroomId = activeChat.chatroomId;
+            let friendName = activeChat.name;
             const message = {
                 sender: username,
                 receiver: friendName,
@@ -221,7 +221,7 @@ export default function Chat(props) {
                 <Toolbar>
                     <div className={classes.chatroomName}>
                         <Typography variant="h4" noWrap>
-                            {activeChat.friend}
+                            {activeChat.name}
                         </Typography>
                     </div>
                 </Toolbar>
@@ -255,7 +255,7 @@ export default function Chat(props) {
                                     gutterBottom
                                     align="center"
                                 >
-                                    {room.friend}
+                                    {room.name}
                                 </Typography>
                             </Button>
                         </ListItem>
