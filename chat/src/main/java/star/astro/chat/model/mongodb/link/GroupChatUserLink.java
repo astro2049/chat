@@ -8,7 +8,7 @@ public class GroupChatUserLink {
 
     @Id
     private String id;
-    private String chatroom;
+    private String chatroomId;
     private String username;
 
     public String getId() {
@@ -19,12 +19,12 @@ public class GroupChatUserLink {
         this.id = id;
     }
 
-    public String getChatroom() {
-        return chatroom;
+    public String getChatroomId() {
+        return chatroomId;
     }
 
-    public void setChatroom(String chatroom) {
-        this.chatroom = chatroom;
+    public void setChatroomId(String chatroomId) {
+        this.chatroomId = chatroomId;
     }
 
     public String getUser() {

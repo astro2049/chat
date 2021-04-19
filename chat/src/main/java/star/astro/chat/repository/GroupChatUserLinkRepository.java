@@ -7,8 +7,8 @@ import star.astro.chat.model.mongodb.link.GroupChatUserLink;
 import java.util.List;
 
 @Repository
-public interface ChatroomUserLinkRepository extends MongoRepository<GroupChatUserLink, String> {
+public interface GroupChatUserLinkRepository extends MongoRepository<GroupChatUserLink, String> {
 
-    List<GroupChatUserLink> findChatroomUserLinkByUsername(String username);
+    List<GroupChatUserLink> findGroupChatUserLinkByUsername(String username);
 
 }
