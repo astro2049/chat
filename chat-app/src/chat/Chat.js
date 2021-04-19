@@ -51,13 +51,22 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
     },
-    friendCard: {
+    privateChatCard: {
         width: "100%",
         height: 50,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         textTransform: "none",
+    },
+    groupChatCard: {
+        width: "100%",
+        height: 50,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        textTransform: "none",
+        backgroundColor: "sandyBrown",
     },
     userInfo: {
         zIndex: 1250,
@@ -113,7 +122,7 @@ export default function Chat(props) {
     const [receivedMessages, setReceivedMessages] = useState([]);
 
     const setChatrooms = () => {
-        fetch("http://localhost:8080/user/private/room?username=" + username, {
+        fetch("http://localhost:8080/user/room?username=" + username, {
             method: "GET",
         }).then((response) => {
             response.json().then((data) => {
@@ -258,7 +267,11 @@ export default function Chat(props) {
                                 variant="contained"
                                 color="secondary"
                                 onClick={() => setActiveChat(room)}
-                                className={classes.friendCard}
+                                className={
+                                    room.type === 0
+                                        ? classes.privateChatCard
+                                        : classes.groupChatCard
+                                }
                             >
                                 <Typography
                                     variant="h5"

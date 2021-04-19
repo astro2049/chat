@@ -6,9 +6,10 @@ import star.astro.chat.model.mongodb.User;
 import star.astro.chat.model.mongodb.link.FriendLink;
 import star.astro.chat.model.mongodb.link.GroupChatUserLink;
 import star.astro.chat.model.wrapper.Chatroom;
-import star.astro.chat.repository.ChatroomRepository;
-import star.astro.chat.repository.ChatroomUserLinkRepository;
+import star.astro.chat.model.wrapper.ChatroomType;
 import star.astro.chat.repository.FriendLinkRepository;
+import star.astro.chat.repository.GroupChatRepository;
+import star.astro.chat.repository.GroupChatUserLinkRepository;
 import star.astro.chat.repository.UserRepository;
 
 import java.util.LinkedList;
@@ -19,17 +20,17 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final ChatroomRepository chatroomRepository;
+    private final GroupChatRepository groupChatRepository;
 
     private final FriendLinkRepository friendLinkRepository;
 
-    private final ChatroomUserLinkRepository chatroomUserLinkRepository;
+    private final GroupChatUserLinkRepository groupChatUserLinkRepository;
 
-    public UserService(UserRepository userRepository, ChatroomRepository chatroomRepository, FriendLinkRepository friendLinkRepository, ChatroomUserLinkRepository chatroomUserLinkRepository) {
+    public UserService(UserRepository userRepository, GroupChatRepository groupChatRepository, FriendLinkRepository friendLinkRepository, GroupChatUserLinkRepository groupChatUserLinkRepository) {
         this.userRepository = userRepository;
-        this.chatroomRepository = chatroomRepository;
+        this.groupChatRepository = groupChatRepository;
         this.friendLinkRepository = friendLinkRepository;
-        this.chatroomUserLinkRepository = chatroomUserLinkRepository;
+        this.groupChatUserLinkRepository = groupChatUserLinkRepository;
     }
 
     public boolean createUserByName(String name, String password) {
@@ -89,7 +90,7 @@ public class UserService {
             String username1 = friendLink.getUsername1();
             User user = userRepository.findUserByName(username1);
             String chatroomId = friendLink.getId();
-            Chatroom chatroom = new Chatroom(chatroomId, user.getName());
+            Chatroom chatroom = new Chatroom(chatroomId, user.getName(), ChatroomType.PRIVATECHAT.getValue());
             chatrooms.add(chatroom);
         }
 
@@ -99,42 +100,51 @@ public class UserService {
             String username0 = friendLink.getUsername0();
             User user = userRepository.findUserByName(username0);
             String chatroomId = friendLink.getId();
-            Chatroom chatroom = new Chatroom(chatroomId, user.getName());
+            Chatroom chatroom = new Chatroom(chatroomId, user.getName(), ChatroomType.PRIVATECHAT.getValue());
             chatrooms.add(chatroom);
         }
 
         return chatrooms;
     }
 
-    public List<GroupChat> getGroupChatrooms(String username) {
-        List<GroupChat> groupChats = new LinkedList<>();
-        List<GroupChatUserLink> groupChatUserLinks = chatroomUserLinkRepository.findChatroomUserLinkByUsername(username);
+    public List<Chatroom> getGroupChatrooms(String username) {
+        List<Chatroom> chatrooms = new LinkedList<>();
+        List<GroupChatUserLink> groupChatUserLinks = groupChatUserLinkRepository.findGroupChatUserLinkByUsername(username);
         for (GroupChatUserLink groupChatUserLink : groupChatUserLinks) {
-            String chatroomId = groupChatUserLink.getId();
-            GroupChat groupChat = chatroomRepository.findChatroomById(chatroomId);
-            groupChats.add(groupChat);
+            String chatroomId = groupChatUserLink.getChatroomId();
+            GroupChat groupChat = groupChatRepository.findGroupChatById(chatroomId);
+            String chatroomName = groupChat.getName();
+            Chatroom chatroom = new Chatroom(chatroomId, chatroomName, ChatroomType.GROUPCHAT.getValue());
+            chatrooms.add(chatroom);
         }
-        return groupChats;
+        return chatrooms;
     }
 
     public boolean createChatroom(String username, String chatroomName) {
         GroupChat groupChat = new GroupChat();
         groupChat.setName(chatroomName);
-        groupChat = chatroomRepository.save(groupChat);
+        groupChat = groupChatRepository.save(groupChat);
         String chatroomId = groupChat.getId();
         GroupChatUserLink groupChatUserLink = new GroupChatUserLink();
-        groupChatUserLink.setChatroom(chatroomId);
+        groupChatUserLink.setChatroomId(chatroomId);
         groupChatUserLink.setUser(username);
-        chatroomUserLinkRepository.save(groupChatUserLink);
+        groupChatUserLinkRepository.save(groupChatUserLink);
         return true;
     }
 
     public boolean joinChatroom(String username, String chatroomId) {
         GroupChatUserLink groupChatUserLink = new GroupChatUserLink();
-        groupChatUserLink.setChatroom(chatroomId);
+        groupChatUserLink.setChatroomId(chatroomId);
         groupChatUserLink.setUser(username);
-        chatroomUserLinkRepository.save(groupChatUserLink);
+        groupChatUserLinkRepository.save(groupChatUserLink);
         return true;
+    }
+
+    public List<Chatroom> getUserChatrooms(String username) {
+        List<Chatroom> chatrooms = new LinkedList<>();
+        chatrooms.addAll(getPrivateChatrooms(username));
+        chatrooms.addAll(getGroupChatrooms(username));
+        return chatrooms;
     }
 
 }

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 import star.astro.chat.model.mongodb.GroupChat;
 
 @Repository
-public interface ChatroomRepository extends MongoRepository<GroupChat, String> {
+public interface GroupChatRepository extends MongoRepository<GroupChat, String> {
 
-    GroupChat findChatroomById(String Id);
+    GroupChat findGroupChatById(String id);
 
 }
