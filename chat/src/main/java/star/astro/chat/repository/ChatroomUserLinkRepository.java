@@ -2,7 +2,7 @@ package star.astro.chat.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import star.astro.chat.model.link.GroupChatUserLink;
+import star.astro.chat.model.mongodb.link.GroupChatUserLink;
 
 import java.util.List;
 
