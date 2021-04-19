@@ -1,4 +1,4 @@
-package star.astro.chat.model;
+package star.astro.chat.model.mongodb;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,20 +1,20 @@
 package star.astro.chat.model;
 
-public class ChatMessage {
+public class Notification {
 
     private String sender;
     private String receiver;
-    private String content;
+    private int type;
     private String time;
 
-    public ChatMessage() {
+    public Notification() {
 
     }
 
-    public ChatMessage(String sender, String receiver, String content, String time) {
+    public Notification(String sender, String receiver, int type, String time) {
         this.sender = sender;
         this.receiver = receiver;
-        this.content = content;
+        this.type = type;
         this.time = time;
     }
 
@@ -34,12 +34,12 @@ public class ChatMessage {
         this.receiver = receiver;
     }
 
-    public String getContent() {
-        return content;
+    public int getType() {
+        return type;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getTime() {

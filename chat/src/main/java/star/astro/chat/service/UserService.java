@@ -1,10 +1,10 @@
 package star.astro.chat.service;
 
 import org.springframework.stereotype.Service;
-import star.astro.chat.model.GroupChat;
-import star.astro.chat.model.User;
-import star.astro.chat.model.link.FriendLink;
-import star.astro.chat.model.link.GroupChatUserLink;
+import star.astro.chat.model.mongodb.GroupChat;
+import star.astro.chat.model.mongodb.User;
+import star.astro.chat.model.mongodb.link.FriendLink;
+import star.astro.chat.model.mongodb.link.GroupChatUserLink;
 import star.astro.chat.model.wrapper.Chatroom;
 import star.astro.chat.repository.ChatroomRepository;
 import star.astro.chat.repository.ChatroomUserLinkRepository;

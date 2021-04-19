@@ -171,6 +171,16 @@ export default function Chat(props) {
         subscribeChatrooms();
     };
 
+    const subscribeNotifications = () => {
+        stompClient.subscribe("/topic/notice." + username, onNoticeReceived);
+    };
+
+    const onNoticeReceived = (ntc) => {
+        let notice = JSON.parse(ntc);
+        console.log(notice);
+        setChatrooms();
+    };
+
     const subscribeChatrooms = () => {
         rooms.map((room) =>
             stompClient.subscribe(
