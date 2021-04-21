@@ -6,12 +6,21 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import { Button, List, ListItem, TextField } from "@material-ui/core";
+import {
+    Button,
+    Input,
+    List,
+    ListItem,
+    Table,
+    TableContainer,
+    TextField,
+} from "@material-ui/core";
 import MessageBox from "./components/message/Message";
 import Panels from "./components/panels/Panels";
 
 const appBarHeight = 80;
 const drawerWidth = "26%";
+const middleSectionUnifiedHeight = 392; // very hacky
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 40,
         fontSize: 40,
     },
+    forTableContainer: {
+        width: "100%",
+        maxHeight: middleSectionUnifiedHeight, // very hacky
+    },
     panelsContainer: {
         display: "flex",
         flexDirection: "column",
@@ -77,13 +90,16 @@ const useStyles = makeStyles((theme) => ({
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
     },
     messagesArea: {
         width: "100%",
-        minHeight: "900px",
+        minHeight: 600, // hacky
+        marginTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
         display: "flex",
         flexDirection: "column",
+        paddingBottom: 25,
     },
     inputContainer: {
         zIndex: 1300,
@@ -213,6 +229,13 @@ export default function Chat(props) {
         console.log(err);
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            sendChatMessage();
+        }
+    };
+
     const sendChatMessage = () => {
         setChatText("");
         let msg = chatText;
@@ -260,30 +283,34 @@ export default function Chat(props) {
                 </div>
                 <Divider />
 
-                <List>
-                    {rooms.map((room) => (
-                        <ListItem>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => setActiveChat(room)}
-                                className={
-                                    room.type === 0
-                                        ? classes.privateChatCard
-                                        : classes.groupChatCard
-                                }
-                            >
-                                <Typography
-                                    variant="h5"
-                                    gutterBottom
-                                    align="center"
-                                >
-                                    {room.name}
-                                </Typography>
-                            </Button>
-                        </ListItem>
-                    ))}
-                </List>
+                <TableContainer className={classes.forTableContainer}>
+                    <Table stickyHeader>
+                        <List>
+                            {rooms.map((room) => (
+                                <ListItem>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => setActiveChat(room)}
+                                        className={
+                                            room.type === 0
+                                                ? classes.privateChatCard
+                                                : classes.groupChatCard
+                                        }
+                                    >
+                                        <Typography
+                                            variant="h5"
+                                            gutterBottom
+                                            align="center"
+                                        >
+                                            {room.name}
+                                        </Typography>
+                                    </Button>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Table>
+                </TableContainer>
 
                 <div className={classes.panelsContainer}>
                     <Panels
@@ -298,15 +325,22 @@ export default function Chat(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <div className={classes.messagesArea}>
-                    {currentChatroomMessages.map((message) => (
-                        <MessageBox
-                            username={message.sender}
-                            content={message.content}
-                            mine={message.mine}
-                        ></MessageBox>
-                    ))}
-                </div>
+                <TableContainer className={classes.forTableContainer}>
+                    <Table
+                        stickyHeader
+                        className={classes.forRightSideContentTable}
+                    >
+                        <div className={classes.messagesArea}>
+                            {currentChatroomMessages.map((message) => (
+                                <MessageBox
+                                    username={message.sender}
+                                    content={message.content}
+                                    mine={message.mine}
+                                ></MessageBox>
+                            ))}
+                        </div>
+                    </Table>
+                </TableContainer>
             </main>
             <div className={classes.inputContainer}>
                 <TextField
@@ -317,6 +351,7 @@ export default function Chat(props) {
                     className={classes.forTextField}
                     value={chatText}
                     onChange={(e) => setChatText(e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(e)}
                 ></TextField>
                 <Button
                     variant="contained"

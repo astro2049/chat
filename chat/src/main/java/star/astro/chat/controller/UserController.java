@@ -64,17 +64,23 @@ public class UserController {
     }
 
     @PostMapping("/chatroom")
-    public boolean createChatroom(@RequestParam Map<String, Object> params) {
+    public JSONObject createChatroom(@RequestParam Map<String, Object> params) {
+        JSONObject ret = new JSONObject();
         String username = (String) params.get("username");
         String chatroomName = (String) params.get("chatroomName");
-        return userService.createChatroom(username, chatroomName);
+        boolean success = userService.createChatroom(username, chatroomName);
+        ret.put("success", success);
+        return ret;
     }
 
-    @PutMapping("/chatroom")
-    public boolean joinChatroom(@RequestParam Map<String, Object> params) {
+    @PutMapping("/user/chatroom")
+    public JSONObject joinChatroom(@RequestParam Map<String, Object> params) {
+        JSONObject ret = new JSONObject();
         String username = (String) params.get("username");
         String chatroomId = (String) params.get("chatroomId");
-        return userService.joinChatroom(username, chatroomId);
+        boolean success = userService.joinChatroom(username, chatroomId);
+        ret.put("success", success);
+        return ret;
     }
 
     @GetMapping("/user/room")

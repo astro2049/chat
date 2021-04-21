@@ -9,12 +9,26 @@ const useStyles = makeStyles((theme) => ({
     },
     messageOnLeftSide: {
         alignSelf: "flex-start",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        paddingTop: 5,
+        paddingLeft: 10,
+        paddingRight: 20,
+        paddingBottom: 10,
     },
     messageOnRightSide: {
         alignSelf: "flex-end",
         display: "flex",
-        flexDirection: "row-reverse",
+        flexDirection: "column",
+        alignItems: "flex-end",
+        paddingTop: 5,
+        paddingLeft: 20,
+        paddingRight: 10,
+        paddingBottom: 10,
         backgroundColor: "lightpink",
+    },
+    username: {
+        marginBottom: 5,
     },
 }));
 
@@ -31,14 +45,12 @@ export default function ChatMessage(props) {
 
     return (
         <Card className={[classes.container, messageClass].join(" ")}>
-            <CardContent>
-                <Typography variant="h6" hidden>
-                    {username}:
-                </Typography>
-                <Typography variant="body1" style={{ wordWrap: "break-word" }}>
-                    {content}
-                </Typography>
-            </CardContent>
+            <Typography variant="h6" className={classes.username} hidden>
+                {username}
+            </Typography>
+            <Typography variant="h6" style={{ wordWrap: "break-word" }}>
+                {content}
+            </Typography>
         </Card>
     );
 }
