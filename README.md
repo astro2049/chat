@@ -1,6 +1,6 @@
 # chat
 
-Chat!:speech_balloon: An online chat app that supports private & group chat, built with React + Spring Boot, homework (currently under development)
+Chat!:speech_balloon: An online chat app that supports private & group chat, built with React + Spring Boot, homework
 
 ## Notes:
 
