@@ -60,6 +60,12 @@ export default function CustomizedInputBase(props) {
         if (activeOption === "New Friend") {
             addANewFriend(username, inputText);
         }
+        if (activeOption === "Join Chatroom") {
+            joinAChatroom(username, inputText);
+        }
+        if (activeOption === "Create Chatroom") {
+            createAChatroom(username, inputText);
+        }
     };
 
     const addANewFriend = (username, friendName) => {
@@ -67,6 +73,42 @@ export default function CustomizedInputBase(props) {
         formData.append("username", username);
         formData.append("friendName", friendName);
         fetch("http://localhost:8080/user/friend", {
+            method: "POST",
+            body: formData,
+        }).then((response) => {
+            response.json().then((data) => {
+                if (data.success === true) {
+                    setChatrooms();
+                } else {
+                    console.log("nope");
+                }
+            });
+        });
+    };
+
+    const joinAChatroom = (username, chatroomId) => {
+        let formData = new FormData();
+        formData.append("username", username);
+        formData.append("chatroomId", chatroomId);
+        fetch("http://localhost:8080/user/chatroom", {
+            method: "PUT",
+            body: formData,
+        }).then((response) => {
+            response.json().then((data) => {
+                if (data.success === true) {
+                    setChatrooms();
+                } else {
+                    console.log("nope");
+                }
+            });
+        });
+    };
+
+    const createAChatroom = (username, chatroomName) => {
+        let formData = new FormData();
+        formData.append("username", username);
+        formData.append("chatroomName", chatroomName);
+        fetch("http://localhost:8080/chatroom", {
             method: "POST",
             body: formData,
         }).then((response) => {
