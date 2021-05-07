@@ -1,31 +1,36 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     container: {
         maxWidth: 500,
-        marginTop: 20,
-    },
-    messageOnLeftSide: {
-        alignSelf: "flex-start",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        paddingTop: 5,
-        paddingLeft: 10,
-        paddingRight: 20,
-        paddingBottom: 10,
-    },
-    messageOnRightSide: {
-        alignSelf: "flex-end",
+        marginTop: 10,
         display: "flex",
         flexDirection: "column",
+    },
+    containerOnLeftSide: {
+        alignSelf: "flex-start",
+        alignItems: "flex-start",
+    },
+    containerOnRightSide: {
+        alignSelf: "flex-end",
         alignItems: "flex-end",
+    },
+    messageCard: {
+        display: "flex",
+        flexDirection: "column",
         paddingTop: 5,
+        paddingBottom: 10,
+    },
+    friendMessage: {
+        paddingLeft: 10,
+        paddingRight: 20,
+    },
+    myMessage: {
+        backgroundColor: "lightpink",
         paddingLeft: 20,
         paddingRight: 10,
-        paddingBottom: 10,
-        backgroundColor: "lightpink",
     },
     username: {
         marginBottom: 5,
@@ -37,20 +42,32 @@ export default function ChatMessage(props) {
 
     const username = props.username;
     const content = props.content;
+    const time = props.time.substring(11, 16);
     const mine = props.mine;
 
-    const messageClass = mine
-        ? classes.messageOnRightSide
-        : classes.messageOnLeftSide;
+    const containerClass = mine
+        ? classes.containerOnRightSide
+        : classes.containerOnLeftSide;
+
+    const cardClass = mine ? classes.myMessage : classes.friendMessage;
 
     return (
-        <Card className={[classes.container, messageClass].join(" ")}>
-            <Typography variant="h6" className={classes.username} hidden>
-                {username}
+        <div className={[classes.container, containerClass].join(" ")}>
+            <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                className={classes.time}
+            >
+                {time}
             </Typography>
-            <Typography variant="h6" style={{ wordWrap: "break-word" }}>
-                {content}
-            </Typography>
-        </Card>
+            <Card className={[classes.messageCard, cardClass].join(" ")}>
+                <Typography variant="h6" className={classes.username} hidden>
+                    {username}
+                </Typography>
+                <Typography variant="h6" style={{ wordWrap: "break-word" }}>
+                    {content}
+                </Typography>
+            </Card>
+        </div>
     );
 }
