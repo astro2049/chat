@@ -17,15 +17,10 @@ public class ChatController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
-    @MessageMapping("/private/{room}")
-    @SendTo("/topic/private.{room}")
+    @MessageMapping("/chatroom/{room}")
+    @SendTo("/topic/chatroom.{room}")
     public ChatMessage sendPrivateMessage(@DestinationVariable String room, @Payload ChatMessage chatMessage) {
         return chatMessage;
-    }
-
-    @MessageMapping("/chatroom/{room}")
-    public void sendChatroomMessage(@DestinationVariable String room, @Payload ChatMessage chatMessage) {
-        simpMessagingTemplate.convertAndSend("/topic/chatroom." + room, chatMessage);
     }
 
 }
