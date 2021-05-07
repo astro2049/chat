@@ -1,5 +1,6 @@
 package star.astro.chat.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 import star.astro.chat.TimeServiceClient_Library.NTP_Client;
 
@@ -31,9 +32,12 @@ public class TimeService {
         ntp_client.SetUp_TimeService_AddressStruct(url);
     }
 
-    public String getTime() {
+    public JSONObject getTime() {
+        JSONObject ret = new JSONObject();
         NTP_Client.NTP_Timestamp_Data NTPTimestamp = ntp_client.Get_NTP_Timestamp();
-        return String.format("%02d:%02d:%02d", NTPTimestamp.lHour, NTPTimestamp.lMinute, NTPTimestamp.lSecond);
+        ret.put("simpleFormat", String.format("%02d:%02d:%02d", NTPTimestamp.lHour, NTPTimestamp.lMinute, NTPTimestamp.lSecond));
+        ret.put("UnixTime", NTPTimestamp.lUnixTime * 1000);
+        return ret;
     }
 
 }

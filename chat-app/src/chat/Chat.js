@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import {
     Button,
-    Input,
     List,
     ListItem,
     Table,
@@ -232,11 +231,11 @@ export default function Chat(props) {
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            sendChatMessage();
+            activateSendChatMessage();
         }
     };
 
-    const sendChatMessage = () => {
+    const sendChatMessage = (time) => {
         setChatText("");
         let msg = chatText;
         if (msg.trim() !== "") {
@@ -246,7 +245,7 @@ export default function Chat(props) {
                 sender: username,
                 receiver: friendName,
                 content: msg,
-                time: new Date(),
+                time: new Date(time),
             };
             stompClient.send(
                 "/app/chatroom/" + chatroomId,
@@ -254,6 +253,18 @@ export default function Chat(props) {
                 JSON.stringify(message)
             );
         }
+    };
+
+    const activateSendChatMessage = () => {
+        // get UTC time first, send message in callback
+        fetch("http://localhost:8080/time", {
+            method: "GET",
+        }).then((response) => {
+            response.json().then((data) => {
+                let time = data.UTCTime.UnixTime;
+                sendChatMessage(time);
+            });
+        });
     };
 
     return (
@@ -335,6 +346,7 @@ export default function Chat(props) {
                                 <MessageBox
                                     username={message.sender}
                                     content={message.content}
+                                    time={message.time}
                                     mine={message.mine}
                                 ></MessageBox>
                             ))}
@@ -356,7 +368,7 @@ export default function Chat(props) {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={sendChatMessage}
+                    onClick={activateSendChatMessage}
                 >
                     Send
                 </Button>
