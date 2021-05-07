@@ -209,7 +209,7 @@ export default function Chat(props) {
     const subscribeChatrooms = () => {
         rooms.map((room) =>
             stompClient.subscribe(
-                "/topic/private." + room.chatroomId,
+                "/topic/chatroom." + room.chatroomId,
                 onMessageReceived
             )
         );
@@ -249,7 +249,7 @@ export default function Chat(props) {
                 time: new Date(),
             };
             stompClient.send(
-                "/app/private/" + chatroomId,
+                "/app/chatroom/" + chatroomId,
                 {},
                 JSON.stringify(message)
             );
