@@ -21,16 +21,12 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         paddingTop: 5,
-        paddingBottom: 10,
-    },
-    friendMessage: {
-        paddingLeft: 10,
+        paddingLeft: 20,
         paddingRight: 20,
+        paddingBottom: 10,
     },
     myMessage: {
         backgroundColor: "lightpink",
-        paddingLeft: 20,
-        paddingRight: 10,
     },
     username: {
         marginBottom: 5,
@@ -49,7 +45,7 @@ export default function ChatMessage(props) {
         ? classes.containerOnRightSide
         : classes.containerOnLeftSide;
 
-    const cardClass = mine ? classes.myMessage : classes.friendMessage;
+    const cardClass = mine ? classes.myMessage : "";
 
     return (
         <div className={[classes.container, containerClass].join(" ")}>
