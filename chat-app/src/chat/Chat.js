@@ -137,7 +137,7 @@ export default function Chat(props) {
     const [receivedMessages, setReceivedMessages] = useState([]);
 
     const setChatrooms = () => {
-        fetch("http://localhost:8080/user/room?username=" + username, {
+        fetch("http://localhost:8080/user/chatroom?username=" + username, {
             method: "GET",
         }).then((response) => {
             response.json().then((data) => {

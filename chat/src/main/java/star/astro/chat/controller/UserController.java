@@ -30,12 +30,6 @@ public class UserController {
         return ret;
     }
 
-    @GetMapping("/user")
-    public User getUserByName(@RequestParam Map<String, Object> params) {
-        String username = (String) params.get("username");
-        return userService.retrieveUserByName(username);
-    }
-
     @PostMapping("/login")
     public JSONObject login(@RequestParam Map<String, Object> params, HttpServletRequest request) {
         JSONObject ret = new JSONObject();
@@ -83,7 +77,7 @@ public class UserController {
         return ret;
     }
 
-    @GetMapping("/user/room")
+    @GetMapping("/user/chatroom")
     public List<Chatroom> getUserChatrooms(@RequestParam Map<String, Object> params) {
         String username = (String) params.get("username");
         return userService.getUserChatrooms(username);
