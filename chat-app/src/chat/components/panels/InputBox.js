@@ -34,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const { REACT_APP_SERVER_ADDRESS } = process.env;
+
 export default function CustomizedInputBase(props) {
     const classes = useStyles();
 
@@ -72,7 +74,7 @@ export default function CustomizedInputBase(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("friendName", friendName);
-        fetch("http://localhost:8080/user/friend", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/user/friend", {
             method: "POST",
             body: formData,
         }).then((response) => {
@@ -90,7 +92,7 @@ export default function CustomizedInputBase(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("chatroomId", chatroomId);
-        fetch("http://localhost:8080/user/chatroom", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/user/chatroom", {
             method: "PUT",
             body: formData,
         }).then((response) => {
@@ -108,7 +110,7 @@ export default function CustomizedInputBase(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("chatroomName", chatroomName);
-        fetch("http://localhost:8080/chatroom", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/chatroom", {
             method: "POST",
             body: formData,
         }).then((response) => {

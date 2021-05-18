@@ -44,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const { REACT_APP_SERVER_ADDRESS } = process.env;
+
 export default function SignIn(props) {
     const classes = useStyles();
     const setPage = props.setPage;
@@ -56,7 +58,7 @@ export default function SignIn(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
-        fetch("http://localhost:8080/login", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/login", {
             method: "POST",
             body: formData,
         }).then((response) => {

@@ -121,6 +121,8 @@ const useStyles = makeStyles((theme) => ({
     forTextField: {},
 }));
 
+const { REACT_APP_SERVER_ADDRESS } = process.env;
+
 var stompClient = null;
 
 export default function Chat(props) {
@@ -137,9 +139,12 @@ export default function Chat(props) {
     const [receivedMessages, setReceivedMessages] = useState([]);
 
     const setChatrooms = () => {
-        fetch("http://localhost:8080/user/chatroom?username=" + username, {
-            method: "GET",
-        }).then((response) => {
+        fetch(
+            REACT_APP_SERVER_ADDRESS + "/user/chatroom?username=" + username,
+            {
+                method: "GET",
+            }
+        ).then((response) => {
             response.json().then((data) => {
                 setRooms(data);
             });
@@ -257,7 +262,7 @@ export default function Chat(props) {
 
     const activateSendChatMessage = () => {
         // get UTC time first, send message in callback
-        fetch("http://localhost:8080/time", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/time", {
             method: "GET",
         }).then((response) => {
             response.json().then((data) => {
