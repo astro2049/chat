@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const { REACT_APP_SERVER_ADDRESS } = process.env;
+
 export default function SignUp(props) {
     const classes = useStyles();
     const setPage = props.setPage;
@@ -57,7 +59,7 @@ export default function SignUp(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
-        fetch("http://localhost:8080/user", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/user", {
             method: "POST",
             body: formData,
         }).then((response) => {
