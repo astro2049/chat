@@ -190,7 +190,7 @@ export default function Chat(props) {
     const connect = () => {
         const Stomp = require("stompjs");
         var SockJS = require("sockjs-client");
-        SockJS = new SockJS("http://localhost:8080/chat");
+        SockJS = new SockJS(REACT_APP_SERVER_ADDRESS + "/chat");
         stompClient = Stomp.over(SockJS);
         stompClient.connect({}, onConnected, onError);
     };
