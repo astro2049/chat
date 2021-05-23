@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         width: panelsWidth,
-        height: 62,
+        height: 70,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

@@ -19,7 +19,7 @@ import Panels from "./components/panels/Panels";
 
 const appBarHeight = 80;
 const drawerWidth = "26%";
-const middleSectionUnifiedHeight = 392; // very hacky
+const middleSectionUnifiedHeight = 401; // very hacky
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -106,12 +106,12 @@ const useStyles = makeStyles((theme) => ({
         bottom: 0,
         right: 0,
         width: `calc(100% - ${drawerWidth})`,
-        height: 250,
+        height: 258,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "flex-end",
-        paddingTop: 10,
+        paddingTop: 13,
         paddingLeft: 10,
         paddingRight: 10,
         paddingBottom: 12,
