@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import { Paper, TextField } from "@material-ui/core";
 
 const panelsWidth = "95%";
 
@@ -129,12 +128,12 @@ export default function CustomizedInputBase(props) {
             <Paper
                 component="form"
                 className={classes.root}
+                elevation={0}
                 onSubmit={(e) => onSubmit(e)}
             >
-                <InputBase
+                <TextField
                     className={classes.input}
                     placeholder={inputPlaceholder}
-                    inputProps={{ "aria-label": "search google maps" }}
                     onChange={(e) => setInputText(e.target.value)}
                 />
                 <IconButton
