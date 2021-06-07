@@ -16,7 +16,9 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
         borderTop: "1px solid lightgray",
+        borderRight: "1px solid lightgray",
         borderBottom: "1px solid lightgray",
+        backgroundColor: "white",
     },
     container: {
         width: panelsWidth,
