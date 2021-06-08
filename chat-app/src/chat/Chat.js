@@ -19,7 +19,7 @@ import Panels from "./components/panels/Panels";
 
 const appBarHeight = 80;
 const drawerWidth = "26%";
-const middleSectionUnifiedHeight = 401; // very hacky
+const middleSectionUnifiedHeight = 383; // very hacky
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,9 +54,13 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 40,
         fontSize: 40,
     },
-    forTableContainer: {
+    forTableContainerOfChats: {
         width: "100%",
         maxHeight: middleSectionUnifiedHeight, // very hacky
+    },
+    forTableContainerOfMessages: {
+        width: "100%",
+        maxHeight: middleSectionUnifiedHeight + 17, // very hacky
     },
     panelsContainer: {
         display: "flex",
@@ -299,7 +303,7 @@ export default function Chat(props) {
                 </div>
                 <Divider />
 
-                <TableContainer className={classes.forTableContainer}>
+                <TableContainer className={classes.forTableContainerOfChats}>
                     <Table stickyHeader>
                         <List>
                             {rooms.map((room) => (
@@ -341,7 +345,7 @@ export default function Chat(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <TableContainer className={classes.forTableContainer}>
+                <TableContainer className={classes.forTableContainerOfMessages}>
                     <Table
                         stickyHeader
                         className={classes.forRightSideContentTable}
