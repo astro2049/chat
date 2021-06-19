@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import MessageBox from "./components/message/Message";
 import Panels from "./components/panels/Panels";
+import { Popover } from "@material-ui/core";
 
 const appBarHeight = 80;
 const drawerWidth = "26%";
@@ -29,11 +30,19 @@ const useStyles = makeStyles((theme) => ({
         width: `calc(100% - ${drawerWidth})`,
         height: appBarHeight,
         marginLeft: drawerWidth,
+        backgroundColor: "LightSalmon",
+        borderTop: "1px solid black",
     },
     chatroomName: {
-        height: 80,
+        height: appBarHeight,
         display: "flex",
         alignItems: "center",
+    },
+    activeChatButton: {
+        textTransform: "none",
+    },
+    activeChatChatroomIdContainer: {
+        padding: 10,
     },
     drawer: {
         width: drawerWidth,
@@ -276,15 +285,53 @@ export default function Chat(props) {
         });
     };
 
+    // for popover
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    //
+
     return (
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <div className={classes.chatroomName}>
-                        <Typography variant="h4" noWrap>
-                            {activeChat.name}
-                        </Typography>
+                        <Button
+                            className={classes.activeChatButton}
+                            onClick={handleClick}
+                        >
+                            <Typography variant="h4" noWrap>
+                                {activeChat.name}
+                            </Typography>
+                        </Button>
+                        <Popover
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: "center",
+                                horizontal: "right",
+                            }}
+                        >
+                            <div
+                                className={
+                                    classes.activeChatChatroomIdContainer
+                                }
+                            >
+                                <Typography variant="h6">
+                                    {activeChat.chatroomId}
+                                </Typography>
+                            </div>
+                        </Popover>
                     </div>
                 </Toolbar>
             </AppBar>
@@ -375,7 +422,7 @@ export default function Chat(props) {
                     onKeyDown={(e) => handleKeyDown(e)}
                 ></TextField>
                 <Button
-                    variant="contained"
+                    variant="outlined"
                     color="primary"
                     onClick={activateSendChatMessage}
                 >
