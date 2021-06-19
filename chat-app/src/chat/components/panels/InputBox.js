@@ -45,72 +45,66 @@ export default function CustomizedInputBase(props) {
     const [inputText, setInputText] = useState("");
 
     useEffect(() => {
-        if (activeOption === "Create Chatroom") {
-            setInputPlaceholder("create a new chatroom...");
+        switch (activeOption) {
+            case "Create Chatroom":
+                setInputPlaceholder("name for the new chatroom...");
+                break;
+            case "Join Chatroom":
+                setInputPlaceholder("join a chatroom...");
+                break;
+            case "New Friend":
+                setInputPlaceholder("add a new friend...");
+                break;
+            default:
+                console.log("check parameter");
         }
-        if (activeOption === "Join Chatroom") {
-            setInputPlaceholder("join a chatroom...");
-        }
-        if (activeOption === "New Friend") {
-            setInputPlaceholder("add a new friend...");
-        }
+        setInputText("");
     }, [activeOption]);
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (activeOption === "New Friend") {
-            addANewFriend(username, inputText);
+        switch (activeOption) {
+            case "New Friend":
+                launchCommand(username, inputText, "new friend!");
+                break;
+            case "Join Chatroom":
+                launchCommand(username, inputText, "join chatroom!");
+                break;
+            case "Create Chatroom":
+                launchCommand(username, inputText, "new chatroom!");
+                break;
+            default:
+                console.log("check parameter");
         }
-        if (activeOption === "Join Chatroom") {
-            joinAChatroom(username, inputText);
-        }
-        if (activeOption === "Create Chatroom") {
-            createAChatroom(username, inputText);
-        }
+        setInputText("");
     };
 
-    const addANewFriend = (username, friendName) => {
+    const launchCommand = (username, guest, type) => {
         let formData = new FormData();
         formData.append("username", username);
-        formData.append("friendName", friendName);
-        fetch(REACT_APP_SERVER_ADDRESS + "/user/friend", {
-            method: "POST",
-            body: formData,
-        }).then((response) => {
-            response.json().then((data) => {
-                if (data.success === true) {
-                    setChatrooms();
-                } else {
-                    console.log("nope");
-                }
-            });
-        });
-    };
-
-    const joinAChatroom = (username, chatroomId) => {
-        let formData = new FormData();
-        formData.append("username", username);
-        formData.append("chatroomId", chatroomId);
-        fetch(REACT_APP_SERVER_ADDRESS + "/user/chatroom", {
-            method: "PUT",
-            body: formData,
-        }).then((response) => {
-            response.json().then((data) => {
-                if (data.success === true) {
-                    setChatrooms();
-                } else {
-                    console.log("nope");
-                }
-            });
-        });
-    };
-
-    const createAChatroom = (username, chatroomName) => {
-        let formData = new FormData();
-        formData.append("username", username);
-        formData.append("chatroomName", chatroomName);
-        fetch(REACT_APP_SERVER_ADDRESS + "/chatroom", {
-            method: "POST",
+        let requestAddress;
+        let requestMethod;
+        switch (type) {
+            case "new friend!":
+                formData.append("friendName", guest);
+                requestAddress = "/user/friend";
+                requestMethod = "POST";
+                break;
+            case "join chatroom!":
+                formData.append("chatroomId", guest);
+                requestAddress = "/user/chatroom";
+                requestMethod = "PUT";
+                break;
+            case "new chatroom!":
+                formData.append("chatroomName", guest);
+                requestAddress = "/chatroom";
+                requestMethod = "POST";
+                break;
+            default:
+                console.log("check parameter");
+        }
+        fetch(REACT_APP_SERVER_ADDRESS + requestAddress, {
+            method: requestMethod,
             body: formData,
         }).then((response) => {
             response.json().then((data) => {
@@ -134,6 +128,7 @@ export default function CustomizedInputBase(props) {
                 <TextField
                     className={classes.input}
                     placeholder={inputPlaceholder}
+                    value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                 />
                 <IconButton
