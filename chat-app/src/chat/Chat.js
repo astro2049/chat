@@ -308,6 +308,10 @@ export default function Chat(props) {
                         <Button
                             className={classes.activeChatButton}
                             onClick={handleClick}
+                            disabled={activeChat.type === 0}
+                            style={{
+                                color: "black",
+                            }}
                         >
                             <Typography variant="h4" noWrap>
                                 {activeChat.name}
