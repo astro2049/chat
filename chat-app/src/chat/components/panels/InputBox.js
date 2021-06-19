@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         padding: "2px 4px",
         display: "flex",
         alignItems: "center",
-        width: 400,
+        width: "100%",
     },
     input: {
         marginLeft: theme.spacing(1),
@@ -47,10 +47,10 @@ export default function CustomizedInputBase(props) {
     useEffect(() => {
         switch (activeOption) {
             case "Create Chatroom":
-                setInputPlaceholder("name for the new chatroom...");
+                setInputPlaceholder("the new chatroom will be...");
                 break;
             case "Join Chatroom":
-                setInputPlaceholder("join a chatroom...");
+                setInputPlaceholder("chatroom id goes here...");
                 break;
             case "New Friend":
                 setInputPlaceholder("add a new friend...");
