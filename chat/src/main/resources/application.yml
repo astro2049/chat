@@ -8,3 +8,5 @@ spring:
         enabled: true
   session:
     store-type: MongoDB
+  mvc:
+    dispatch-options-request: true

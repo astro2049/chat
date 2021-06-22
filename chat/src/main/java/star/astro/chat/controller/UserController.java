@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public JSONObject addUserByNickname(@RequestParam Map<String, Object> params) {
         JSONObject ret = new JSONObject();
         String username = (String) params.get("username");
