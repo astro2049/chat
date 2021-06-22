@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { Paper, TextField } from "@material-ui/core";
+import axios from "axios";
 
 const panelsWidth = "95%";
 
@@ -103,18 +104,20 @@ export default function CustomizedInputBase(props) {
             default:
                 console.log("check parameter");
         }
-        fetch(REACT_APP_SERVER_ADDRESS + requestAddress, {
-            method: requestMethod,
-            body: formData,
-        }).then((response) => {
-            response.json().then((data) => {
+        axios
+            .request({
+                url: REACT_APP_SERVER_ADDRESS + requestAddress,
+                method: requestMethod,
+                data: formData,
+            })
+            .then((response) => {
+                let data = response.data;
                 if (data.success === true) {
                     setChatrooms();
                 } else {
                     console.log("nope");
                 }
             });
-        });
     };
 
     return (
