@@ -1,5 +1,6 @@
 package star.astro.chat.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
@@ -12,11 +13,8 @@ import java.util.Objects;
 @Component
 public class ChatEventListener {
 
-    private final UserService userService;
-
-    public ChatEventListener(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
@@ -29,8 +27,7 @@ public class ChatEventListener {
         try {
             String username = (String) Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("username");
             userService.userOffline(username);
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }

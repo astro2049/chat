@@ -1,5 +1,6 @@
 package star.astro.chat.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import star.astro.chat.model.mongodb.GroupChat;
 import star.astro.chat.model.mongodb.User;
@@ -11,6 +12,7 @@ import star.astro.chat.repository.FriendLinkRepository;
 import star.astro.chat.repository.GroupChatRepository;
 import star.astro.chat.repository.GroupChatUserLinkRepository;
 import star.astro.chat.repository.UserRepository;
+import star.astro.chat.util.JwtTokenUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,20 +20,16 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-
-    private final GroupChatRepository groupChatRepository;
-
-    private final FriendLinkRepository friendLinkRepository;
-
-    private final GroupChatUserLinkRepository groupChatUserLinkRepository;
-
-    public UserService(UserRepository userRepository, GroupChatRepository groupChatRepository, FriendLinkRepository friendLinkRepository, GroupChatUserLinkRepository groupChatUserLinkRepository) {
-        this.userRepository = userRepository;
-        this.groupChatRepository = groupChatRepository;
-        this.friendLinkRepository = friendLinkRepository;
-        this.groupChatUserLinkRepository = groupChatUserLinkRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private GroupChatRepository groupChatRepository;
+    @Autowired
+    private FriendLinkRepository friendLinkRepository;
+    @Autowired
+    private GroupChatUserLinkRepository groupChatUserLinkRepository;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     public boolean createUserByName(String name, String password) {
         if (userRepository.findUserByName(name) != null) {
@@ -43,10 +41,6 @@ public class UserService {
         }
     }
 
-    public User retrieveUserByName(String name) {
-        return userRepository.findUserByName(name);
-    }
-
     public boolean login(String name, String password) {
         boolean granted = false;
         User user = userRepository.findUserByName(name);
@@ -56,6 +50,11 @@ public class UserService {
             }
         }
         return granted;
+    }
+
+    public String getToken(String name) {
+        User user = userRepository.findUserByName(name);
+        return jwtTokenUtil.getToken(user);
     }
 
     public boolean addFriend(String username, String friendName) {
