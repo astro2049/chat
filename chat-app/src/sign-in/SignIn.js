@@ -69,6 +69,7 @@ export default function SignIn(props) {
                     };
                     user.name = data.username;
                     setUser(user);
+                    localStorage.setItem("token", data.token);
                 } else {
                     console.log("nope");
                 }
