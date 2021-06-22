@@ -17,6 +17,18 @@ import {
 import MessageBox from "./components/message/Message";
 import Panels from "./components/panels/Panels";
 import { Popover } from "@material-ui/core";
+import axios from "axios";
+
+// axios
+// https://stackoverflow.com/questions/43051291/attach-authorization-header-for-all-axios-requests
+(function () {
+    let token = localStorage.getItem("token");
+    if (token) {
+        axios.defaults.headers.common["token"] = token;
+    } else {
+        axios.defaults.headers.common["token"] = null;
+    }
+})();
 
 const appBarHeight = 80;
 const drawerWidth = "26%";
@@ -151,17 +163,27 @@ export default function Chat(props) {
     const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
     const [receivedMessages, setReceivedMessages] = useState([]);
 
+    // const setChatrooms = () => {
+    //     fetch(
+    //         REACT_APP_SERVER_ADDRESS + "/user/chatroom?username=" + username,
+    //         {
+    //             method: "GET",
+    //         }
+    //     ).then((response) => {
+    //         response.json().then((data) => {
+    //             setRooms(data);
+    //         });
+    //     });
+    // };
+
     const setChatrooms = () => {
-        fetch(
-            REACT_APP_SERVER_ADDRESS + "/user/chatroom?username=" + username,
-            {
-                method: "GET",
-            }
-        ).then((response) => {
-            response.json().then((data) => {
-                setRooms(data);
+        axios
+            .get(
+                REACT_APP_SERVER_ADDRESS + "/user/chatroom?username=" + username
+            )
+            .then((response) => {
+                setRooms(response.data);
             });
-        });
     };
 
     useEffect(setChatrooms, []); // set chatrooms after entering the chat page
