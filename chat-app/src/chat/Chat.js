@@ -248,11 +248,29 @@ export default function Chat(props) {
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            activateSendChatMessage();
+            sendChatMessage();
         }
     };
 
-    const sendChatMessage = (time) => {
+    async function sendChatMessage() {
+        let UnixTime = await getTime();
+        sendMessage(UnixTime);
+    }
+
+    const getTime = () => {
+        return new Promise((resolve, reject) => {
+            fetch(REACT_APP_SERVER_ADDRESS + "/time", {
+                method: "GET",
+            }).then((response) => {
+                response.json().then((data) => {
+                    let time = data.UTCTime.UnixTime;
+                    resolve(time);
+                });
+            });
+        });
+    };
+
+    const sendMessage = (time) => {
         setChatText("");
         let msg = chatText;
         if (msg.trim() !== "") {
@@ -270,18 +288,6 @@ export default function Chat(props) {
                 JSON.stringify(message)
             );
         }
-    };
-
-    const activateSendChatMessage = () => {
-        // get UTC time first, send message in callback
-        fetch(REACT_APP_SERVER_ADDRESS + "/time", {
-            method: "GET",
-        }).then((response) => {
-            response.json().then((data) => {
-                let time = data.UTCTime.UnixTime;
-                sendChatMessage(time);
-            });
-        });
     };
 
     // for popover
@@ -427,7 +433,7 @@ export default function Chat(props) {
                 <Button
                     variant="outlined"
                     color="primary"
-                    onClick={activateSendChatMessage}
+                    onClick={sendChatMessage}
                 >
                     Send
                 </Button>
