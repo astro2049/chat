@@ -232,6 +232,7 @@ export default function Chat(props) {
 
     const onMessageReceived = (msg) => {
         let message = JSON.parse(msg.body);
+        message.time = new Date(message.time).toString();
         if (message.sender === username) {
             message.mine = true;
         } else {

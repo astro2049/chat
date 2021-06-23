@@ -38,7 +38,7 @@ export default function ChatMessage(props) {
 
     const username = props.username;
     const content = props.content;
-    const time = props.time.substring(11, 16);
+    const time = props.time.substring(16, 21);
     const mine = props.mine;
 
     const containerClass = mine
