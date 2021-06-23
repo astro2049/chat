@@ -59,7 +59,7 @@ export default function SignUp(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
-        fetch(REACT_APP_SERVER_ADDRESS + "/user", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/register", {
             method: "POST",
             body: formData,
         }).then((response) => {
