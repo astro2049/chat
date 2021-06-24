@@ -30,6 +30,8 @@ public class UserService {
     private GroupChatUserLinkRepository groupChatUserLinkRepository;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private NotificationService notificationService;
 
     public boolean createUserByName(String name, String password) {
         if (userRepository.findUserByName(name) != null) {
@@ -65,6 +67,7 @@ public class UserService {
         friendLink.setUsername0(username);
         friendLink.setUsername1(friendName);
         friendLinkRepository.save(friendLink);
+        notificationService.noticeUserOfNewChatroom(friendName);
         return true;
     }
 
