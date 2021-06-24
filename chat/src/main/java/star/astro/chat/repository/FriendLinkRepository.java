@@ -9,8 +9,6 @@ import java.util.List;
 @Repository
 public interface FriendLinkRepository extends MongoRepository<FriendLink, String> {
 
-    List<FriendLink> findFriendLinkByUsername0(String username0);
-
-    List<FriendLink> findFriendLinkByUsername1(String username1);
+    List<FriendLink> findAllByUsername0OrUsername1(String username0, String username1);
 
 }

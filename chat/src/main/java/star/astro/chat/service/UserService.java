@@ -85,27 +85,20 @@ public class UserService {
 
     public List<Chatroom> getPrivateChatrooms(String username) {
         List<Chatroom> chatrooms = new LinkedList<>();
-
-        //get friends as user0
-        List<FriendLink> friendLinks = friendLinkRepository.findFriendLinkByUsername0(username);
-        for (FriendLink friendLink : friendLinks) {
-            String username1 = friendLink.getUsername1();
-            User user = userRepository.findUserByName(username1);
-            String chatroomId = friendLink.getId();
-            Chatroom chatroom = new Chatroom(chatroomId, user.getName(), ChatroomType.PRIVATECHAT.getValue());
-            chatrooms.add(chatroom);
-        }
-
-        //get friends as user1
-        friendLinks = friendLinkRepository.findFriendLinkByUsername1(username);
+        List<FriendLink> friendLinks = friendLinkRepository.findAllByUsername0OrUsername1(username, username);
         for (FriendLink friendLink : friendLinks) {
             String username0 = friendLink.getUsername0();
-            User user = userRepository.findUserByName(username0);
+            String username1 = friendLink.getUsername1();
+            String friendName;
+            if (username0.equals(username)) {
+                friendName = username1;
+            } else {
+                friendName = username0;
+            }
             String chatroomId = friendLink.getId();
-            Chatroom chatroom = new Chatroom(chatroomId, user.getName(), ChatroomType.PRIVATECHAT.getValue());
+            Chatroom chatroom = new Chatroom(chatroomId, friendName, ChatroomType.PRIVATECHAT.getValue());
             chatrooms.add(chatroom);
         }
-
         return chatrooms;
     }
 

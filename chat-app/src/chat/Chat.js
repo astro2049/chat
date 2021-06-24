@@ -21,7 +21,8 @@ import axios from "axios";
 
 const appBarHeight = 80;
 const drawerWidth = "26%";
-const middleSectionUnifiedHeight = 383; // very hacky
+const middleSectionUnifiedHeight = 564; // very hacky
+const inputContainerHeight = 258;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     },
     forTableContainerOfChats: {
         width: "100%",
-        maxHeight: middleSectionUnifiedHeight, // very hacky
+        marginBottom: inputContainerHeight,
     },
     forTableContainerOfMessages: {
         width: "100%",
@@ -120,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
         bottom: 0,
         right: 0,
         width: `calc(100% - ${drawerWidth})`,
-        height: 258,
+        height: inputContainerHeight,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -236,7 +237,6 @@ export default function Chat(props) {
 
     const onNoticeReceived = (ntc) => {
         let notice = JSON.parse(ntc.body);
-        console.log(notice);
         if (notice.type === 1) {
             setChatrooms();
         }
