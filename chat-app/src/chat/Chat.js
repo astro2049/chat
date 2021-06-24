@@ -151,6 +151,11 @@ export default function Chat(props) {
     });
     const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
     const [receivedMessages, setReceivedMessages] = useState([]);
+    const [StompCommunicationInitialized, setStompCommunicationInitialized] =
+        useState(false);
+    const [notificationsSubscribed, setNotificationsSubscribed] =
+        useState(false);
+    const [subscribedChatrooms, setSubscribedChatrooms] = useState([]);
 
     const setChatrooms = () => {
         axios
@@ -165,7 +170,7 @@ export default function Chat(props) {
     useEffect(setChatrooms, []); // set chatrooms after entering the chat page
 
     useEffect(() => {
-        if (rooms === undefined) {
+        if (rooms === undefined || rooms.length === 0) {
             return;
         } else {
             if (rooms.length > 0) {
@@ -173,7 +178,12 @@ export default function Chat(props) {
                     setActiveChat(rooms[0]);
                 }
             }
-            connect();
+            if (!StompCommunicationInitialized) {
+                initializeStompCommunication();
+                setStompCommunicationInitialized(true);
+            } else {
+                subscribeStuffs();
+            }
         }
     }, [rooms]);
 
@@ -198,7 +208,7 @@ export default function Chat(props) {
         return messages;
     };
 
-    const connect = () => {
+    const initializeStompCommunication = () => {
         const Stomp = require("stompjs");
         var SockJS = require("sockjs-client");
         SockJS = new SockJS(REACT_APP_SERVER_ADDRESS + "/chat");
@@ -206,28 +216,44 @@ export default function Chat(props) {
         stompClient.connect({}, onConnected, onError);
     };
 
-    const onConnected = () => {
-        console.log("connected");
+    const subscribeStuffs = () => {
+        subscribeNotifications();
         subscribeChatrooms();
     };
 
+    const onConnected = () => {
+        console.log("connected");
+        subscribeStuffs();
+    };
+
     const subscribeNotifications = () => {
+        if (notificationsSubscribed) {
+            return;
+        }
         stompClient.subscribe("/topic/notice." + username, onNoticeReceived);
+        setNotificationsSubscribed(true);
     };
 
     const onNoticeReceived = (ntc) => {
-        let notice = JSON.parse(ntc);
+        let notice = JSON.parse(ntc.body);
         console.log(notice);
-        setChatrooms();
+        if (notice.type === 1) {
+            setChatrooms();
+        }
     };
 
     const subscribeChatrooms = () => {
-        rooms.map((room) =>
-            stompClient.subscribe(
-                "/topic/chatroom." + room.chatroomId,
-                onMessageReceived
-            )
-        );
+        rooms.forEach((room) => {
+            let id = room.chatroomId;
+            if (subscribedChatrooms.includes(id)) {
+                return;
+            }
+            stompClient.subscribe("/topic/chatroom." + id, onMessageReceived);
+            setSubscribedChatrooms((subscribedChatrooms) => [
+                ...subscribedChatrooms,
+                id,
+            ]);
+        });
     };
 
     const onMessageReceived = (msg) => {
