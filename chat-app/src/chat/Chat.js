@@ -13,18 +13,17 @@ import {
     Table,
     TableContainer,
     TextField,
+    Popover,
 } from "@material-ui/core";
 import MessageBox from "./components/message/Message";
 import Panels from "./components/panels/Panels";
-import { Popover } from "@material-ui/core";
 import axios from "axios";
 
 const appBarHeight = 80;
 const drawerWidth = "26%";
-const middleSectionUnifiedHeight = 564; // very hacky
 const inputContainerHeight = 258;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         display: "flex",
     },
@@ -53,8 +52,6 @@ const useStyles = makeStyles((theme) => ({
     drawerPaper: {
         width: drawerWidth,
     },
-    // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
     titleContainer: {
         height: 80,
         display: "flex",
@@ -68,10 +65,6 @@ const useStyles = makeStyles((theme) => ({
     forTableContainerOfChats: {
         width: "100%",
         marginBottom: inputContainerHeight,
-    },
-    forTableContainerOfMessages: {
-        width: "100%",
-        maxHeight: middleSectionUnifiedHeight + 17, // very hacky
     },
     panelsContainer: {
         display: "flex",
@@ -103,17 +96,23 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
+    },
+    // make sure contents are below app bar!
+    toolbar: {
+        height: appBarHeight,
+    },
+    forTableContainerOfMessages: {
+        width: "100%",
+        maxHeight: 720 - appBarHeight - inputContainerHeight, // hacky
     },
     messagesArea: {
         width: "100%",
-        minHeight: 600, // hacky
         marginTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
+        paddingBottom: 25,
         display: "flex",
         flexDirection: "column",
-        paddingBottom: 25,
     },
     inputContainer: {
         zIndex: 1300,
@@ -428,10 +427,7 @@ export default function Chat(props) {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <TableContainer className={classes.forTableContainerOfMessages}>
-                    <Table
-                        stickyHeader
-                        className={classes.forRightSideContentTable}
-                    >
+                    <Table stickyHeader>
                         <div className={classes.messagesArea}>
                             {currentChatroomMessages.map((message) => (
                                 <MessageBox
