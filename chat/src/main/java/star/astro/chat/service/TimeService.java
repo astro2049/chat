@@ -40,4 +40,9 @@ public class TimeService {
         return ret;
     }
 
+    public String getUnixTime() {
+        NTP_Client.NTP_Timestamp_Data NTPTimestamp = ntp_client.Get_NTP_Timestamp();
+        return String.valueOf(NTPTimestamp.lUnixTime * 1000);
+    }
+
 }
