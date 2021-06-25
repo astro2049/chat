@@ -22,6 +22,7 @@ import axios from "axios";
 const appBarHeight = 80;
 const drawerWidth = "26%";
 const inputContainerHeight = 258;
+const messagesAreaHeight = 900 - appBarHeight - inputContainerHeight;
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -103,10 +104,11 @@ const useStyles = makeStyles(() => ({
     },
     forTableContainerOfMessages: {
         width: "100%",
-        maxHeight: 720 - appBarHeight - inputContainerHeight, // hacky
+        maxHeight: messagesAreaHeight, // hacky
     },
     messagesArea: {
         width: "100%",
+        minHeight: messagesAreaHeight, // hacky
         marginTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
@@ -213,7 +215,7 @@ export default function Chat(props) {
         var SockJS = require("sockjs-client");
         SockJS = new SockJS(REACT_APP_SERVER_ADDRESS + "/chat");
         stompClient = Stomp.over(SockJS);
-        stompClient.connect({}, onConnected, onError);
+        stompClient.connect({ username: username }, onConnected, onError);
     };
 
     const subscribeStuffs = () => {

@@ -35,8 +35,6 @@ public class UserController {
         boolean granted = userService.login(username, password);
         String token = null;
         if (granted) {
-            userService.userOnline(username);
-            request.getSession().setAttribute("username", username);
             token = userService.getToken(username);
         }
         ret.put("success", granted);
