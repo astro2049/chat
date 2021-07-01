@@ -29,7 +29,7 @@ public class ChatEventListener {
             StompSession stompSession = new StompSession(sessionId, username);
             stompSessionRepository.save(stompSession);
             userService.userOnline(username);
-            System.out.println(username + " is online");
+            System.out.println("[" + username + "] is online");
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
@@ -50,7 +50,7 @@ public class ChatEventListener {
             String username = stompSession.getUsername();
             stompSessionRepository.delete(stompSession);
             userService.userOffline(username);
-            System.out.println(username + " is offline");
+            System.out.println("[" + username + "] is offline");
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
