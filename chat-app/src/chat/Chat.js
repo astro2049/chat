@@ -165,7 +165,7 @@ export default function Chat(props) {
                 REACT_APP_SERVER_ADDRESS + "/user/chatroom?username=" + username
             )
             .then((response) => {
-                setRooms(response.data);
+                setRooms(response.data.chatrooms);
             });
     };
 

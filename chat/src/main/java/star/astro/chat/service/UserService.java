@@ -33,13 +33,12 @@ public class UserService {
     @Autowired
     private NotificationService notificationService;
 
-    public boolean createUserByName(String name, String password) {
+    public void createUserByNickname(String name, String password) throws Exception {
         if (userRepository.findUserByName(name) != null) {
-            return false;
+            throw new Exception("email already taken");
         } else {
             User user = new User(name, password);
             userRepository.save(user);
-            return true;
         }
     }
 
