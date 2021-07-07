@@ -69,7 +69,6 @@ const useStyles = makeStyles(() => ({
     forTableContainer: {
         width: "100%",
         marginBottom: inputContainerHeight,
-        border: "1px solid red",
     },
     panelsContainer: {
         display: "flex",
@@ -344,7 +343,6 @@ export default function Chat(props) {
                     </div>
                 </div>
                 <Divider />
-
                 <TableContainer className={classes.forTableContainer}>
                     <Table stickyHeader>
                         <List>
