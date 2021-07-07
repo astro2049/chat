@@ -20,18 +20,14 @@ import Panels from "./components/panels/Panels";
 import axios from "axios";
 
 const appBarHeight = 80;
-const drawerWidth = "26%";
+const menuWidth = "26%";
 const inputContainerHeight = 258;
-const messagesAreaHeight = 900 - appBarHeight - inputContainerHeight;
 
 const useStyles = makeStyles(() => ({
-    root: {
-        display: "flex",
-    },
     appBar: {
-        width: `calc(100% - ${drawerWidth})`,
+        zIndex: "1300",
+        width: "100%",
         height: appBarHeight,
-        marginLeft: drawerWidth,
         backgroundColor: "LightSalmon",
         borderTop: "1px solid black",
     },
@@ -46,12 +42,19 @@ const useStyles = makeStyles(() => ({
     activeChatChatroomIdContainer: {
         padding: 10,
     },
-    drawer: {
-        width: drawerWidth,
+    drawerOnLeft: {
+        width: menuWidth,
         flexShrink: 0,
     },
-    drawerPaper: {
-        width: drawerWidth,
+    drawerPaperOnLeft: {
+        width: menuWidth,
+    },
+    drawerOnRight: {
+        width: `calc(100% - ${menuWidth})`,
+        flexShrink: 0,
+    },
+    drawerPaperOnRight: {
+        width: `calc(100% - ${menuWidth})`,
     },
     titleContainer: {
         height: 80,
@@ -63,9 +66,10 @@ const useStyles = makeStyles(() => ({
         marginLeft: 40,
         fontSize: 40,
     },
-    forTableContainerOfChats: {
+    forTableContainer: {
         width: "100%",
         marginBottom: inputContainerHeight,
+        border: "1px solid red",
     },
     panelsContainer: {
         display: "flex",
@@ -95,20 +99,12 @@ const useStyles = makeStyles(() => ({
         bottom: 40,
         left: 40,
     },
-    content: {
-        flexGrow: 1,
-    },
     // make sure contents are below app bar!
     toolbar: {
         height: appBarHeight,
     },
-    forTableContainerOfMessages: {
-        width: "100%",
-        maxHeight: messagesAreaHeight, // hacky
-    },
     messagesArea: {
         width: "100%",
-        minHeight: messagesAreaHeight, // hacky
         marginTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
@@ -121,7 +117,7 @@ const useStyles = makeStyles(() => ({
         position: "fixed",
         bottom: 0,
         right: 0,
-        width: `calc(100% - ${drawerWidth})`,
+        width: `calc(100% - ${menuWidth})`,
         height: inputContainerHeight,
         display: "flex",
         flexDirection: "column",
@@ -332,50 +328,13 @@ export default function Chat(props) {
     //
 
     return (
-        <div className={classes.root}>
+        <div>
             <CssBaseline />
-            <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <div className={classes.chatroomName}>
-                        <Button
-                            className={classes.activeChatButton}
-                            onClick={handleClick}
-                            disabled={activeChat.type === 0}
-                            style={{
-                                color: "black",
-                            }}
-                        >
-                            <Typography variant="h4" noWrap>
-                                {activeChat.name}
-                            </Typography>
-                        </Button>
-                        <Popover
-                            open={open}
-                            anchorEl={anchorEl}
-                            onClose={handleClose}
-                            anchorOrigin={{
-                                vertical: "center",
-                                horizontal: "right",
-                            }}
-                        >
-                            <div
-                                className={
-                                    classes.activeChatChatroomIdContainer
-                                }
-                            >
-                                <Typography variant="h6">
-                                    {activeChat.chatroomId}
-                                </Typography>
-                            </div>
-                        </Popover>
-                    </div>
-                </Toolbar>
-            </AppBar>
             <Drawer
-                className={classes.drawer}
+                className={classes.drawerOnLeft}
                 variant="permanent"
                 classes={{
-                    paper: classes.drawerPaper,
+                    paper: classes.drawerPaperOnLeft,
                 }}
                 anchor="left"
             >
@@ -386,7 +345,7 @@ export default function Chat(props) {
                 </div>
                 <Divider />
 
-                <TableContainer className={classes.forTableContainerOfChats}>
+                <TableContainer className={classes.forTableContainer}>
                     <Table stickyHeader>
                         <List>
                             {rooms.map((room) => (
@@ -426,9 +385,55 @@ export default function Chat(props) {
                     <Typography variant="h4">{username}</Typography>
                 </div>
             </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                <TableContainer className={classes.forTableContainerOfMessages}>
+
+            <CssBaseline />
+            <Drawer
+                className={classes.drawerOnRight}
+                variant="permanent"
+                classes={{
+                    paper: classes.drawerPaperOnRight,
+                }}
+                anchor="right"
+            >
+                <AppBar position="sticky" className={classes.appBar}>
+                    <Toolbar>
+                        <div className={classes.chatroomName}>
+                            <Button
+                                className={classes.activeChatButton}
+                                onClick={handleClick}
+                                disabled={activeChat.type === 0}
+                                style={{
+                                    color: "black",
+                                }}
+                            >
+                                <Typography variant="h4" noWrap>
+                                    {activeChat.name}
+                                </Typography>
+                            </Button>
+                            <Popover
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: "center",
+                                    horizontal: "right",
+                                }}
+                            >
+                                <div
+                                    className={
+                                        classes.activeChatChatroomIdContainer
+                                    }
+                                >
+                                    <Typography variant="h6">
+                                        {activeChat.chatroomId}
+                                    </Typography>
+                                </div>
+                            </Popover>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+
+                <TableContainer className={classes.forTableContainer}>
                     <Table stickyHeader>
                         <div className={classes.messagesArea}>
                             {currentChatroomMessages.map((message) => (
@@ -442,7 +447,8 @@ export default function Chat(props) {
                         </div>
                     </Table>
                 </TableContainer>
-            </main>
+            </Drawer>
+
             <div className={classes.inputContainer}>
                 <TextField
                     variant="outlined"
