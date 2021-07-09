@@ -12,6 +12,7 @@ import star.astro.chat.repository.FriendLinkRepository;
 import star.astro.chat.repository.GroupChatRepository;
 import star.astro.chat.repository.GroupChatUserLinkRepository;
 import star.astro.chat.repository.UserRepository;
+import star.astro.chat.util.BcryptUtil;
 import star.astro.chat.util.JwtTokenUtil;
 
 import java.util.LinkedList;
@@ -32,12 +33,14 @@ public class UserService {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private BcryptUtil bcryptUtil;
 
     public void createUserByNickname(String name, String password) throws Exception {
         if (userRepository.findUserByName(name) != null) {
             throw new Exception("email already taken");
         } else {
-            User user = new User(name, password);
+            User user = new User(name, bcryptUtil.hashPassword(password));
             userRepository.save(user);
         }
     }
@@ -46,7 +49,7 @@ public class UserService {
         boolean granted = false;
         User user = userRepository.findUserByName(name);
         if (user != null) {
-            if (password.equals(user.getPassword())) {
+            if (bcryptUtil.checkPassword(password, user.getPassword())) {
                 granted = true;
             }
         }
