@@ -41,7 +41,7 @@ export default function CustomizedInputBase(props) {
     const classes = useStyles();
 
     // i18n
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const username = props.username;
     const activeOption = props.activeOption;
@@ -60,11 +60,9 @@ export default function CustomizedInputBase(props) {
             case "New Friend":
                 setInputPlaceholder(t("chat.panels.newFriend.promptText"));
                 break;
-            default:
-                console.log("check parameter");
         }
         setInputText("");
-    }, [activeOption]);
+    }, [activeOption, i18n.language]);
 
     const onSubmit = (e) => {
         e.preventDefault();
