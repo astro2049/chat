@@ -37,7 +37,7 @@ export default function SimpleBreadcrumbs(props) {
     const classes = useStyles();
 
     // i18n
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const setChatrooms = props.setChatrooms;
     const [activeOption, setActiveOption] = useState("");
