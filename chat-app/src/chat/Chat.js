@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,10 +14,15 @@ import {
     TableContainer,
     TextField,
     Popover,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@material-ui/core";
 import MessageBox from "./components/message/Message";
 import Panels from "./components/panels/Panels";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
@@ -31,8 +36,14 @@ const useStyles = makeStyles(() => ({
         backgroundColor: "LightSalmon",
         borderTop: "1px solid black",
     },
-    chatroomName: {
+    appBarContentContainer: {
         height: appBarHeight,
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    chatroomName: {
         display: "flex",
         alignItems: "center",
     },
@@ -102,6 +113,9 @@ const useStyles = makeStyles(() => ({
     toolbar: {
         height: appBarHeight,
     },
+    languageSelector: {
+        justifySelf: "flex-end",
+    },
     messagesArea: {
         width: "100%",
         marginTop: 20,
@@ -129,7 +143,6 @@ const useStyles = makeStyles(() => ({
         borderTop: "1px solid lightgray",
         backgroundColor: "white",
     },
-    forTextField: {},
 }));
 
 const { REACT_APP_SERVER_ADDRESS } = process.env;
@@ -138,6 +151,22 @@ var stompClient = null;
 
 export default function Chat(props) {
     const classes = useStyles();
+
+    // i18n
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
+    //
+
+    const [language, setLanguage] = useState("en");
+    const handleChangeLanguage = (e) => {
+        let language = e.target.value;
+        console.log(language);
+        setLanguage(language);
+        changeLanguage(language);
+    };
 
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
@@ -394,7 +423,7 @@ export default function Chat(props) {
                 anchor="right"
             >
                 <AppBar position="sticky" className={classes.appBar}>
-                    <Toolbar>
+                    <Toolbar className={classes.appBarContentContainer}>
                         <div className={classes.chatroomName}>
                             <Button
                                 className={classes.activeChatButton}
@@ -428,6 +457,18 @@ export default function Chat(props) {
                                 </div>
                             </Popover>
                         </div>
+                        <FormControl className={classes.languageSelector}>
+                            <InputLabel>
+                                {t("chat.languageIndicator")}
+                            </InputLabel>
+                            <Select
+                                value={language}
+                                onChange={(e) => handleChangeLanguage(e)}
+                            >
+                                <MenuItem value="en">English</MenuItem>
+                                <MenuItem value="zh">中文</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Toolbar>
                 </AppBar>
 
@@ -453,7 +494,6 @@ export default function Chat(props) {
                     fullWidth
                     multiline
                     rows="8"
-                    className={classes.forTextField}
                     value={chatText}
                     onChange={(e) => setChatText(e.target.value)}
                     onKeyDown={(e) => handleKeyDown(e)}
@@ -463,7 +503,7 @@ export default function Chat(props) {
                     color="primary"
                     onClick={sendChatMessage}
                 >
-                    Send
+                    {t("chat.sendButton")}
                 </Button>
             </div>
         </div>
