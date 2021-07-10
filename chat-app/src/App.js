@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import SignIn from "./sign-in/SignIn";
 import Chat from "./chat/Chat";
 import SignUp from "./sign-up/SignUp";
@@ -64,13 +64,24 @@ class App extends React.Component {
             }
         }
 
+        // loading component for suspense fallback
+        function Loader() {
+            return (
+                <div className="App">
+                    <div>loading...</div>
+                </div>
+            );
+        }
+
         return (
-            <Main
-                online={online}
-                user={user}
-                setUser={this.setUserOnline}
-                setPage={this.setPageOnDisplay}
-            ></Main>
+            <Suspense fallback={<Loader />}>
+                <Main
+                    online={online}
+                    user={user}
+                    setUser={this.setUserOnline}
+                    setPage={this.setPageOnDisplay}
+                ></Main>
+            </Suspense>
         );
     }
 }
