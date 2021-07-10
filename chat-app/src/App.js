@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import Loader from "./loader/Loader";
 import SignIn from "./sign-in/SignIn";
 import Chat from "./chat/Chat";
 import SignUp from "./sign-up/SignUp";
@@ -62,15 +63,6 @@ class App extends React.Component {
             } else {
                 return <Chat user={props.user}></Chat>;
             }
-        }
-
-        // loading component for suspense fallback
-        function Loader() {
-            return (
-                <div className="App">
-                    <div>loading...</div>
-                </div>
-            );
         }
 
         return (

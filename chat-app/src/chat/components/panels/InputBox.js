@@ -41,7 +41,7 @@ export default function CustomizedInputBase(props) {
     const classes = useStyles();
 
     // i18n
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const username = props.username;
     const activeOption = props.activeOption;
