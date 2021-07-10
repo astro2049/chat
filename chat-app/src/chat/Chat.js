@@ -160,10 +160,9 @@ export default function Chat(props) {
     };
     //
 
-    const [language, setLanguage] = useState("en");
+    const [language, setLanguage] = useState(i18n.language);
     const handleChangeLanguage = (e) => {
         let language = e.target.value;
-        console.log(language);
         setLanguage(language);
         changeLanguage(language);
     };
