@@ -8,11 +8,15 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useTranslation } from "react-i18next";
 
 function Copyright() {
+    // i18n
+    const { t } = useTranslation();
     return (
         <Typography variant="body2" color="textSecondary" align="center">
-            {"Contact @"}
+            {t("signIn.contact")}
+            {" @"}
             <Link color="inherit" href="https://github.com/astro2049">
                 Jerry,
             </Link>{" "}
@@ -45,6 +49,10 @@ const { REACT_APP_SERVER_ADDRESS } = process.env;
 
 export default function SignIn(props) {
     const classes = useStyles();
+
+    // i18n
+    const { t } = useTranslation();
+
     const setPage = props.setPage;
     const setUser = props.setUser;
     const [username, setUsername] = useState("");
@@ -90,7 +98,7 @@ export default function SignIn(props) {
                         required
                         fullWidth
                         id="Username"
-                        label="Username"
+                        label={t("signIn.username")}
                         name="username"
                         autoComplete="username"
                         autoFocus
@@ -103,7 +111,7 @@ export default function SignIn(props) {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label={t("signIn.password")}
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -117,7 +125,7 @@ export default function SignIn(props) {
                         color="primary"
                         className={classes.submit}
                     >
-                        Sign In
+                        {t("signIn.signInButton")}
                     </Button>
                     <Grid container>
                         <Grid item xs>
@@ -133,7 +141,7 @@ export default function SignIn(props) {
                                     setPage("sign-up");
                                 }}
                             >
-                                {"Don't have an account? Sign Up"}
+                                {t("signIn.goToSignUp")}
                             </Link>
                         </Grid>
                     </Grid>

@@ -10,11 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
+import { useTranslation } from "react-i18next";
 
 function Copyright() {
+    // i18n
+    const { t } = useTranslation();
     return (
         <Typography variant="body2" color="textSecondary" align="center">
-            {"Contact @"}
+            {t("signIn.contact")}
+            {" @"}
             <Link color="inherit" href="https://github.com/astro2049">
                 Jerry,
             </Link>{" "}
@@ -47,6 +51,10 @@ const { REACT_APP_SERVER_ADDRESS } = process.env;
 
 export default function SignUp(props) {
     const classes = useStyles();
+
+    // i18n
+    const { t } = useTranslation();
+
     const setPage = props.setPage;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -80,7 +88,7 @@ export default function SignUp(props) {
                     <AcUnitIcon />
                 </Avatar>
                 <Typography component="h1" variant="h3">
-                    Sign up
+                    {t("signUp.title")}
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={onSubmit}>
                     <Grid container spacing={2}>
@@ -90,7 +98,7 @@ export default function SignUp(props) {
                                 required
                                 fullWidth
                                 id="username"
-                                label="Nickname"
+                                label={t("signUp.nickname")}
                                 name="username"
                                 autoComplete="username"
                                 value={username}
@@ -103,7 +111,7 @@ export default function SignUp(props) {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label={t("signUp.password")}
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
@@ -119,7 +127,7 @@ export default function SignUp(props) {
                         color="primary"
                         className={classes.submit}
                     >
-                        Sign Up
+                        {t("signUp.signUpButton")}
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
@@ -130,7 +138,7 @@ export default function SignUp(props) {
                                     setPage("sign-in");
                                 }}
                             >
-                                Already have an account? Sign in
+                                {t("signUp.goToSignIn")}
                             </Link>
                         </Grid>
                     </Grid>
