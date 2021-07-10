@@ -3,6 +3,7 @@ import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core";
 import InputBox from "./InputBox";
+import { useTranslation } from "react-i18next";
 
 const panelsWidth = "95%";
 
@@ -35,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
 export default function SimpleBreadcrumbs(props) {
     const classes = useStyles();
 
+    // i18n
+    const { t, i18n } = useTranslation();
+
     const setChatrooms = props.setChatrooms;
     const [activeOption, setActiveOption] = useState("");
 
@@ -62,21 +66,21 @@ export default function SimpleBreadcrumbs(props) {
                         underline={createChatroomIsActive ? "none" : "hover"}
                         onClick={(e) => handleSwitchOption("Create Chatroom")}
                     >
-                        Create Chatroom
+                        {t("chat.panels.createChatroom.name")}
                     </Link>
                     <Link
                         color={joinChatroomIsActive ? "secondary" : "inherit"}
                         underline={joinChatroomIsActive ? "none" : "hover"}
                         onClick={(e) => handleSwitchOption("Join Chatroom")}
                     >
-                        Join Chatroom
+                        {t("chat.panels.joinChatroom.name")}
                     </Link>
                     <Link
                         color={addNewFriendIsActive ? "secondary" : "inherit"}
                         underline={addNewFriendIsActive ? "none" : "hover"}
                         onClick={(e) => handleSwitchOption("New Friend")}
                     >
-                        New Friend
+                        {t("chat.panels.newFriend.name")}
                     </Link>
                 </Breadcrumbs>
             </div>

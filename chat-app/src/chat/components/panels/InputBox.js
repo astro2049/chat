@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { Paper, TextField } from "@material-ui/core";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const panelsWidth = "95%";
 
@@ -39,6 +40,9 @@ const { REACT_APP_SERVER_ADDRESS } = process.env;
 export default function CustomizedInputBase(props) {
     const classes = useStyles();
 
+    // i18n
+    const { t, i18n } = useTranslation();
+
     const username = props.username;
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
@@ -48,13 +52,13 @@ export default function CustomizedInputBase(props) {
     useEffect(() => {
         switch (activeOption) {
             case "Create Chatroom":
-                setInputPlaceholder("the new chatroom will be...");
+                setInputPlaceholder(t("chat.panels.createChatroom.promptText"));
                 break;
             case "Join Chatroom":
-                setInputPlaceholder("chatroom id goes here...");
+                setInputPlaceholder(t("chat.panels.joinChatroom.promptText"));
                 break;
             case "New Friend":
-                setInputPlaceholder("add a new friend...");
+                setInputPlaceholder(t("chat.panels.newFriend.promptText"));
                 break;
             default:
                 console.log("check parameter");

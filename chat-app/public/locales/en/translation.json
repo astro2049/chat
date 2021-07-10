@@ -1,0 +1,21 @@
+{
+    "name": "English",
+    "chat": {
+        "languageIndicator": "Language",
+        "panels": {
+            "createChatroom": {
+                "name": "Create Chatroom",
+                "promptText": "the new chatroom will be..."
+            },
+            "joinChatroom": {
+                "name": "Join Chatroom",
+                "promptText": "chatroom id goes here..."
+            },
+            "newFriend": {
+                "name": "New Friend",
+                "promptText": "add a new friend..."
+            } 
+        },
+        "sendButton": "send"
+    }
+}
