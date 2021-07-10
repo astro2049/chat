@@ -7,6 +7,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.stereotype.Component;
 import star.astro.chat.model.mongodb.User;
 
+import java.util.Date;
+
 @Component
 public class JwtTokenUtil {
 
@@ -14,6 +16,7 @@ public class JwtTokenUtil {
         String token;
         token = JWT.create()
                 .withAudience(user.getName())
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 3)) // 3 hours later
                 .sign(Algorithm.HMAC256(user.getPassword()));
         return token;
     }
