@@ -14,6 +14,7 @@ Chat messages travel on STOMP over WebSocket.
 ## Requirements:
 
 - [Node.js](https://nodejs.org/)
+- Java 16
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [MongoDB](https://www.mongodb.com/)
 
@@ -21,9 +22,9 @@ Chat messages travel on STOMP over WebSocket.
 
 This app adopts typical publish-subscribe architecture: 
 
-- *Spring Boot server* + *RabbitMQ server* as *Event notification server (ENS)*, 
+- *Spring Boot server* + *RabbitMQ server* as *Event notification server (ENS)*
 - *React app Web client* as *Consumer client* & *Publisher client*
-- as for *Directory service (DS)*...
+- as for *Directory service (DS)*, there's **no** service discovery in this app since the three back end services are all standalone (on one host) and their locations are hard coded
 
 ## Major Implementation Reference (server side):
 
