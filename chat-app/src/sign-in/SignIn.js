@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -6,12 +6,12 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import {makeStyles} from "@material-ui/core/styles";
-import {useTranslation} from "react-i18next";
+import { makeStyles } from "@material-ui/core/styles";
+import { useTranslation } from "react-i18next";
 
 function Copyright() {
     // i18n
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {t("signIn.contact")}
@@ -55,13 +55,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const {REACT_APP_SERVER_ADDRESS} = process.env;
+const { REACT_APP_SERVER_ADDRESS } = process.env;
 
 export default function SignIn(props) {
     const classes = useStyles();
 
     // i18n
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const setPage = props.setPage;
     const setUser = props.setUser;
@@ -96,7 +96,7 @@ export default function SignIn(props) {
 
     return (
         <div className={classes.outerContainer}>
-            <CssBaseline/>
+            <CssBaseline />
             <div className={classes.paper}>
                 <Typography component="h1" variant="h3">
                     Chat!
@@ -158,7 +158,7 @@ export default function SignIn(props) {
                 </form>
             </div>
             <Box mt={3}>
-                <Copyright/>
+                <Copyright />
             </Box>
         </div>
     );

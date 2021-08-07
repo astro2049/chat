@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,13 +7,13 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function Copyright() {
     // i18n
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {t("signIn.contact")}
@@ -57,13 +57,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const {REACT_APP_SERVER_ADDRESS} = process.env;
+const { REACT_APP_SERVER_ADDRESS } = process.env;
 
 export default function SignUp(props) {
     const classes = useStyles();
 
     // i18n
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const setPage = props.setPage;
     const [username, setUsername] = useState("");
@@ -92,10 +92,10 @@ export default function SignUp(props) {
 
     return (
         <div className={classes.outerContainer}>
-            <CssBaseline/>
+            <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <AcUnitIcon/>
+                    <AcUnitIcon />
                 </Avatar>
                 <Typography component="h1" variant="h3">
                     {t("signUp.title")}
@@ -155,7 +155,7 @@ export default function SignUp(props) {
                 </form>
             </div>
             <Box mt={3}>
-                <Copyright/>
+                <Copyright />
             </Box>
         </div>
     );
