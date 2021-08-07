@@ -8,7 +8,6 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { useTranslation } from "react-i18next";
 
@@ -28,8 +27,16 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    outerContainer: {
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+    },
     paper: {
-        marginTop: theme.spacing(12),
+        width: theme.spacing(55),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -44,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+    },
+    blankDiv10PercentHeight: {
+        height: "20%",
     },
 }));
 
@@ -81,7 +91,7 @@ export default function SignUp(props) {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <div className={classes.outerContainer}>
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -144,9 +154,9 @@ export default function SignUp(props) {
                     </Grid>
                 </form>
             </div>
-            <Box mt={5}>
+            <Box mt={3}>
                 <Copyright />
             </Box>
-        </Container>
+        </div>
     );
 }
