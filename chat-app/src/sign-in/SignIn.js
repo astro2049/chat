@@ -73,22 +73,20 @@ export default function SignIn(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
-        fetch(REACT_APP_SERVER_ADDRESS + "/login", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/users/login", {
             method: "POST",
             body: formData,
         }).then((response) => {
-            response.json().then((data) => {
-                if (data.success === true) {
+            if (response.status === 200) {
+                response.json().then((data) => {
                     let user = {
                         name: "",
                     };
                     user.name = data.username;
                     setUser(user);
                     localStorage.setItem("token", data.token);
-                } else {
-                    console.log("nope");
-                }
-            });
+                });
+            }
         });
         setUsername("");
         setPassword("");

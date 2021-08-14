@@ -184,9 +184,7 @@ export default function Chat(props) {
 
     const setChatrooms = () => {
         axios
-            .get(
-                REACT_APP_SERVER_ADDRESS + "/user/chatroom?username=" + username
-            )
+            .get(REACT_APP_SERVER_ADDRESS + "/users/" + username + "/me")
             .then((response) => {
                 setRooms(response.data.chatrooms);
             });

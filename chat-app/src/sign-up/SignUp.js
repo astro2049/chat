@@ -74,17 +74,13 @@ export default function SignUp(props) {
         let formData = new FormData();
         formData.append("username", username);
         formData.append("password", password);
-        fetch(REACT_APP_SERVER_ADDRESS + "/register", {
+        fetch(REACT_APP_SERVER_ADDRESS + "/users/register", {
             method: "POST",
             body: formData,
         }).then((response) => {
-            response.json().then((data) => {
-                if (data.success === true) {
-                    setPage("sign-in");
-                } else {
-                    console.log("nope");
-                }
-            });
+            if (response.status === 200) {
+                setPage("sign-in");
+            }
         });
         setUsername("");
         setPassword("");
