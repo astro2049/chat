@@ -2,20 +2,21 @@ package star.astro.chat.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import star.astro.chat.service.UserService;
 
 import java.util.Map;
 
 @RestController
+@RequestMapping("/chatrooms")
 public class ChatroomController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/chatroom")
+    @PostMapping("")
     public JSONObject createChatroom(@RequestParam Map<String, Object> params) {
         JSONObject ret = new JSONObject();
         try {
@@ -28,6 +29,12 @@ public class ChatroomController {
             ret.put("exc", e.getMessage());
         }
         return ret;
+    }
+
+    @PostMapping("/{chatroomId}/users/{username}")
+    public ResponseEntity<?> joinChatroom(@PathVariable String chatroomId, @PathVariable String username) {
+        userService.joinChatroom(username, chatroomId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }
