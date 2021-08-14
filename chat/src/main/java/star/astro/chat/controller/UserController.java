@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import star.astro.chat.exception.RegisterOnTakenUsernameException;
 import star.astro.chat.model.wrapper.Chatroom;
 import star.astro.chat.service.UserService;
 
@@ -19,18 +20,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public JSONObject addUserByNickname(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
+    public ResponseEntity<String> addUserByNickname(@RequestParam Map<String, Object> params) {
         try {
             String username = (String) params.get("username");
             String password = (String) params.get("password");
             userService.createUserByNickname(username, password);
-            ret.put("success", true);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RegisterOnTakenUsernameException e) {
+            return new ResponseEntity<>("username already taken", HttpStatus.CONFLICT);
         }
-        return ret;
     }
 
     @PostMapping("/login")
