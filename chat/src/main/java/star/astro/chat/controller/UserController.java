@@ -48,18 +48,15 @@ public class UserController {
     }
 
     @PostMapping("/friends")
-    public JSONObject addFriend(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String friendName = (String) params.get("friendName");
-            boolean success = userService.addFriend(username, friendName);
-            ret.put("success", success);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
+    public ResponseEntity<JSONObject> addFriend(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String friendName = (String) params.get("friendName");
+        boolean success = userService.addFriend(username, friendName);
+        if (success) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
-        return ret;
     }
 
     @PutMapping("/chatrooms")
