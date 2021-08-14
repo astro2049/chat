@@ -124,7 +124,7 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean createChatroom(String username, String chatroomName) {
+    public void createChatroom(String username, String chatroomName) {
         GroupChat groupChat = new GroupChat();
         groupChat.setName(chatroomName);
         groupChat = groupChatRepository.save(groupChat);
@@ -133,7 +133,6 @@ public class UserService {
         groupChatUserLink.setChatroomId(chatroomId);
         groupChatUserLink.setUser(username);
         groupChatUserLinkRepository.save(groupChatUserLink);
-        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)

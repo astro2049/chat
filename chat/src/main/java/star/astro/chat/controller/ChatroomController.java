@@ -1,6 +1,5 @@
 package star.astro.chat.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +16,11 @@ public class ChatroomController {
     private UserService userService;
 
     @PostMapping("")
-    public JSONObject createChatroom(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String chatroomName = (String) params.get("chatroomName");
-            boolean success = userService.createChatroom(username, chatroomName);
-            ret.put("success", success);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
-        }
-        return ret;
+    public ResponseEntity<?> createChatroom(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String chatroomName = (String) params.get("chatroomName");
+        userService.createChatroom(username, chatroomName);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/{chatroomId}/users/{username}")
