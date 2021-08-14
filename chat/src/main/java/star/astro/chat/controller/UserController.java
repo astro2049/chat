@@ -63,21 +63,6 @@ public class UserController {
         return ret;
     }
 
-    @PostMapping("/chatroom")
-    public JSONObject createChatroom(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String chatroomName = (String) params.get("chatroomName");
-            boolean success = userService.createChatroom(username, chatroomName);
-            ret.put("success", success);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
-        }
-        return ret;
-    }
-
     @PutMapping("/user/chatroom")
     public JSONObject joinChatroom(@RequestParam Map<String, Object> params) {
         JSONObject ret = new JSONObject();
