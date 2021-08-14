@@ -2,114 +2,67 @@ package star.astro.chat.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import star.astro.chat.exception.RegisterOnTakenUsernameException;
 import star.astro.chat.model.wrapper.Chatroom;
 import star.astro.chat.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public JSONObject addUserByNickname(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
+    public ResponseEntity<String> addUserByNickname(@RequestParam Map<String, Object> params) {
         try {
             String username = (String) params.get("username");
             String password = (String) params.get("password");
             userService.createUserByNickname(username, password);
-            ret.put("success", true);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RegisterOnTakenUsernameException e) {
+            return new ResponseEntity<>("username already taken", HttpStatus.CONFLICT);
         }
-        return ret;
     }
 
     @PostMapping("/login")
-    public JSONObject login(@RequestParam Map<String, Object> params, HttpServletRequest request) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String password = (String) params.get("password");
-            boolean granted = userService.login(username, password);
-            String token = null;
-            if (granted) {
-                token = userService.getToken(username);
-            }
-            ret.put("success", granted);
+    public ResponseEntity<JSONObject> login(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String password = (String) params.get("password");
+        boolean granted = userService.login(username, password);
+        if (granted) {
+            JSONObject ret = new JSONObject();
+            String token = userService.getToken(username);
             ret.put("username", username);
             ret.put("token", token);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
+            return new ResponseEntity<>(ret, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return ret;
     }
 
-    @PostMapping("/user/friend")
-    public JSONObject addFriend(@RequestParam Map<String, Object> params) {
+    @GetMapping("/{username}/me")
+    public ResponseEntity<JSONObject> getChatrooms(@PathVariable String username) {
+        List<Chatroom> chatrooms = userService.getUserChatrooms(username);
         JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String friendName = (String) params.get("friendName");
-            boolean success = userService.addFriend(username, friendName);
-            ret.put("success", success);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
-        }
-        return ret;
+        ret.put("chatrooms", chatrooms);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
-    @PostMapping("/chatroom")
-    public JSONObject createChatroom(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String chatroomName = (String) params.get("chatroomName");
-            boolean success = userService.createChatroom(username, chatroomName);
-            ret.put("success", success);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
+    @PostMapping("/{username}/friends/{friendName}")
+    public ResponseEntity<JSONObject> addFriend(@PathVariable String username, @PathVariable String friendName) {
+        boolean success = userService.addFriend(username, friendName);
+        if (success) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
-        return ret;
-    }
-
-    @PutMapping("/user/chatroom")
-    public JSONObject joinChatroom(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String chatroomId = (String) params.get("chatroomId");
-            boolean success = userService.joinChatroom(username, chatroomId);
-            ret.put("success", success);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
-        }
-        return ret;
-    }
-
-    @GetMapping("/user/chatroom")
-    public JSONObject getUserChatrooms(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            List<Chatroom> chatrooms = userService.getUserChatrooms(username);
-            ret.put("success", true);
-            ret.put("chatrooms", chatrooms);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
-        }
-        return ret;
     }
 
 }

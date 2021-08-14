@@ -3,6 +3,7 @@ package star.astro.chat.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import star.astro.chat.exception.RegisterOnTakenUsernameException;
 import star.astro.chat.model.mongodb.GroupChat;
 import star.astro.chat.model.mongodb.User;
 import star.astro.chat.model.mongodb.link.FriendLink;
@@ -38,9 +39,9 @@ public class UserService {
     private BcryptUtil bcryptUtil;
 
     @Transactional(rollbackFor = Exception.class)
-    public void createUserByNickname(String name, String password) throws Exception {
+    public void createUserByNickname(String name, String password) throws RegisterOnTakenUsernameException {
         if (userRepository.findUserByName(name) != null) {
-            throw new Exception("email already taken");
+            throw new RegisterOnTakenUsernameException();
         } else {
             User user = new User(name, bcryptUtil.hashPassword(password));
             userRepository.save(user);
@@ -123,7 +124,7 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean createChatroom(String username, String chatroomName) {
+    public void createChatroom(String username, String chatroomName) {
         GroupChat groupChat = new GroupChat();
         groupChat.setName(chatroomName);
         groupChat = groupChatRepository.save(groupChat);
@@ -132,16 +133,14 @@ public class UserService {
         groupChatUserLink.setChatroomId(chatroomId);
         groupChatUserLink.setUser(username);
         groupChatUserLinkRepository.save(groupChatUserLink);
-        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean joinChatroom(String username, String chatroomId) {
+    public void joinChatroom(String username, String chatroomId) {
         GroupChatUserLink groupChatUserLink = new GroupChatUserLink();
         groupChatUserLink.setChatroomId(chatroomId);
         groupChatUserLink.setUser(username);
         groupChatUserLinkRepository.save(groupChatUserLink);
-        return true;
     }
 
     public List<Chatroom> getUserChatrooms(String username) {
