@@ -84,24 +84,18 @@ export default function CustomizedInputBase(props) {
 
     const launchCommand = (username, guest, type) => {
         let formData = new FormData();
-        formData.append("username", username);
         let requestAddress;
-        let requestMethod;
         switch (type) {
             case "new friend!":
-                formData.append("friendName", guest);
-                requestAddress = "/user/friend";
-                requestMethod = "POST";
+                requestAddress = "/users/" + username + "/friends/" + guest;
                 break;
             case "join chatroom!":
-                formData.append("chatroomId", guest);
-                requestAddress = "/user/chatroom";
-                requestMethod = "PUT";
+                requestAddress = "/chatrooms/" + guest + "/users/" + username;
                 break;
             case "new chatroom!":
+                formData.append("username", username);
                 formData.append("chatroomName", guest);
-                requestAddress = "/chatroom";
-                requestMethod = "POST";
+                requestAddress = "/chatrooms";
                 break;
             default:
                 console.log("check parameter");
@@ -109,15 +103,12 @@ export default function CustomizedInputBase(props) {
         axios
             .request({
                 url: REACT_APP_SERVER_ADDRESS + requestAddress,
-                method: requestMethod,
+                method: "POST",
                 data: formData,
             })
             .then((response) => {
-                let data = response.data;
-                if (data.success === true) {
+                if (response.status === 201) {
                     setChatrooms();
-                } else {
-                    console.log("nope");
                 }
             });
     };
