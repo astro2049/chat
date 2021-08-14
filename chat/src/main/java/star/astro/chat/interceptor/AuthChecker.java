@@ -1,6 +1,5 @@
 package star.astro.chat.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import star.astro.chat.util.JwtTokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 @Component
 public class AuthChecker implements HandlerInterceptor {
@@ -45,12 +43,7 @@ public class AuthChecker implements HandlerInterceptor {
         if (granted) {
             return true;
         } else {
-            JSONObject ret = new JSONObject();
-            ret.put("message", "unauthorized request");
-            PrintWriter out = response.getWriter();
-            out.write(ret.toString());
-            out.flush();
-            out.close();
+            response.setStatus(401);
             return false;
         }
     }
