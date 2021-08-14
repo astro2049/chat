@@ -137,12 +137,11 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean joinChatroom(String username, String chatroomId) {
+    public void joinChatroom(String username, String chatroomId) {
         GroupChatUserLink groupChatUserLink = new GroupChatUserLink();
         groupChatUserLink.setChatroomId(chatroomId);
         groupChatUserLink.setUser(username);
         groupChatUserLinkRepository.save(groupChatUserLink);
-        return true;
     }
 
     public List<Chatroom> getUserChatrooms(String username) {

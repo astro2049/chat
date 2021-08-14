@@ -59,19 +59,12 @@ public class UserController {
         }
     }
 
-    @PutMapping("/chatrooms")
-    public JSONObject joinChatroom(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            String chatroomId = (String) params.get("chatroomId");
-            boolean success = userService.joinChatroom(username, chatroomId);
-            ret.put("success", success);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
-        }
-        return ret;
+    @PostMapping("/chatrooms")
+    public ResponseEntity<?> joinChatroom(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String chatroomId = (String) params.get("chatroomId");
+        userService.joinChatroom(username, chatroomId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/chatrooms")
