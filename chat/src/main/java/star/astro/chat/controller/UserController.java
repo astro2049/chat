@@ -47,6 +47,15 @@ public class UserController {
         }
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<JSONObject> getChatrooms(@RequestParam Map<String, Object> params) {
+        String username = (String) params.get("username");
+        List<Chatroom> chatrooms = userService.getUserChatrooms(username);
+        JSONObject ret = new JSONObject();
+        ret.put("chatrooms", chatrooms);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
     @PostMapping("/friends")
     public ResponseEntity<JSONObject> addFriend(@RequestParam Map<String, Object> params) {
         String username = (String) params.get("username");
@@ -65,21 +74,6 @@ public class UserController {
         String chatroomId = (String) params.get("chatroomId");
         userService.joinChatroom(username, chatroomId);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @GetMapping("/chatrooms")
-    public JSONObject getChatrooms(@RequestParam Map<String, Object> params) {
-        JSONObject ret = new JSONObject();
-        try {
-            String username = (String) params.get("username");
-            List<Chatroom> chatrooms = userService.getUserChatrooms(username);
-            ret.put("success", true);
-            ret.put("chatrooms", chatrooms);
-        } catch (Exception e) {
-            ret.put("success", false);
-            ret.put("exc", e.getMessage());
-        }
-        return ret;
     }
 
 }
