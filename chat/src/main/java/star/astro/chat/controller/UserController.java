@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -48,7 +49,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/friend")
+    @PostMapping("/friends")
     public JSONObject addFriend(@RequestParam Map<String, Object> params) {
         JSONObject ret = new JSONObject();
         try {
@@ -63,7 +64,7 @@ public class UserController {
         return ret;
     }
 
-    @PutMapping("/user/chatroom")
+    @PutMapping("/chatrooms")
     public JSONObject joinChatroom(@RequestParam Map<String, Object> params) {
         JSONObject ret = new JSONObject();
         try {
@@ -78,8 +79,8 @@ public class UserController {
         return ret;
     }
 
-    @GetMapping("/user/chatroom")
-    public JSONObject getUserChatrooms(@RequestParam Map<String, Object> params) {
+    @GetMapping("/chatrooms")
+    public JSONObject getChatrooms(@RequestParam Map<String, Object> params) {
         JSONObject ret = new JSONObject();
         try {
             String username = (String) params.get("username");
