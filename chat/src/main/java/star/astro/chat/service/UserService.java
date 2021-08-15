@@ -3,7 +3,7 @@ package star.astro.chat.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import star.astro.chat.exception.RegisterOnTakenUsernameException;
+import star.astro.chat.exception.CustomException;
 import star.astro.chat.model.mongodb.GroupChat;
 import star.astro.chat.model.mongodb.User;
 import star.astro.chat.model.mongodb.link.FriendLink;
@@ -39,9 +39,9 @@ public class UserService {
     private BcryptUtil bcryptUtil;
 
     @Transactional(rollbackFor = Exception.class)
-    public void createUserByNickname(String name, String password) throws RegisterOnTakenUsernameException {
+    public void createUserByNickname(String name, String password) throws CustomException {
         if (userRepository.findUserByName(name) != null) {
-            throw new RegisterOnTakenUsernameException();
+            throw new CustomException("username already taken");
         } else {
             User user = new User(name, bcryptUtil.hashPassword(password));
             userRepository.save(user);
