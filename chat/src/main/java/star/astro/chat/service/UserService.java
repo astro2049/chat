@@ -123,26 +123,6 @@ public class UserService {
         return chatrooms;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void createChatroom(String username, String chatroomName) {
-        GroupChat groupChat = new GroupChat();
-        groupChat.setName(chatroomName);
-        groupChat = groupChatRepository.save(groupChat);
-        String chatroomId = groupChat.getId();
-        GroupChatUserLink groupChatUserLink = new GroupChatUserLink();
-        groupChatUserLink.setChatroomId(chatroomId);
-        groupChatUserLink.setUser(username);
-        groupChatUserLinkRepository.save(groupChatUserLink);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void joinChatroom(String username, String chatroomId) {
-        GroupChatUserLink groupChatUserLink = new GroupChatUserLink();
-        groupChatUserLink.setChatroomId(chatroomId);
-        groupChatUserLink.setUser(username);
-        groupChatUserLinkRepository.save(groupChatUserLink);
-    }
-
     public List<Chatroom> getUserChatrooms(String username) {
         List<Chatroom> chatrooms = new LinkedList<>();
         chatrooms.addAll(getPrivateChatrooms(username));
