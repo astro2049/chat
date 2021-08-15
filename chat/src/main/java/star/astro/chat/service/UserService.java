@@ -65,16 +65,19 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean addFriend(String username, String friendName) {
+    public void addFriend(String username, String friendName) throws CustomException {
         if (userRepository.findUserByName(friendName) == null) {
-            return false;
+            throw new CustomException("target friend does not exist");
         }
-        FriendLink friendLink = new FriendLink();
-        friendLink.setUsername0(username);
-        friendLink.setUsername1(friendName);
+        FriendLink friendLink = friendLinkRepository.findByHostAndGuest(username, friendName);
+        if (friendLink != null) {
+            throw new CustomException("already friends");
+        }
+        friendLink = new FriendLink();
+        friendLink.setHostUsername(username);
+        friendLink.setGuestUsername(friendName);
         friendLinkRepository.save(friendLink);
         notificationService.noticeUserOfNewChatroom(friendName);
-        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -91,17 +94,24 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public List<Chatroom> getUserChatrooms(String username) {
+        List<Chatroom> chatrooms = new LinkedList<>();
+        chatrooms.addAll(getPrivateChatrooms(username));
+        chatrooms.addAll(getGroupChatrooms(username));
+        return chatrooms;
+    }
+
     public List<Chatroom> getPrivateChatrooms(String username) {
         List<Chatroom> chatrooms = new LinkedList<>();
-        List<FriendLink> friendLinks = friendLinkRepository.findAllByUsername0OrUsername1(username, username);
+        List<FriendLink> friendLinks = friendLinkRepository.findAllByName(username);
         for (FriendLink friendLink : friendLinks) {
-            String username0 = friendLink.getUsername0();
-            String username1 = friendLink.getUsername1();
+            String hostUsername = friendLink.getHostUsername();
+            String guestUsername = friendLink.getGuestUsername();
             String friendName;
-            if (username0.equals(username)) {
-                friendName = username1;
+            if (hostUsername.equals(username)) {
+                friendName = guestUsername;
             } else {
-                friendName = username0;
+                friendName = hostUsername;
             }
             String chatroomId = friendLink.getId();
             Chatroom chatroom = new Chatroom(chatroomId, friendName, ChatroomType.PRIVATECHAT.getValue());
@@ -120,13 +130,6 @@ public class UserService {
             Chatroom chatroom = new Chatroom(chatroomId, chatroomName, ChatroomType.GROUPCHAT.getValue());
             chatrooms.add(chatroom);
         }
-        return chatrooms;
-    }
-
-    public List<Chatroom> getUserChatrooms(String username) {
-        List<Chatroom> chatrooms = new LinkedList<>();
-        chatrooms.addAll(getPrivateChatrooms(username));
-        chatrooms.addAll(getGroupChatrooms(username));
         return chatrooms;
     }
 
