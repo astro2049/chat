@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import star.astro.chat.exception.CustomException;
 import star.astro.chat.service.ChatroomService;
 
 import java.util.Map;
@@ -25,8 +26,12 @@ public class ChatroomController {
 
     @PostMapping("/{chatroomId}/users/{username}")
     public ResponseEntity<?> addUser(@PathVariable String chatroomId, @PathVariable String username) {
-        chatroomService.addUser(username, chatroomId);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+            chatroomService.addUser(username, chatroomId);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (CustomException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 }

@@ -122,7 +122,7 @@ public class UserService {
 
     public List<Chatroom> getGroupChatrooms(String username) {
         List<Chatroom> chatrooms = new LinkedList<>();
-        List<GroupChatUserLink> groupChatUserLinks = groupChatUserLinkRepository.findGroupChatUserLinkByUsername(username);
+        List<GroupChatUserLink> groupChatUserLinks = groupChatUserLinkRepository.findByUsername(username);
         for (GroupChatUserLink groupChatUserLink : groupChatUserLinks) {
             String chatroomId = groupChatUserLink.getChatroomId();
             GroupChat groupChat = groupChatRepository.findGroupChatById(chatroomId);
