@@ -10,7 +10,7 @@ import star.astro.chat.model.mongodb.User;
 import java.util.Date;
 
 @Component
-public class JwtTokenUtil {
+public class JwtUtil {
 
     public String getToken(User user) {
         String token;

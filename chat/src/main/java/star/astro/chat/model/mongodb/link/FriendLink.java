@@ -8,8 +8,8 @@ public class FriendLink {
 
     @Id
     private String id;
-    private String username0;
-    private String username1;
+    private String hostUsername;
+    private String guestUsername;
 
     public String getId() {
         return id;
@@ -19,20 +19,20 @@ public class FriendLink {
         this.id = id;
     }
 
-    public String getUsername0() {
-        return username0;
+    public String getHostUsername() {
+        return hostUsername;
     }
 
-    public void setUsername0(String username0) {
-        this.username0 = username0;
+    public void setHostUsername(String hostUsername) {
+        this.hostUsername = hostUsername;
     }
 
-    public String getUsername1() {
-        return username1;
+    public String getGuestUsername() {
+        return guestUsername;
     }
 
-    public void setUsername1(String username1) {
-        this.username1 = username1;
+    public void setGuestUsername(String guestUsername) {
+        this.guestUsername = guestUsername;
     }
 
 }

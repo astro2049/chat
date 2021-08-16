@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface GroupChatUserLinkRepository extends MongoRepository<GroupChatUserLink, String> {
 
-    List<GroupChatUserLink> findGroupChatUserLinkByUsername(String username);
+    GroupChatUserLink findByUsernameAndChatroomId(String username, String chatroomId);
+
+    List<GroupChatUserLink> findByUsername(String username);
 
 }
