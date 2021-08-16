@@ -15,7 +15,7 @@ import star.astro.chat.repository.GroupChatRepository;
 import star.astro.chat.repository.GroupChatUserLinkRepository;
 import star.astro.chat.repository.UserRepository;
 import star.astro.chat.util.BcryptUtil;
-import star.astro.chat.util.JwtTokenUtil;
+import star.astro.chat.util.JwtUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class UserService {
     @Autowired
     private GroupChatUserLinkRepository groupChatUserLinkRepository;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtUtil jwtUtil;
     @Autowired
     private NotificationService notificationService;
     @Autowired
@@ -61,7 +61,7 @@ public class UserService {
 
     public String getToken(String name) {
         User user = userRepository.findUserByName(name);
-        return jwtTokenUtil.getToken(user);
+        return jwtUtil.getToken(user);
     }
 
     @Transactional(rollbackFor = Exception.class)
