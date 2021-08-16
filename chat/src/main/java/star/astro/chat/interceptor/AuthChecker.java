@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import star.astro.chat.model.mongodb.User;
 import star.astro.chat.repository.UserRepository;
-import star.astro.chat.util.JwtTokenUtil;
+import star.astro.chat.util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthChecker implements HandlerInterceptor {
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtUtil jwtUtil;
     @Autowired
     private UserRepository userRepository;
 
@@ -32,7 +32,7 @@ public class AuthChecker implements HandlerInterceptor {
             try {
                 username = JWT.decode(token).getAudience().get(0);
                 User user = userRepository.findUserByName(username);
-                boolean verified = jwtTokenUtil.verifyToken(token, user);
+                boolean verified = jwtUtil.verifyToken(token, user);
                 if (verified) {
                     granted = true;
                 }

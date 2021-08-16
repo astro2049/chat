@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import star.astro.chat.exception.RegisterOnTakenUsernameException;
+import star.astro.chat.exception.CustomException;
 import star.astro.chat.model.wrapper.Chatroom;
 import star.astro.chat.service.UserService;
 
@@ -26,8 +26,8 @@ public class UserController {
             String password = (String) params.get("password");
             userService.createUserByNickname(username, password);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (RegisterOnTakenUsernameException e) {
-            return new ResponseEntity<>("username already taken", HttpStatus.CONFLICT);
+        } catch (CustomException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
@@ -56,12 +56,12 @@ public class UserController {
     }
 
     @PostMapping("/{username}/friends/{friendName}")
-    public ResponseEntity<JSONObject> addFriend(@PathVariable String username, @PathVariable String friendName) {
-        boolean success = userService.addFriend(username, friendName);
-        if (success) {
+    public ResponseEntity<?> addFriend(@PathVariable String username, @PathVariable String friendName) {
+        try {
+            userService.addFriend(username, friendName);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        } catch (CustomException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
