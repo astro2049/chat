@@ -301,22 +301,9 @@ export default function Chat(props) {
     };
 
     async function sendChatMessage() {
-        let UnixTime = await getTime();
-        sendMessage(UnixTime);
+        let response = await axios.get(REACT_APP_SERVER_ADDRESS + "/time");
+        sendMessage(response.data.UTCTime.UnixTime);
     }
-
-    const getTime = () => {
-        return new Promise((resolve, reject) => {
-            fetch(REACT_APP_SERVER_ADDRESS + "/time", {
-                method: "GET",
-            }).then((response) => {
-                response.json().then((data) => {
-                    let time = data.UTCTime.UnixTime;
-                    resolve(time);
-                });
-            });
-        });
-    };
 
     const sendMessage = (time) => {
         setChatText("");
