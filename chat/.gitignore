@@ -31,4 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# SSL certificate
 /src/main/resources/*.jks
+
+# production configs
+/src/main/resources/application-prod.yml
