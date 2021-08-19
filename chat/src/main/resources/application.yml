@@ -1,13 +1,3 @@
 spring:
-  data:
-    mongodb:
-      host: localhost
-      database: Chat_Astro
-      port: 27017
-      repositories:
-        enabled: true
-  session:
-    store-type: MongoDB
-
-website:
-  address: astro.ski
+  profiles:
+    active: @springboot.profileName@

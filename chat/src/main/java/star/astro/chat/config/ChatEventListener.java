@@ -11,6 +11,8 @@ import star.astro.chat.model.mongodb.StompSession;
 import star.astro.chat.repository.StompSessionRepository;
 import star.astro.chat.service.UserService;
 
+import java.util.Date;
+
 @Component
 public class ChatEventListener {
 
@@ -29,7 +31,7 @@ public class ChatEventListener {
             StompSession stompSession = new StompSession(sessionId, username);
             stompSessionRepository.save(stompSession);
             userService.userOnline(username);
-            System.out.println("[" + username + "] is online");
+            System.out.println("[" + username + "] is online\t\t\t" + new Date());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
@@ -50,7 +52,7 @@ public class ChatEventListener {
             String username = stompSession.getUsername();
             stompSessionRepository.delete(stompSession);
             userService.userOffline(username);
-            System.out.println("[" + username + "] is offline");
+            System.out.println("[" + username + "] is offline\t\t\t" + new Date());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
