@@ -11,3 +11,10 @@ spring:
 
 website:
   address: astro.ski
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:yacht.jks
+    key-store-password:
+    keyStoreType: JKS
