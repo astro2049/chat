@@ -2,7 +2,7 @@
 
 Chat!:speech_balloon: An online chat app that supports private & group chat, built with React + Spring Boot
 
-Now at http://www.astro.ski/ !
+Now at https://www.astro.ski/ !
 
 ## Notes:
 
