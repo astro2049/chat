@@ -6,9 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import star.astro.chat.exception.CustomException;
+import star.astro.chat.exception.UnAuthorizedException;
 import star.astro.chat.model.wrapper.Chatroom;
 import star.astro.chat.service.UserService;
+import star.astro.chat.util.JwtUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<String> addUserByNickname(@RequestParam Map<String, Object> params) {
@@ -48,20 +53,30 @@ public class UserController {
     }
 
     @GetMapping("/{username}/me")
-    public ResponseEntity<JSONObject> getChatrooms(@PathVariable String username) {
-        List<Chatroom> chatrooms = userService.getUserChatrooms(username);
-        JSONObject ret = new JSONObject();
-        ret.put("chatrooms", chatrooms);
-        return new ResponseEntity<>(ret, HttpStatus.OK);
+    public ResponseEntity<?> getChatrooms(@PathVariable String username, HttpServletRequest request) {
+        try {
+            String token = request.getHeader("token");
+            jwtUtil.authorize(token, username);
+            List<Chatroom> chatrooms = userService.getUserChatrooms(username);
+            JSONObject ret = new JSONObject();
+            ret.put("chatrooms", chatrooms);
+            return new ResponseEntity<>(ret, HttpStatus.OK);
+        } catch (UnAuthorizedException uae) {
+            return new ResponseEntity<>(uae.getMessage(), HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/{username}/friends/{friendName}")
-    public ResponseEntity<?> addFriend(@PathVariable String username, @PathVariable String friendName) {
+    public ResponseEntity<?> addFriend(@PathVariable String username, @PathVariable String friendName, HttpServletRequest request) {
         try {
+            String token = request.getHeader("token");
+            jwtUtil.authorize(token, username);
             userService.addFriend(username, friendName);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (CustomException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        } catch (UnAuthorizedException uae) {
+            return new ResponseEntity<>(uae.getMessage(), HttpStatus.FORBIDDEN);
+        } catch (CustomException ce) {
+            return new ResponseEntity<>(ce.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
