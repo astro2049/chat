@@ -8,6 +8,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
+import { signInOrOut } from "../../utils/HttpRequest";
 
 function Copyright() {
     // i18n
@@ -55,8 +56,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const { REACT_APP_SERVER_ADDRESS } = process.env;
-
 export default function SignIn(props) {
     const classes = useStyles();
 
@@ -70,24 +69,18 @@ export default function SignIn(props) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        let formData = new FormData();
-        formData.append("username", username);
-        formData.append("password", password);
-        fetch(REACT_APP_SERVER_ADDRESS + "/users/login", {
-            method: "POST",
-            body: formData,
-        }).then((response) => {
-            if (response.status === 200) {
-                response.json().then((data) => {
-                    let user = {
-                        name: "",
-                    };
-                    user.name = data.username;
-                    setUser(user);
-                    localStorage.setItem("token", data.token);
-                });
-            }
+        let response = signInOrOut("/users/login", {
+            username: username,
+            password: password,
         });
+        if (response.status === 200) {
+            let user = {
+                name: "",
+            };
+            user.name = response.username;
+            setUser(user);
+            localStorage.setItem("token", response.token);
+        }
         setUsername("");
         setPassword("");
     };

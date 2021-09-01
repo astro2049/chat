@@ -19,8 +19,8 @@ import {
     Select,
     MenuItem,
 } from "@material-ui/core";
-import MessageBox from "./components/message/Message";
-import Panels from "./components/panels/Panels";
+import MessageBox from "../../components/message/index";
+import Panels from "../../components/panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
@@ -190,7 +190,7 @@ export default function Chat(props) {
             });
     };
 
-    useEffect(setChatrooms, []); // set chatrooms after entering the chat page
+    useEffect(setChatrooms, [username]); // set chatrooms after entering the chat page
 
     useEffect(() => {
         if (rooms === undefined || rooms.length === 0) {

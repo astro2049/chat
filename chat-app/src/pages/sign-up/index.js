@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { useTranslation } from "react-i18next";
+import { signInOrOut } from "../../utils/HttpRequest";
 
 function Copyright() {
     // i18n
@@ -57,8 +58,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const { REACT_APP_SERVER_ADDRESS } = process.env;
-
 export default function SignUp(props) {
     const classes = useStyles();
 
@@ -69,21 +68,21 @@ export default function SignUp(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        let formData = new FormData();
-        formData.append("username", username);
-        formData.append("password", password);
-        fetch(REACT_APP_SERVER_ADDRESS + "/users/register", {
-            method: "POST",
-            body: formData,
-        }).then((response) => {
+        try {
+            let response = await signInOrOut("/users/register", {
+                username: username,
+                password: password,
+            });
             if (response.status === 200) {
                 setPage("sign-in");
             }
-        });
-        setUsername("");
-        setPassword("");
+            setUsername("");
+            setPassword("");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
