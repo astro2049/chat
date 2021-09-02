@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -8,8 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { useTranslation } from "react-i18next";
+import { signInOrOut } from "../../utils/HttpRequest";
 
 function Copyright() {
     // i18n
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
         width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(1),
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -57,75 +56,73 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const { REACT_APP_SERVER_ADDRESS } = process.env;
-
-export default function SignUp(props) {
+export default function SignIn(props) {
     const classes = useStyles();
 
     // i18n
     const { t } = useTranslation();
 
     const setPage = props.setPage;
+    const setUser = props.setUser;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        let formData = new FormData();
-        formData.append("username", username);
-        formData.append("password", password);
-        fetch(REACT_APP_SERVER_ADDRESS + "/users/register", {
-            method: "POST",
-            body: formData,
-        }).then((response) => {
+        try {
+            let response = await signInOrOut("/users/login", {
+                username: username,
+                password: password,
+            });
             if (response.status === 200) {
-                setPage("sign-in");
+                let user = {
+                    name: "",
+                };
+                user.name = response.data.username;
+                setUser(user);
+                localStorage.setItem("token", response.data.token);
             }
-        });
-        setUsername("");
-        setPassword("");
+            setUsername("");
+            setPassword("");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
         <div className={classes.outerContainer}>
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <AcUnitIcon />
-                </Avatar>
                 <Typography component="h1" variant="h3">
-                    {t("signUp.title")}
+                    Chat!
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={onSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="username"
-                                label={t("signUp.nickname")}
-                                name="username"
-                                autoComplete="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label={t("signUp.password")}
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </Grid>
-                    </Grid>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="Username"
+                        label={t("signIn.username")}
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label={t("signIn.password")}
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                     <Button
                         type="submit"
                         fullWidth
@@ -133,18 +130,23 @@ export default function SignUp(props) {
                         color="primary"
                         className={classes.submit}
                     >
-                        {t("signUp.signUpButton")}
+                        {t("signIn.signInButton")}
                     </Button>
-                    <Grid container justify="flex-end">
+                    <Grid container>
+                        <Grid item xs>
+                            <Link href="#" variant="body2">
+                                Forgot password?
+                            </Link>
+                        </Grid>
                         <Grid item>
                             <Link
                                 href="#"
                                 variant="body2"
                                 onClick={() => {
-                                    setPage("sign-in");
+                                    setPage("sign-up");
                                 }}
                             >
-                                {t("signUp.goToSignIn")}
+                                {t("signIn.goToSignUp")}
                             </Link>
                         </Grid>
                     </Grid>

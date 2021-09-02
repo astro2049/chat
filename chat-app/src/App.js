@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
-import Loader from "./loader/Loader";
-import SignIn from "./sign-in/SignIn";
-import Chat from "./chat/Chat";
-import SignUp from "./sign-up/SignUp";
+import Loader from "./pages/loader/index";
+import SignIn from "./pages/sign-in/index";
+import Chat from "./pages/main/index";
+import SignUp from "./pages/sign-up/index";
 import axios from "axios";
 
 // axios
@@ -17,17 +17,19 @@ import axios from "axios";
 })();
 
 class App extends React.Component {
-    props = {};
-
-    state = {
-        user: {
-            name: "",
-        },
-        friends: [],
-        chatrooms: [],
-        online: false,
-        pageOnDisplay: "sign-in",
-    };
+    constructor(props) {
+        super(props);
+        this.props = props;
+        this.state = {
+            user: {
+                name: "",
+            },
+            friends: [],
+            chatrooms: [],
+            online: false,
+            pageOnDisplay: "sign-in",
+        };
+    }
 
     setPageOnDisplay = (pageToDisplay) => {
         this.setState({

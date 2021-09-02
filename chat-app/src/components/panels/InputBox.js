@@ -60,9 +60,11 @@ export default function CustomizedInputBase(props) {
             case "New Friend":
                 setInputPlaceholder(t("chat.panels.newFriend.promptText"));
                 break;
+            default:
+                break;
         }
         setInputText("");
-    }, [activeOption, i18n.language]);
+    }, [activeOption, i18n.language, t]);
 
     const onSubmit = (e) => {
         e.preventDefault();
