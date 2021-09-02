@@ -67,22 +67,26 @@ export default function SignIn(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        let response = signInOrOut("/users/login", {
-            username: username,
-            password: password,
-        });
-        if (response.status === 200) {
-            let user = {
-                name: "",
-            };
-            user.name = response.username;
-            setUser(user);
-            localStorage.setItem("token", response.token);
+        try {
+            let response = await signInOrOut("/users/login", {
+                username: username,
+                password: password,
+            });
+            if (response.status === 200) {
+                let user = {
+                    name: "",
+                };
+                user.name = response.data.username;
+                setUser(user);
+                localStorage.setItem("token", response.data.token);
+            }
+            setUsername("");
+            setPassword("");
+        } catch (error) {
+            console.log(error);
         }
-        setUsername("");
-        setPassword("");
     };
 
     return (
