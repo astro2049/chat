@@ -25,7 +25,7 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<String> addUserByNickname(@RequestParam Map<String, Object> params) {
+    public ResponseEntity<String> addUserByNickname(@RequestBody Map<String, Object> params) {
         try {
             String username = (String) params.get("username");
             String password = (String) params.get("password");
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JSONObject> login(@RequestParam Map<String, Object> params) {
+    public ResponseEntity<JSONObject> login(@RequestBody Map<String, Object> params) {
         String username = (String) params.get("username");
         String password = (String) params.get("password");
         boolean granted = userService.login(username, password);

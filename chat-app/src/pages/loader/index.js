@@ -19,7 +19,7 @@ export default function Loader() {
 
     return (
         <div className={classes.outerContainer}>
-            <Typography className={classes.loading}>
+            <Typography className={classes.loading} component="div">
                 <Box
                     fontWeight="fontWeightLight"
                     fontSize="h3.fontSize"
