@@ -75,7 +75,7 @@ export default function SignUp(props) {
                 username: username,
                 password: password,
             });
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setPage("sign-in");
             }
             setUsername("");

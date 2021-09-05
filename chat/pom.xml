@@ -28,6 +28,12 @@
             </activation>
         </profile>
         <profile>
+            <id>test</id>
+            <properties>
+                <springboot.profileName>test</springboot.profileName>
+            </properties>
+        </profile>
+        <profile>
             <id>prod</id>
             <properties>
                 <springboot.profileName>prod</springboot.profileName>
