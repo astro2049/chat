@@ -62,8 +62,9 @@ export default function SignIn(props) {
     // i18n
     const { t } = useTranslation();
 
-    const setPage = props.setPage;
     const setUser = props.setUser;
+    const setToken = props.setToken;
+    const setPage = props.setPage;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -75,12 +76,12 @@ export default function SignIn(props) {
                 password: password,
             });
             if (response.status === 200) {
-                let user = {
-                    name: "",
-                };
+                let user = props.user;
                 user.name = response.data.username;
                 setUser(user);
-                localStorage.setItem("token", response.data.token);
+                let jwtToken = response.data.token;
+                setToken(jwtToken);
+                sessionStorage.setItem("token", jwtToken);
             }
             setUsername("");
             setPassword("");

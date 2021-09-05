@@ -1,83 +1,58 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Loader from "./pages/loader/index";
 import SignIn from "./pages/sign-in/index";
 import Chat from "./pages/main/index";
 import SignUp from "./pages/sign-up/index";
 import axios from "axios";
 
-// axios
-// https://stackoverflow.com/questions/43051291/attach-authorization-header-for-all-axios-requests
-(function () {
-    let token = localStorage.getItem("token");
-    if (token) {
-        axios.defaults.headers.common["token"] = token;
-    } else {
-        axios.defaults.headers.common["token"] = null;
-    }
-})();
+export default function App() {
+    const [user, setUser] = useState({
+        name: null,
+    });
+    const [online, setOnline] = useState(false);
+    const [token, setToken] = useState(null);
+    const [pageOnDisplay, setPageOnDisplay] = useState("sign-in");
+    const displaySignInPage = pageOnDisplay === "sign-in";
+    const displaySignUpPage = pageOnDisplay === "sign-up";
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.props = props;
-        this.state = {
-            user: {
-                name: "",
-            },
-            friends: [],
-            chatrooms: [],
-            online: false,
-            pageOnDisplay: "sign-in",
-        };
-    }
-
-    setPageOnDisplay = (pageToDisplay) => {
-        this.setState({
-            pageOnDisplay: pageToDisplay,
-        });
-    };
-
-    setUserOnline = (user) => {
-        this.setState({
-            user: user,
-            online: true,
-        });
-    };
-
-    render() {
-        const { user, online, pageOnDisplay } = this.state;
-        const displaySignInPage = pageOnDisplay === "sign-in";
-        const displaySignUpPage = pageOnDisplay === "sign-up";
-
-        function Main(props) {
-            if (props.online === false) {
-                if (displaySignInPage) {
-                    return (
-                        <SignIn
-                            setUser={props.setUser}
-                            setPage={props.setPage}
-                        ></SignIn>
-                    );
-                }
-                if (displaySignUpPage) {
-                    return <SignUp setPage={props.setPage}></SignUp>;
-                }
-            } else {
-                return <Chat user={props.user}></Chat>;
-            }
+    useEffect(() => {
+        if (user.name !== null && token != null) {
+            axios.defaults.headers.common["token"] = token;
+            setOnline(true);
         }
+    }, [user, token]);
 
-        return (
-            <Suspense fallback={<Loader />}>
-                <Main
-                    online={online}
-                    user={user}
-                    setUser={this.setUserOnline}
-                    setPage={this.setPageOnDisplay}
-                ></Main>
-            </Suspense>
-        );
+    function Main(props) {
+        if (props.online === false) {
+            if (displaySignInPage) {
+                return (
+                    <SignIn
+                        user={props.user}
+                        setUser={props.setUser}
+                        token={props.token}
+                        setToken={props.setToken}
+                        setPage={props.setPage}
+                    ></SignIn>
+                );
+            }
+            if (displaySignUpPage) {
+                return <SignUp setPage={props.setPage}></SignUp>;
+            }
+        } else {
+            return <Chat user={props.user}></Chat>;
+        }
     }
-}
 
-export default App;
+    return (
+        <Suspense fallback={<Loader />}>
+            <Main
+                online={online}
+                user={user}
+                setUser={setUser}
+                setPage={setPageOnDisplay}
+                token={token}
+                setToken={setToken}
+            ></Main>
+        </Suspense>
+    );
+}

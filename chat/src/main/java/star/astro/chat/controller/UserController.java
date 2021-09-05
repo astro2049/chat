@@ -30,9 +30,9 @@ public class UserController {
             String username = (String) params.get("username");
             String password = (String) params.get("password");
             userService.createUserByNickname(username, password);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (CustomException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
