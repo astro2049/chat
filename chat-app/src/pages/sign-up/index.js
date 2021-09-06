@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
     },
     paper: {
-        width: theme.spacing(55),
+        width: "xs",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -96,35 +96,31 @@ export default function SignUp(props) {
                     {t("signUp.title")}
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={onSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="username"
-                                label={t("signUp.nickname")}
-                                name="username"
-                                autoComplete="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label={t("signUp.password")}
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </Grid>
-                    </Grid>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="username"
+                        label={t("signUp.nickname")}
+                        name="username"
+                        autoComplete="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label={t("signUp.password")}
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                     <Button
                         type="submit"
                         fullWidth

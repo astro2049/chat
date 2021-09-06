@@ -7,9 +7,7 @@ const useStyles = makeStyles((theme) => ({
         height: "100vh",
         display: "flex",
         justifyContent: "center",
-    },
-    loading: {
-        marginTop: theme.spacing(32),
+        alignItems: "center",
     },
 }));
 
@@ -19,7 +17,7 @@ export default function Loader() {
 
     return (
         <div className={classes.outerContainer}>
-            <Typography className={classes.loading} component="div">
+            <Typography component="div">
                 <Box
                     fontWeight="fontWeightLight"
                     fontSize="h3.fontSize"
