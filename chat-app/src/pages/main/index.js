@@ -293,6 +293,11 @@ export default function Chat(props) {
         console.log(err);
     };
 
+    useEffect(() => {
+        var element = document.getElementById("dialogBox");
+        element.scrollIntoView(false);
+    }, [currentChatroomMessages]);
+
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -457,7 +462,7 @@ export default function Chat(props) {
                 </AppBar>
 
                 <TableContainer className={classes.forTableContainer}>
-                    <Table stickyHeader>
+                    <Table stickyHeader id="dialogBox">
                         <div className={classes.messagesArea}>
                             {currentChatroomMessages.map((message) => (
                                 <MessageBox
