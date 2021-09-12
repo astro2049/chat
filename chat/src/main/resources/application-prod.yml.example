@@ -18,3 +18,5 @@ server:
     key-store: classpath:yacht.jks
     key-store-password:
     keyStoreType: JKS
+  servlet:
+    context-path: /api

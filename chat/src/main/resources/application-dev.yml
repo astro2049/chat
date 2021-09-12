@@ -11,3 +11,7 @@ spring:
 
 website:
   address: astro.ski
+
+server:
+  servlet:
+    context-path: /api
