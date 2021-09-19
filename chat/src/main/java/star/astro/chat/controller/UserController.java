@@ -6,10 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import star.astro.chat.exception.CustomException;
+import star.astro.chat.exception.NotAcceptableUGCException;
 import star.astro.chat.exception.UnAuthorizedException;
 import star.astro.chat.model.wrapper.Chatroom;
 import star.astro.chat.service.UserService;
 import star.astro.chat.util.JwtUtil;
+import star.astro.chat.util.UGCValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,24 +22,29 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
+    private UGCValidator ugcValidator;
+    @Autowired
     private UserService userService;
     @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<String> addUserByNickname(@RequestBody Map<String, Object> params) {
+        String username = (String) params.get("username");
+        String password = (String) params.get("password");
         try {
-            String username = (String) params.get("username");
-            String password = (String) params.get("password");
+            ugcValidator.validateNames(username);
             userService.createUserByNickname(username, password);
             return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (NotAcceptableUGCException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (CustomException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JSONObject> login(@RequestBody Map<String, Object> params) {
+    public ResponseEntity<?> login(@RequestBody Map<String, Object> params) {
         String username = (String) params.get("username");
         String password = (String) params.get("password");
         boolean granted = userService.login(username, password);
@@ -48,7 +55,7 @@ public class UserController {
             ret.put("token", token);
             return new ResponseEntity<>(ret, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("wrong username or password", HttpStatus.UNAUTHORIZED);
         }
     }
 
