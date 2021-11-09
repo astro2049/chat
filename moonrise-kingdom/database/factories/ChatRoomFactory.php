@@ -3,9 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class ChatRoomFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,7 +15,6 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->realTextBetween(2, 21),
-            'remember_token' => Str::random(10),
         ];
     }
 }
