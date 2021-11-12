@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Overtrue\LaravelFollow\Followable;
 
 /**
  * @property string $name
@@ -21,7 +20,6 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use SoftDeletes;
-    use Followable;
 
     protected $fillable = [
         'name',
@@ -39,7 +37,7 @@ class User extends Authenticatable
 
     public function friends(): BelongsToMany
     {
-        return $this->followers();
+        return $this->belongsToMany(User::class, 'friends', 'guest_user_id', 'host_user_id');
     }
 
     public function chatRooms(): BelongsToMany

@@ -21,5 +21,6 @@ Route::post('login', [LoginController::class, 'authenticate']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/me', [UserController::class, 'me']);
+    Route::post('users/{user}', [UserController::class, 'update']);
     Route::resource('chatRooms', ChatRoomController::class);
 });

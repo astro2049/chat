@@ -13,6 +13,10 @@ class ChatRoomTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create([]);
 
+        $this->postJson('api/chatRooms', [
+            'name' => 'Paradise'
+        ])->assertUnauthorized();
+
         $this->actingAs($user)->postJson('api/chatRooms', [
             'name' => 'Paradise'
         ])->assertCreated();
@@ -29,6 +33,7 @@ class ChatRoomTest extends TestCase
 
         /** @var User $user1 */
         $user1 = User::factory()->create();
+        $this->patchJson('api/chatRooms/1', [])->assertUnauthorized();
         $this->actingAs($user1)->patchJson('api/chatRooms/1', [])->assertNoContent();
 
         /** @var User $user2 */
