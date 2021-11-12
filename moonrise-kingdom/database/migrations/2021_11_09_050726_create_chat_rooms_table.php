@@ -13,8 +13,9 @@ class CreateChatRoomsTable extends Migration
      */
     public function up()
     {
-        Schema::create('chatrooms', function (Blueprint $table) {
+        Schema::create('chat_rooms', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -22,7 +23,7 @@ class CreateChatRoomsTable extends Migration
         Schema::create('user_chatroom', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('chatroom_id');
+            $table->string('chat_room_id');
             $table->timestamps();
         });
     }
@@ -35,6 +36,6 @@ class CreateChatRoomsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('user_chatroom');
-        Schema::dropIfExists('chatrooms');
+        Schema::dropIfExists('chat_rooms');
     }
 }

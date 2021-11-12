@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Unique;
@@ -27,8 +29,10 @@ class UserController extends Controller
         ]);
     }
 
-    public function me(): Authenticatable
+    public function me(): Model|Collection|Builder|array|null
     {
-        return auth()->user();
+        $userId = auth()->id();
+
+        return User::query()->with(['friends', 'chatRooms'])->find($userId);
     }
 }

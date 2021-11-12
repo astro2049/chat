@@ -21,5 +21,5 @@ Route::post('login', [LoginController::class, 'authenticate']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/me', [UserController::class, 'me']);
-    Route::resource('chatrooms', ChatRoomController::class);
+    Route::resource('chatRooms', ChatRoomController::class);
 });

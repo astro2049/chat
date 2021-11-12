@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChatRoom;
-use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class ChatRoomController extends Controller
@@ -12,29 +12,30 @@ class ChatRoomController extends Controller
     /**
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): ChatRoom
     {
         $this->validate($request, [
             'name' => ['required', 'between:2,21'],
         ]);
 
-        return ChatRoom::query()->create([$request->all()]);
+        /** @var ChatRoom $chatRoom */
+        $chatRoom = ChatRoom::query()->create($request->all());
+        $this->addUserToChatroom($chatRoom);
+
+        return $chatRoom->refresh();
     }
 
-    public function show($chatroom)
+    public function update(ChatRoom $chatRoom): Response
     {
-        return $chatroom;
+        $this->addUserToChatroom($chatRoom);
+
+        return response()->noContent();
     }
 
-    /**
-     * @throws ValidationException
-     */
-    public function update(Request $request, ChatRoom $chatroom): bool
+    public function addUserToChatroom(ChatRoom $chatRoom): ChatRoom
     {
-        $this->validate($request, [
-            'name' => ['required', 'between:2,21'],
-        ]);
+        $chatRoom->members()->syncWithoutDetaching(auth()->user()->id);
 
-        return $chatroom->update($request->all());
+        return $chatRoom->refresh();
     }
 }
