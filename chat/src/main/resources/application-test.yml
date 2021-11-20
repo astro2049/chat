@@ -8,6 +8,9 @@ spring:
         enabled: true
   session:
     store-type: MongoDB
+  output:
+    ansi:
+      enabled: ALWAYS
 
 website:
   address: astro.ski

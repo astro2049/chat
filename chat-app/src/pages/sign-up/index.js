@@ -71,8 +71,8 @@ export default function SignUp(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            let response = await signInOrOut("/users/register", {
-                username: username,
+            let response = await signInOrOut("/users", {
+                name: username,
                 password: password,
             });
             if (response.status === 201) {

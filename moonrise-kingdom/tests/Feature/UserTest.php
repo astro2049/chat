@@ -50,6 +50,7 @@ class UserTest extends TestCase
 
         $this->assertSame($user->name, $response['name']);
     }
+
     public function test_user_can_be_updated()
     {
         /** @var User $me */
@@ -57,11 +58,11 @@ class UserTest extends TestCase
         /** @var User $friend */
         $friend = User::factory()->create();
 
-        $this->postJson('api/users/1', [
+        $this->patchJson('api/users/1', [
             'newFriend' => $friend->name
         ])->assertUnauthorized();
 
-        $this->actingAs($me)->postJson('api/users/1', [
+        $this->actingAs($me)->patchJson('api/users/1', [
             'newFriend' => $friend->name
         ])->assertNoContent();
 

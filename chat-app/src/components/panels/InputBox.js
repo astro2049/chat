@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const { REACT_APP_SERVER_ADDRESS } = process.env;
+const { REACT_APP_PROFILE_SERVER_ADDRESS } = process.env;
 
 export default function CustomizedInputBase(props) {
     const classes = useStyles();
@@ -43,6 +43,7 @@ export default function CustomizedInputBase(props) {
     // i18n
     const { t, i18n } = useTranslation();
 
+    const userId = props.userId;
     const username = props.username;
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
@@ -85,31 +86,35 @@ export default function CustomizedInputBase(props) {
     };
 
     const launchCommand = (username, guest, type) => {
-        let formData = new FormData();
         let requestAddress;
+        let method = "";
+        let data = {};
         switch (type) {
             case "new friend!":
-                requestAddress = "/users/" + username + "/friends/" + guest;
+                requestAddress = "/users/" + userId;
+                method = "PATCH";
+                data["newFriend"] = guest;
                 break;
             case "join chatroom!":
-                requestAddress = "/chatrooms/" + guest + "/users/" + username;
+                requestAddress = "/chatRooms/" + guest;
+                method = "PATCH";
                 break;
             case "new chatroom!":
-                formData.append("username", username);
-                formData.append("chatroomName", guest);
-                requestAddress = "/chatrooms";
+                requestAddress = "/chatRooms";
+                method = "POST";
+                data["name"] = guest;
                 break;
             default:
                 console.log("check parameter");
         }
         axios
             .request({
-                url: REACT_APP_SERVER_ADDRESS + requestAddress,
-                method: "POST",
-                data: formData,
+                url: REACT_APP_PROFILE_SERVER_ADDRESS + requestAddress,
+                method: method,
+                data: data,
             })
             .then((response) => {
-                if (response.status === 201) {
+                if (response.status >= 200 && response.status < 300) {
                     setChatrooms();
                 }
             });

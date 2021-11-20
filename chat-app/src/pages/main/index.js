@@ -145,7 +145,8 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const { REACT_APP_SERVER_ADDRESS } = process.env;
+const { REACT_APP_PROFILE_SERVER_ADDRESS, REACT_APP_CHAT_SERVER_ADDRESS } =
+    process.env;
 
 var stompClient = null;
 
@@ -167,6 +168,7 @@ export default function Chat(props) {
         changeLanguage(language);
     };
 
+    const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
     const [rooms, setRooms] = useState([]);
@@ -184,9 +186,9 @@ export default function Chat(props) {
 
     const setChatrooms = () => {
         axios
-            .get(REACT_APP_SERVER_ADDRESS + "/users/" + username + "/me")
+            .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
-                setRooms(response.data.chatrooms);
+                setRooms(response.data.chat_rooms);
             });
     };
 
@@ -234,7 +236,7 @@ export default function Chat(props) {
     const initializeStompCommunication = () => {
         const Stomp = require("stompjs");
         var SockJS = require("sockjs-client");
-        SockJS = new SockJS(REACT_APP_SERVER_ADDRESS + "/chat");
+        SockJS = new SockJS(REACT_APP_CHAT_SERVER_ADDRESS + "/chat");
         stompClient = Stomp.over(SockJS);
         stompClient.connect({ username: username }, onConnected, onError);
     };
@@ -306,7 +308,7 @@ export default function Chat(props) {
     };
 
     async function sendChatMessage() {
-        let response = await axios.get(REACT_APP_SERVER_ADDRESS + "/time");
+        let response = await axios.get(REACT_APP_CHAT_SERVER_ADDRESS + "/time");
         sendMessage(response.data.UTCTime.UnixTime);
     }
 
@@ -392,6 +394,7 @@ export default function Chat(props) {
 
                 <div className={classes.panelsContainer}>
                     <Panels
+                        userId={userId}
                         username={username}
                         setChatrooms={setChatrooms}
                     ></Panels>
