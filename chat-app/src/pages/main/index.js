@@ -191,7 +191,7 @@ export default function Chat(props) {
                 let rooms = [];
                 for (const friend of response.data.friends) {
                     rooms.push({
-                        id: friend.pivot.id,
+                        id: friend.pivot.duet_id,
                         name: friend.name,
                         type: "private",
                     });
@@ -228,7 +228,7 @@ export default function Chat(props) {
     }, [rooms]);
 
     const refreshChatroomMessages = () => {
-        let messages = findChatMessages(activeChat.name);
+        let messages = findChatMessages();
         setCurrentChatroomMessages(messages);
     };
 

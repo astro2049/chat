@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @property int    $id
  * @property string $name
  * @property string $password
  * @property string $remember_token
@@ -40,7 +41,7 @@ class User extends Authenticatable
 
     public function friends(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'friends', 'guest_user_id', 'host_user_id')->withPivot('id');
+        return $this->belongsToMany(User::class, 'friends', 'guest_user_id', 'host_user_id')->withPivot('duet_id');
     }
 
     public function chatRooms(): BelongsToMany
