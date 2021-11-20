@@ -7,6 +7,7 @@ import axios from "axios";
 
 export default function App() {
     const [user, setUser] = useState({
+        id: null,
         name: null,
     });
     const [online, setOnline] = useState(false);
@@ -17,7 +18,7 @@ export default function App() {
 
     useEffect(() => {
         if (user.name !== null && token != null) {
-            axios.defaults.headers.common["token"] = token;
+            axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             setOnline(true);
         }
     }, [user, token]);

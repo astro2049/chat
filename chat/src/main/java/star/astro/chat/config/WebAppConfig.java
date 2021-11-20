@@ -20,7 +20,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authChecker)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/users/login", "/users/register", "/time")
+                .excludePathPatterns("/users/login", "/users/register", "/time", "/notifications/new-friend")
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui/**");
     }
 

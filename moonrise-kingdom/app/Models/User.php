@@ -26,22 +26,30 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $appends = [
+        'resource_type'
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',
         'created_at',
         'updated_at',
         'deleted_at',
-        'pivot'
     ];
 
     public function friends(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'friends', 'guest_user_id', 'host_user_id');
+        return $this->belongsToMany(User::class, 'friends', 'guest_user_id', 'host_user_id')->withPivot('id');
     }
 
     public function chatRooms(): BelongsToMany
     {
         return $this->belongsToMany(ChatRoom::class, 'user_chatroom');
+    }
+
+    public function getResourceTypeAttribute(): string
+    {
+        return $this->table;
     }
 }

@@ -71,20 +71,20 @@ export default function SignIn(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            let response = await signInOrOut("/users/login", {
-                username: username,
+            let response = await signInOrOut("/login", {
+                name: username,
                 password: password,
             });
-            if (response.status === 200) {
-                let user = props.user;
-                user.name = response.data.username;
-                setUser(user);
-                let jwtToken = response.data.token;
-                setToken(jwtToken);
-                sessionStorage.setItem("token", jwtToken);
-            }
             setUsername("");
             setPassword("");
+            if (response.status === 200) {
+                let user = props.user;
+                user.id = response.data.user.id;
+                user.name = response.data.user.name;
+                setUser(user);
+                let token = response.data.token;
+                setToken(token);
+            }
         } catch (error) {
             console.log(error);
         }

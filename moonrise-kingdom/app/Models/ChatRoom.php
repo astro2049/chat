@@ -19,6 +19,10 @@ class ChatRoom extends Model
         'name',
     ];
 
+    protected $appends = [
+        'resource_type'
+    ];
+
     protected $hidden = [
         'created_at',
         'updated_at',
@@ -29,5 +33,10 @@ class ChatRoom extends Model
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_chatroom');
+    }
+
+    public function getResourceTypeAttribute(): string
+    {
+        return $this->table;
     }
 }

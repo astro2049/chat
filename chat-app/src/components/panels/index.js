@@ -86,6 +86,7 @@ export default function SimpleBreadcrumbs(props) {
             </div>
             <InputBox
                 activeOption={activeOption}
+                userId={props.userId}
                 username={props.username}
                 setChatrooms={setChatrooms}
             ></InputBox>
