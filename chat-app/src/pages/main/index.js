@@ -286,10 +286,10 @@ export default function Chat(props) {
             let id = room.id;
             let type = room.type;
             if (
-                subscribedChatrooms.includes({
-                    id: id,
-                    type: type,
-                })
+                subscribedChatrooms.some(
+                    (chatRoom) =>
+                        chatRoom["id"] === id && chatRoom["type"] === type
+                )
             ) {
                 return;
             }
