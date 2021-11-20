@@ -17,9 +17,15 @@ public class ChatController {
     @Autowired
     private NotificationService notificationService;
 
-    @MessageMapping("/chatroom/{room}")
-    @SendTo("/topic/chatroom.{room}")
-    public ChatMessage sendPrivateMessage(@DestinationVariable String room, @Payload ChatMessage chatMessage) {
+    @MessageMapping("/friends/{friend}")
+    @SendTo("/topic/friends.{friend}")
+    public ChatMessage sendPrivateMessage(@DestinationVariable String friend, @Payload ChatMessage chatMessage) {
+        return chatMessage;
+    }
+
+    @MessageMapping("/chatrooms/{room}")
+    @SendTo("/topic/chatrooms.{room}")
+    public ChatMessage sendGroupChatMessage(@DestinationVariable String room, @Payload ChatMessage chatMessage) {
         return chatMessage;
     }
 
