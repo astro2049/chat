@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FriendPivot;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
@@ -62,8 +63,35 @@ class UserController extends Controller
             abort(403, 'nah');
         }
 
-        $user->friends()->syncWithoutDetaching($friend);
-        $friend->friends()->syncWithoutDetaching($user);
+        $friendPivot = FriendPivot::query()
+            ->where(
+                fn($q) => $q
+                    ->where(
+                        fn($q1) => $q1->where('host_user_id', $user->id)
+                            ->where('guest_user_id', $friend->id)
+                    )->orWhere(
+                        fn($q2) => $q2->where('host_user_id', $friend->id)
+                            ->where('guest_user_id', $user->id)
+                    ))
+            ->first();
+
+        // return if friendship is already established
+        if ($friendPivot != null) {
+            return response()->noContent();
+        }
+
+        /** @var FriendPivot $newFriendPivot0 */
+        $newFriendPivot0 = FriendPivot::query()->create([
+            'host_user_id' => $user->id,
+            'guest_user_id' => $friend->id
+        ]);
+        /** @var FriendPivot $newFriendPivot1 */
+        $newFriendPivot1 = FriendPivot::query()->create([
+            'host_user_id' => $friend->id,
+            'guest_user_id' => $user->id
+        ]);
+        $newFriendPivot0->update(['duet_id' => $newFriendPivot0->id]);
+        $newFriendPivot1->update(['duet_id' => $newFriendPivot0->id]);
 
         Http::Post(config('notification.service_url') . '/api/notifications/new-friend', [
             'name' => $friendName
