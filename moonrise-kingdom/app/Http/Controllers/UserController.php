@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Validation\ValidationException;
 
@@ -63,6 +64,10 @@ class UserController extends Controller
 
         $user->friends()->syncWithoutDetaching($friend);
         $friend->friends()->syncWithoutDetaching($user);
+
+        Http::Post(config('notification.service_url') . '/api/notifications/new-friend', [
+            'name' => $friendName
+        ]);
 
         return response()->noContent();
     }

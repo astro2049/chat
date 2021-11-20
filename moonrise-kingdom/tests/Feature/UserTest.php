@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -57,6 +58,10 @@ class UserTest extends TestCase
         $me = User::factory()->create();
         /** @var User $friend */
         $friend = User::factory()->create();
+
+        Http::fake([
+            config('notification.service_url') . '/api/notification/new-friend' => Http::response()
+        ]);
 
         $this->patchJson('api/users/1', [
             'newFriend' => $friend->name
