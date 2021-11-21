@@ -211,20 +211,16 @@ export default function Chat(props) {
     useEffect(setChatrooms, [username]); // set chatrooms after entering the chat page
 
     useEffect(() => {
-        if (rooms === undefined || rooms.length === 0) {
-            return;
+        if (rooms.length > 0) {
+            if (activeChat.id === "") {
+                setActiveChat(rooms[0]);
+            }
+        }
+        if (!StompCommunicationInitialized) {
+            initializeStompCommunication();
+            setStompCommunicationInitialized(true);
         } else {
-            if (rooms.length > 0) {
-                if (activeChat.id === "") {
-                    setActiveChat(rooms[0]);
-                }
-            }
-            if (!StompCommunicationInitialized) {
-                initializeStompCommunication();
-                setStompCommunicationInitialized(true);
-            } else {
-                subscribeStuffs();
-            }
+            subscribeStuffs();
         }
     }, [rooms]);
 
@@ -469,7 +465,7 @@ export default function Chat(props) {
                             <Button
                                 className={classes.activeChatButton}
                                 onClick={handleClick}
-                                disabled={activeChat.type === 0}
+                                disabled={activeChat.type === "private"}
                                 style={{
                                     color: "black",
                                 }}
