@@ -60,7 +60,7 @@ class UserTest extends TestCase
         $friend = User::factory()->create();
 
         Http::fake([
-            config('notification.service_url') . '/api/notification/new-friend' => Http::response()
+            config('notification.service_url') . '/api/notifications/new-friend' => Http::response()
         ]);
 
         $this->patchJson('api/users/1', [
