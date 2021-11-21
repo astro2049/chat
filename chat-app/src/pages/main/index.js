@@ -173,8 +173,9 @@ export default function Chat(props) {
     const [chatText, setChatText] = useState("");
     const [rooms, setRooms] = useState([]);
     const [activeChat, setActiveChat] = useState({
-        chatroomId: "",
+        id: "",
         name: "",
+        type: "",
     });
     const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
     const [receivedMessages, setReceivedMessages] = useState([]);
@@ -214,7 +215,7 @@ export default function Chat(props) {
             return;
         } else {
             if (rooms.length > 0) {
-                if (activeChat.chatroomId === "") {
+                if (activeChat.id === "") {
                     setActiveChat(rooms[0]);
                 }
             }
@@ -239,8 +240,8 @@ export default function Chat(props) {
         for (let i = 0; i < receivedMessages.length; i++) {
             let message = receivedMessages[i];
             if (
-                message.sender === activeChat.name ||
-                message.receiver === activeChat.name
+                message.chatId === activeChat.id &&
+                message.type === activeChat.type
             ) {
                 messages.push(message);
             }
@@ -353,8 +354,11 @@ export default function Chat(props) {
         let msg = chatText;
         if (msg.trim() !== "") {
             let id = activeChat.id;
+            let type = activeChat.type;
             let guestName = activeChat.name;
             const message = {
+                chatId: id,
+                type: type,
                 sender: username,
                 receiver: guestName,
                 content: msg,
@@ -489,7 +493,7 @@ export default function Chat(props) {
                                     }
                                 >
                                     <Typography variant="h6">
-                                        {activeChat.chatroomId}
+                                        {activeChat.id}
                                     </Typography>
                                 </div>
                             </Popover>
