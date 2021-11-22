@@ -1,32 +1,38 @@
-# chat
+# Chat!
 
-Chat!:speech_balloon: An online chat app that supports private & group chat, built with React + Spring Boot
+Chat! is an online chat site with private & group chat :tent:
 
 Now at https://www.astro.ski/ !
 
 ## Notes:
 
-- [chat-app](https://github.com/astro2049/chat/tree/main/chat-app): client (front end) web app, **React** project
-- [chat](https://github.com/astro2049/chat/tree/main/chat): server-side (back end) **Spring Boot** project (forwards messages to RabbitMQ server)
+- [chat-app](https://github.com/astro2049/chat/tree/main/chat-app): **React app**, Web client
+- [moonrise-kingdom](https://github.com/astro2049/chat/tree/main/moonrise-kingdom): **Laravel app**, handles persistent logics
+- [chat](https://github.com/astro2049/chat/tree/main/chat): **Spring Boot app**, handles chat logics
 
-Chat messages travel on STOMP over WebSocket.
+**chat messages travel on STOMP over WebSocket*
+
+### Architecture Map:
+
+![archi (1920 x 1080 px)](https://astro-1305422781.cos.ap-guangzhou.myqcloud.com/archi%20(1920%20x%201080%20px).png)
 
 ## Requirements:
 
 - [Node.js](https://nodejs.org/)
-- Java 16
+- [PHP 8](https://www.php.net/releases/8.0/en.php)
+- [MySQL](https://www.mysql.com/)
+- [Java 16](https://adoptopenjdk.net/)
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [MongoDB](https://www.mongodb.com/)
 
 ## Some Thoughts...
 
-This app adopts typical publish-subscribe architecture: 
+In realizing chatting, the application adopts a publish-subscribe pattern:
 
 - *Spring Boot server* + *RabbitMQ server* as *Event notification server (ENS)*
 - *React app Web client* as *Consumer client* & *Publisher client*
-- as for *Directory service (DS)*, there's **no** service discovery in this app since the three back end services are all standalone (on one host) and their locations are hard coded
 
-## Major Implementation Reference (server side):
+## Implementation Reference (chat features):
 
 [Build a Chat Application using Spring Boot + WebSocket + RabbitMQ](https://www.javainuse.com/spring/boot-websocket-chat) - JavaInUse
 
