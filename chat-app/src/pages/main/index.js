@@ -171,7 +171,7 @@ export default function Chat(props) {
     const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
-    const [rooms, setRooms] = useState([]);
+    const [rooms, setRooms] = useState();
     const [activeChat, setActiveChat] = useState({
         id: "",
         name: "",
@@ -211,6 +211,9 @@ export default function Chat(props) {
     useEffect(setChatrooms, [username]); // set chatrooms after entering the chat page
 
     useEffect(() => {
+        if (rooms === undefined) {
+            return;
+        }
         if (rooms.length > 0) {
             if (activeChat.id === "") {
                 setActiveChat(rooms[0]);
@@ -218,7 +221,7 @@ export default function Chat(props) {
         }
         if (!StompCommunicationInitialized) {
             initializeStompCommunication();
-            setStompCommunicationInitialized(true);
+            setStompCommunicationInitialized(true); // not perfect
         } else {
             subscribeStuffs();
         }
@@ -411,28 +414,32 @@ export default function Chat(props) {
                 <TableContainer className={classes.forTableContainer}>
                     <Table stickyHeader>
                         <List>
-                            {rooms.map((room) => (
-                                <ListItem>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        onClick={() => setActiveChat(room)}
-                                        className={
-                                            room.type === "private"
-                                                ? classes.privateChatCard
-                                                : classes.groupChatCard
-                                        }
-                                    >
-                                        <Typography
-                                            variant="h5"
-                                            gutterBottom
-                                            align="center"
-                                        >
-                                            {room.name}
-                                        </Typography>
-                                    </Button>
-                                </ListItem>
-                            ))}
+                            {rooms === undefined
+                                ? []
+                                : rooms.map((room) => (
+                                      <ListItem>
+                                          <Button
+                                              variant="contained"
+                                              color="secondary"
+                                              onClick={() =>
+                                                  setActiveChat(room)
+                                              }
+                                              className={
+                                                  room.type === "private"
+                                                      ? classes.privateChatCard
+                                                      : classes.groupChatCard
+                                              }
+                                          >
+                                              <Typography
+                                                  variant="h5"
+                                                  gutterBottom
+                                                  align="center"
+                                              >
+                                                  {room.name}
+                                              </Typography>
+                                          </Button>
+                                      </ListItem>
+                                  ))}
                         </List>
                     </Table>
                 </TableContainer>
