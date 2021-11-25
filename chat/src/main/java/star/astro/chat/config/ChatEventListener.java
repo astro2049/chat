@@ -9,15 +9,12 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import star.astro.chat.model.mongodb.StompSession;
 import star.astro.chat.repository.StompSessionRepository;
-import star.astro.chat.service.UserService;
 
 import java.util.Date;
 
 @Component
 public class ChatEventListener {
 
-    @Autowired
-    private UserService userService;
     @Autowired
     private StompSessionRepository stompSessionRepository;
 
@@ -30,7 +27,6 @@ public class ChatEventListener {
             String username = headerAccessor.getNativeHeader("username").get(0);
             StompSession stompSession = new StompSession(sessionId, username);
             stompSessionRepository.save(stompSession);
-            userService.userOnline(username);
             System.out.println("[" + username + "] is online\t\t\t" + new Date());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
@@ -51,7 +47,6 @@ public class ChatEventListener {
             StompSession stompSession = stompSessionRepository.findStompSessionBySessionId(sessionId);
             String username = stompSession.getUsername();
             stompSessionRepository.delete(stompSession);
-            userService.userOffline(username);
             System.out.println("[" + username + "] is offline\t\t\t" + new Date());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
