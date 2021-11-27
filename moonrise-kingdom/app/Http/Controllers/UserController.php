@@ -93,9 +93,10 @@ class UserController extends Controller
         $newFriendPivot0->update(['duet_id' => $newFriendPivot0->id]);
         $newFriendPivot1->update(['duet_id' => $newFriendPivot0->id]);
 
-        Http::Post(config('notification.service_url') . '/api/notifications/new-friend', [
-            'name' => $friendName
-        ]);
+        Http::withoutVerifying()
+            ->Post(config('notification.service_url') . '/api/notifications/new-friend', [
+                'name' => $friendName
+            ]);
 
         return response()->noContent();
     }
