@@ -6,8 +6,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { Button } from "tdesign-react";
 import {
-    Button,
     List,
     ListItem,
     Table,
@@ -101,7 +101,6 @@ const useStyles = makeStyles(() => ({
         justifyContent: "center",
         alignItems: "center",
         textTransform: "none",
-        backgroundColor: "sandyBrown",
     },
     userInfo: {
         zIndex: 1250,
@@ -419,8 +418,12 @@ export default function Chat(props) {
                                 : rooms.map((room) => (
                                       <ListItem>
                                           <Button
-                                              variant="contained"
-                                              color="secondary"
+                                              variant="outline"
+                                              theme={
+                                                  room.type === "private"
+                                                      ? "primary"
+                                                      : "danger"
+                                              }
                                               onClick={() =>
                                                   setActiveChat(room)
                                               }
@@ -470,12 +473,11 @@ export default function Chat(props) {
                     <Toolbar className={classes.appBarContentContainer}>
                         <div className={classes.chatroomName}>
                             <Button
+                                theme="default"
+                                variant="text"
+                                size="large"
                                 className={classes.activeChatButton}
                                 onClick={handleClick}
-                                disabled={activeChat.type === "private"}
-                                style={{
-                                    color: "black",
-                                }}
                             >
                                 <Typography variant="h4" noWrap>
                                     {activeChat.name}
@@ -510,7 +512,7 @@ export default function Chat(props) {
                                 onChange={(e) => handleChangeLanguage(e)}
                             >
                                 <MenuItem value="en">English</MenuItem>
-                                <MenuItem value="zh">中文</MenuItem>
+                                <MenuItem value="zh-CN">中文</MenuItem>
                             </Select>
                         </FormControl>
                     </Toolbar>
@@ -543,8 +545,8 @@ export default function Chat(props) {
                     onKeyDown={(e) => handleKeyDown(e)}
                 ></TextField>
                 <Button
-                    variant="outlined"
-                    color="primary"
+                    theme="primary"
+                    variant="outline"
                     onClick={sendChatMessage}
                 >
                     {t("chat.sendButton")}
