@@ -65,14 +65,15 @@ class UserController extends Controller
 
         $friendPivot = FriendPivot::query()
             ->where(
-                fn($q) => $q
+                fn ($q) => $q
                     ->where(
-                        fn($q1) => $q1->where('host_user_id', $user->id)
+                        fn ($q1) => $q1->where('host_user_id', $user->id)
                             ->where('guest_user_id', $friend->id)
                     )->orWhere(
-                        fn($q2) => $q2->where('host_user_id', $friend->id)
+                        fn ($q2) => $q2->where('host_user_id', $friend->id)
                             ->where('guest_user_id', $user->id)
-                    ))
+                    )
+            )
             ->first();
 
         // return if friendship is already established

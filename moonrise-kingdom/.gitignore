@@ -11,5 +11,12 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/.idea
+
+# VS Code
 /.vscode
+
+# PhpStorm
+/.idea
+
+# composer-git-hooks
+/cghooks.lock

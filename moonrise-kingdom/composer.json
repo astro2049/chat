@@ -13,8 +13,11 @@
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
+        "brainmaestro/composer-git-hooks": "^2.8",
+        "brianium/paratest": "^6.4",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "friendsofphp/php-cs-fixer": "^3.4",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
@@ -38,18 +41,33 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi"
+            "cghooks remove",
+            "cghooks update"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "post-install-cmd": [
+            "cghooks remove",
+            "cghooks update"
+        ],
+        "cghooks": "vendor/bin/cghooks",
+        "fix-style": "php-cs-fixer fix --using-cache=no --config=.php-cs-fixer.php --ansi",
+        "test": "@php artisan test --parallel --colors"
     },
     "extra": {
         "laravel": {
             "dont-discover": []
+        },
+        "hooks": {
+            "pre-commit": [
+                "cd moonrise-kingdom",
+                "composer fix-style",
+                "composer test"
+            ]
         }
     },
     "config": {
