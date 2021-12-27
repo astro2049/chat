@@ -475,7 +475,14 @@ export default function Chat(props) {
                 anchor="right"
             >
                 <AppBar position="sticky" className={classes.appBar}>
-                    <Toolbar className={classes.appBarContentContainer}>
+                    <Toolbar
+                        className={classes.appBarContentContainer}
+                        style={{
+                            backgroundImage: "url(/images/Christmas-Table.png)",
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                        }}
+                    >
                         <div className={classes.chatroomName}>
                             <Button
                                 theme="default"
