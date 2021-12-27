@@ -94,7 +94,13 @@ export default function SignIn(props) {
         <div className={classes.outerContainer}>
             <CssBaseline />
             <div className={classes.paper}>
-                <Typography component="h1" variant="h3">
+                <Typography
+                    component="div"
+                    variant="h2"
+                    style={{
+                        fontFamily: "'Bungee', cursive",
+                    }}
+                >
                     Chat!
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={onSubmit}>

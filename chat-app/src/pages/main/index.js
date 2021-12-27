@@ -411,7 +411,15 @@ export default function Chat(props) {
             >
                 <div className={classes.toolbar}>
                     <div className={classes.titleContainer}>
-                        <div className={classes.title}>Chat!</div>
+                        <div
+                            className={classes.title}
+                            style={{
+                                fontFamily: "'Bungee', cursive",
+                                fontSize: "46px",
+                            }}
+                        >
+                            Chat!
+                        </div>
                     </div>
                 </div>
                 <Divider />
