@@ -3,7 +3,7 @@
     "signIn": {
         "username": "用户名",
         "password": "密码",
-        "signInButton" :"登录",
+        "signInButton": "登录",
         "goToSignUp": "还没有账号？注册",
         "contact": "联系"
     },
@@ -11,12 +11,13 @@
         "title": "注册",
         "nickname": "昵称",
         "password": "密码",
-        "signUpButton" :"注册",
+        "signUpButton": "注册",
         "goToSignIn": "已经有账号了？登录",
         "contact": "联系"
     },
     "chat": {
         "languageIndicator": "语言",
+        "chatRoomInfo": "聊天信息",
         "panels": {
             "createChatroom": {
                 "name": "创建聊天室",
@@ -24,12 +25,12 @@
             },
             "joinChatroom": {
                 "name": "加入聊天室",
-                "promptText": "请输入聊天室id..."
+                "promptText": "请输入聊天室ID..."
             },
             "newFriend": {
                 "name": "新的好友",
                 "promptText": "好友的昵称是..."
-            } 
+            }
         },
         "sendButton": "发送"
     }

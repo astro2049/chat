@@ -50,8 +50,13 @@ const useStyles = makeStyles(() => ({
     activeChatButton: {
         textTransform: "none",
     },
-    activeChatChatroomIdContainer: {
-        padding: 10,
+    chatRoomInfo: {
+        padding: "10px",
+    },
+    chatRoomInfoTitle: {
+        marginBottom: "5px",
+        paddingRight: "20px",
+        borderBottom: "2px solid black",
     },
     drawerOnLeft: {
         width: menuWidth,
@@ -491,14 +496,20 @@ export default function Chat(props) {
                                     vertical: "center",
                                     horizontal: "right",
                                 }}
+                                transformOrigin={{
+                                    vertical: "center",
+                                    horizontal: "left",
+                                }}
                             >
-                                <div
-                                    className={
-                                        classes.activeChatChatroomIdContainer
-                                    }
-                                >
-                                    <Typography variant="h6">
-                                        {activeChat.id}
+                                <div className={classes.chatRoomInfo}>
+                                    <Typography
+                                        variant="h6"
+                                        className={classes.chatRoomInfoTitle}
+                                    >
+                                        {t("chat.chatRoomInfo")}
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        ID: {activeChat.id}
                                     </Typography>
                                 </div>
                             </Popover>

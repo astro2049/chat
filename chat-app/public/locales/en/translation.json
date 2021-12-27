@@ -3,7 +3,7 @@
     "signIn": {
         "username": "Username",
         "password": "Password",
-        "signInButton" :"sign in",
+        "signInButton": "sign in",
         "goToSignUp": "Don't have an account? Sign Up",
         "contact": "Contact"
     },
@@ -11,12 +11,13 @@
         "title": "Sign up",
         "nickname": "Nickname",
         "password": "Password",
-        "signUpButton" :"sign up",
+        "signUpButton": "sign up",
         "goToSignIn": "Already have an account? Sign in",
         "contact": "Contact"
     },
     "chat": {
         "languageIndicator": "Language",
+        "chatRoomInfo": "Chat Room Info",
         "panels": {
             "createChatroom": {
                 "name": "Create Chatroom",
@@ -24,12 +25,12 @@
             },
             "joinChatroom": {
                 "name": "Join Chatroom",
-                "promptText": "chatroom id goes here..."
+                "promptText": "chatroom ID goes here..."
             },
             "newFriend": {
                 "name": "New Friend",
                 "promptText": "add a new friend..."
-            } 
+            }
         },
         "sendButton": "send"
     }
