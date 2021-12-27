@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
         width: "100%",
         height: appBarHeight,
         backgroundColor: "LightSalmon",
-        borderTop: "1px solid black",
+        borderTop: "2px solid black",
     },
     appBarContentContainer: {
         height: appBarHeight,
@@ -76,7 +76,7 @@ const useStyles = makeStyles(() => ({
         height: 80,
         display: "flex",
         alignItems: "center",
-        borderTop: "1px solid black",
+        borderTop: "2px solid black",
     },
     title: {
         marginLeft: 40,
@@ -435,7 +435,7 @@ export default function Chat(props) {
                                               theme={
                                                   room.type === "private"
                                                       ? "primary"
-                                                      : "danger"
+                                                      : "warning"
                                               }
                                               onClick={() =>
                                                   setActiveChat(room)
