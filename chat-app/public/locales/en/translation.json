@@ -21,15 +21,15 @@
         "panels": {
             "createChatroom": {
                 "name": "Create Chatroom",
-                "promptText": "the new chatroom will be..."
+                "promptText": "New chat room will be..."
             },
             "joinChatroom": {
                 "name": "Join Chatroom",
-                "promptText": "chatroom ID goes here..."
+                "promptText": "Chat Room ID goes here..."
             },
             "newFriend": {
                 "name": "New Friend",
-                "promptText": "add a new friend..."
+                "promptText": "Add a new friend..."
             }
         },
         "sendButton": "send"
