@@ -407,67 +407,69 @@ export default function Chat(props) {
                 }}
                 anchor="left"
             >
-                <div className={classes.toolbar}>
-                    <div className={classes.titleContainer}>
-                        <div
-                            className={classes.title}
-                            style={{
-                                fontFamily: "'Bungee', cursive",
-                                fontSize: "46px",
-                            }}
-                        >
-                            Chat!
+                <div style={{ position: "relative" }}>
+                    <div className={classes.toolbar}>
+                        <div className={classes.titleContainer}>
+                            <div
+                                className={classes.title}
+                                style={{
+                                    fontFamily: "'Bungee', cursive",
+                                    fontSize: "46px",
+                                }}
+                            >
+                                Chat!
+                            </div>
                         </div>
                     </div>
-                </div>
-                <Divider />
-                <TableContainer className={classes.forTableContainer}>
-                    <Table stickyHeader>
-                        <List>
-                            {rooms === undefined
-                                ? []
-                                : rooms.map((room) => (
-                                      <ListItem>
-                                          <Button
-                                              variant="outline"
-                                              theme={
-                                                  room.type === "private"
-                                                      ? "primary"
-                                                      : "warning"
-                                              }
-                                              onClick={() =>
-                                                  setActiveChat(room)
-                                              }
-                                              className={
-                                                  room.type === "private"
-                                                      ? classes.privateChatCard
-                                                      : classes.groupChatCard
-                                              }
-                                          >
-                                              <Typography
-                                                  variant="h5"
-                                                  gutterBottom
-                                                  align="center"
+                    <Divider />
+                    <TableContainer className={classes.forTableContainer}>
+                        <Table stickyHeader>
+                            <List>
+                                {rooms === undefined
+                                    ? []
+                                    : rooms.map((room) => (
+                                          <ListItem>
+                                              <Button
+                                                  variant="outline"
+                                                  theme={
+                                                      room.type === "private"
+                                                          ? "primary"
+                                                          : "warning"
+                                                  }
+                                                  onClick={() =>
+                                                      setActiveChat(room)
+                                                  }
+                                                  className={
+                                                      room.type === "private"
+                                                          ? classes.privateChatCard
+                                                          : classes.groupChatCard
+                                                  }
                                               >
-                                                  {room.name}
-                                              </Typography>
-                                          </Button>
-                                      </ListItem>
-                                  ))}
-                        </List>
-                    </Table>
-                </TableContainer>
+                                                  <Typography
+                                                      variant="h5"
+                                                      gutterBottom
+                                                      align="center"
+                                                  >
+                                                      {room.name}
+                                                  </Typography>
+                                              </Button>
+                                          </ListItem>
+                                      ))}
+                            </List>
+                        </Table>
+                    </TableContainer>
 
-                <div className={classes.panelsContainer}>
-                    <Panels
-                        userId={userId}
-                        username={username}
-                        setChatrooms={setChatrooms}
-                    ></Panels>
-                </div>
+                    <div className={classes.panelsContainer}>
+                        <Panels
+                            userId={userId}
+                            username={username}
+                            setChatrooms={setChatrooms}
+                        ></Panels>
+                    </div>
 
-                <div className={classes.userInfo}>
-                    <Typography variant="h4">{username}</Typography>
+                    <div className={classes.userInfo}>
+                        <Typography variant="h4">{username}</Typography>
+                    </div>
                 </div>
             </Drawer>
 
