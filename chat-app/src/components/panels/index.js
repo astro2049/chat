@@ -9,17 +9,12 @@ const panelsWidth = "95%";
 
 const useStyles = makeStyles((theme) => ({
     outerContainer: {
-        width: "26%",
-        position: "fixed",
-        bottom: 110,
-        left: 0,
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         borderTop: "1px solid lightgray",
-        borderRight: "1px solid lightgray",
         borderBottom: "1px solid lightgray",
-        backgroundColor: "white",
     },
     container: {
         width: panelsWidth,

@@ -26,7 +26,6 @@ import { useTranslation } from "react-i18next";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
-const inputContainerHeight = 258;
 
 const useStyles = makeStyles(() => ({
     appBar: {
@@ -83,13 +82,8 @@ const useStyles = makeStyles(() => ({
         fontSize: 40,
     },
     forTableContainer: {
+        flexGrow: 1,
         width: "100%",
-        marginBottom: inputContainerHeight,
-    },
-    panelsContainer: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
     },
     privateChatCard: {
         width: "100%",
@@ -106,11 +100,6 @@ const useStyles = makeStyles(() => ({
         justifyContent: "center",
         alignItems: "center",
         textTransform: "none",
-    },
-    userInfo: {
-        position: "absolute",
-        bottom: 40,
-        left: 40,
     },
     // make sure contents are below app bar!
     toolbar: {
@@ -129,21 +118,14 @@ const useStyles = makeStyles(() => ({
         flexDirection: "column",
     },
     inputContainer: {
-        position: "absolute",
-        bottom: 0,
-        right: 0,
         width: "100%",
-        height: inputContainerHeight,
+        height: 258,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "flex-end",
-        paddingTop: 13,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 12,
+        padding: 12,
         borderTop: "1px solid lightgray",
-        backgroundColor: "white",
     },
 }));
 
@@ -407,7 +389,14 @@ export default function Chat(props) {
                 }}
                 anchor="left"
             >
-                <div style={{ position: "relative" }}>
+                <div
+                    style={{
+                        position: "relative",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                >
                     <div className={classes.toolbar}>
                         <div className={classes.titleContainer}>
                             <div
@@ -422,6 +411,7 @@ export default function Chat(props) {
                         </div>
                     </div>
                     <Divider />
+
                     <TableContainer className={classes.forTableContainer}>
                         <Table stickyHeader>
                             <List>
@@ -459,16 +449,26 @@ export default function Chat(props) {
                         </Table>
                     </TableContainer>
 
-                    <div className={classes.panelsContainer}>
-                        <Panels
-                            userId={userId}
-                            username={username}
-                            setChatrooms={setChatrooms}
-                        ></Panels>
-                    </div>
+                    <Panels
+                        userId={userId}
+                        username={username}
+                        setChatrooms={setChatrooms}
+                    ></Panels>
 
-                    <div className={classes.userInfo}>
-                        <Typography variant="h4">{username}</Typography>
+                    <div
+                        style={{
+                            height: "110px",
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <div
+                            style={{
+                                marginLeft: "40px",
+                            }}
+                        >
+                            <Typography variant="h4">{username}</Typography>
+                        </div>
                     </div>
                 </div>
             </Drawer>
@@ -482,100 +482,112 @@ export default function Chat(props) {
                 }}
                 anchor="right"
             >
-                <AppBar position="sticky" className={classes.appBar}>
-                    <Toolbar
-                        className={classes.appBarContentContainer}
-                        style={{
-                            backgroundImage: "url(/images/Christmas-Table.png)",
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                        }}
-                    >
-                        <div className={classes.chatroomName}>
-                            <Button
-                                theme="default"
-                                variant="text"
-                                size="large"
-                                className={classes.activeChatButton}
-                                onClick={handleClick}
-                            >
-                                <Typography variant="h4" noWrap>
-                                    {activeChat.name}
-                                </Typography>
-                            </Button>
-                            <Popover
-                                open={open}
-                                anchorEl={anchorEl}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: "center",
-                                    horizontal: "right",
-                                }}
-                                transformOrigin={{
-                                    vertical: "center",
-                                    horizontal: "left",
-                                }}
-                            >
-                                <div className={classes.chatRoomInfo}>
-                                    <Typography
-                                        variant="h6"
-                                        className={classes.chatRoomInfoTitle}
-                                    >
-                                        {t("chat.chatRoomInfo")}
+                <div
+                    style={{
+                        position: "relative",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                >
+                    <AppBar position="sticky" className={classes.appBar}>
+                        <Toolbar
+                            className={classes.appBarContentContainer}
+                            style={{
+                                backgroundImage:
+                                    "url(/images/Christmas-Table.png)",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                        >
+                            <div className={classes.chatroomName}>
+                                <Button
+                                    theme="default"
+                                    variant="text"
+                                    size="large"
+                                    className={classes.activeChatButton}
+                                    onClick={handleClick}
+                                >
+                                    <Typography variant="h4" noWrap>
+                                        {activeChat.name}
                                     </Typography>
-                                    <Typography variant="subtitle1">
-                                        ID: {activeChat.id}
-                                    </Typography>
-                                </div>
-                            </Popover>
-                        </div>
-                        <FormControl className={classes.languageSelector}>
-                            <InputLabel>
-                                {t("chat.languageIndicator")}
-                            </InputLabel>
-                            <Select
-                                value={language}
-                                onChange={(e) => handleChangeLanguage(e)}
-                            >
-                                <MenuItem value="en">English</MenuItem>
-                                <MenuItem value="zh-CN">中文</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Toolbar>
-                </AppBar>
+                                </Button>
+                                <Popover
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    onClose={handleClose}
+                                    anchorOrigin={{
+                                        vertical: "center",
+                                        horizontal: "right",
+                                    }}
+                                    transformOrigin={{
+                                        vertical: "center",
+                                        horizontal: "left",
+                                    }}
+                                >
+                                    <div className={classes.chatRoomInfo}>
+                                        <Typography
+                                            variant="h6"
+                                            className={
+                                                classes.chatRoomInfoTitle
+                                            }
+                                        >
+                                            {t("chat.chatRoomInfo")}
+                                        </Typography>
+                                        <Typography variant="subtitle1">
+                                            ID: {activeChat.id}
+                                        </Typography>
+                                    </div>
+                                </Popover>
+                            </div>
+                            <FormControl className={classes.languageSelector}>
+                                <InputLabel>
+                                    {t("chat.languageIndicator")}
+                                </InputLabel>
+                                <Select
+                                    value={language}
+                                    onChange={(e) => handleChangeLanguage(e)}
+                                >
+                                    <MenuItem value="en">English</MenuItem>
+                                    <MenuItem value="zh-CN">中文</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Toolbar>
+                    </AppBar>
 
-                <TableContainer className={classes.forTableContainer}>
-                    <Table stickyHeader id="dialogBox">
-                        <div className={classes.messagesArea}>
-                            {currentChatroomMessages.map((message) => (
-                                <MessageBox
-                                    username={message.sender}
-                                    content={message.content}
-                                    time={message.time}
-                                    mine={message.mine}
-                                ></MessageBox>
-                            ))}
-                        </div>
-                    </Table>
-                </TableContainer>
+                    <TableContainer className={classes.forTableContainer}>
+                        <Table stickyHeader id="dialogBox">
+                            <div className={classes.messagesArea}>
+                                {currentChatroomMessages.map((message) => (
+                                    <MessageBox
+                                        username={message.sender}
+                                        content={message.content}
+                                        time={message.time}
+                                        mine={message.mine}
+                                    ></MessageBox>
+                                ))}
+                            </div>
+                        </Table>
+                    </TableContainer>
 
-                <div className={classes.inputContainer}>
-                    <TextField
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        rows="8"
-                        value={chatText}
-                        onChange={(e) => setChatText(e.target.value)}
-                        onKeyDown={(e) => handleKeyDown(e)}
-                    ></TextField>
-                    <Button
-                        theme="primary"
-                        variant="outline"
-                        onClick={sendChatMessage}
-                    >
-                        {t("chat.sendButton")}
-                    </Button>
+                    <div className={classes.inputContainer}>
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows="8"
+                            value={chatText}
+                            onChange={(e) => setChatText(e.target.value)}
+                            onKeyDown={(e) => handleKeyDown(e)}
+                        ></TextField>
+                        <Button
+                            theme="primary"
+                            variant="outline"
+                            onClick={sendChatMessage}
+                        >
+                            {t("chat.sendButton")}
+                        </Button>
+                    </div>
                 </div>
             </Drawer>
         </div>
