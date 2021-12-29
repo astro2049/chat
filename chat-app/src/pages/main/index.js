@@ -108,8 +108,7 @@ const useStyles = makeStyles(() => ({
         textTransform: "none",
     },
     userInfo: {
-        zIndex: 1250,
-        position: "fixed",
+        position: "absolute",
         bottom: 40,
         left: 40,
     },
@@ -130,11 +129,10 @@ const useStyles = makeStyles(() => ({
         flexDirection: "column",
     },
     inputContainer: {
-        zIndex: 1300,
-        position: "fixed",
+        position: "absolute",
         bottom: 0,
         right: 0,
-        width: `calc(100% - ${menuWidth})`,
+        width: "100%",
         height: inputContainerHeight,
         display: "flex",
         flexDirection: "column",
@@ -558,26 +556,26 @@ export default function Chat(props) {
                         </div>
                     </Table>
                 </TableContainer>
-            </Drawer>
 
-            <div className={classes.inputContainer}>
-                <TextField
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    rows="8"
-                    value={chatText}
-                    onChange={(e) => setChatText(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e)}
-                ></TextField>
-                <Button
-                    theme="primary"
-                    variant="outline"
-                    onClick={sendChatMessage}
-                >
-                    {t("chat.sendButton")}
-                </Button>
-            </div>
+                <div className={classes.inputContainer}>
+                    <TextField
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        rows="8"
+                        value={chatText}
+                        onChange={(e) => setChatText(e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(e)}
+                    ></TextField>
+                    <Button
+                        theme="primary"
+                        variant="outline"
+                        onClick={sendChatMessage}
+                    >
+                        {t("chat.sendButton")}
+                    </Button>
+                </div>
+            </Drawer>
         </div>
     );
 }
