@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
+const inputContainerHeight = 258;
 
 const useStyles = makeStyles(() => ({
     appBar: {
@@ -82,8 +83,11 @@ const useStyles = makeStyles(() => ({
         fontSize: 40,
     },
     forTableContainer: {
-        flexGrow: 1,
         width: "100%",
+        minHeight: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
+    },
+    forTable: {
+        height: "100%",
     },
     privateChatCard: {
         width: "100%",
@@ -110,16 +114,18 @@ const useStyles = makeStyles(() => ({
     },
     messagesArea: {
         width: "100%",
-        marginTop: 20,
+        height: "100%",
+        paddingTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
         paddingBottom: 25,
         display: "flex",
         flexDirection: "column",
+        overflowY: "auto",
     },
     inputContainer: {
         width: "100%",
-        height: 258,
+        height: inputContainerHeight,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -556,8 +562,11 @@ export default function Chat(props) {
                     </AppBar>
 
                     <TableContainer className={classes.forTableContainer}>
-                        <Table stickyHeader id="dialogBox">
-                            <div className={classes.messagesArea}>
+                        <Table stickyHeader className={classes.forTable}>
+                            <div
+                                id="dialogBox"
+                                className={classes.messagesArea}
+                            >
                                 {currentChatroomMessages.map((message) => (
                                     <MessageBox
                                         username={message.sender}
