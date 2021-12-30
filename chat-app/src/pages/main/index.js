@@ -82,13 +82,6 @@ const useStyles = makeStyles(() => ({
         marginLeft: 40,
         fontSize: 40,
     },
-    forTableContainer: {
-        width: "100%",
-        minHeight: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
-    },
-    forTable: {
-        height: "100%",
-    },
     privateChatCard: {
         width: "100%",
         height: 50,
@@ -114,14 +107,14 @@ const useStyles = makeStyles(() => ({
     },
     messagesArea: {
         width: "100%",
-        height: "100%",
+        height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
         paddingTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
         paddingBottom: 25,
         display: "flex",
         flexDirection: "column",
-        overflowY: "auto",
+        overflowY: "scroll",
     },
     inputContainer: {
         width: "100%",
@@ -323,7 +316,7 @@ export default function Chat(props) {
 
     useEffect(() => {
         var element = document.getElementById("dialogBox");
-        element.scrollIntoView(false);
+        element.scrollTop = element.scrollHeight;
     }, [currentChatroomMessages]);
 
     const handleKeyDown = (e) => {
@@ -561,23 +554,16 @@ export default function Chat(props) {
                         </Toolbar>
                     </AppBar>
 
-                    <TableContainer className={classes.forTableContainer}>
-                        <Table stickyHeader className={classes.forTable}>
-                            <div
-                                id="dialogBox"
-                                className={classes.messagesArea}
-                            >
-                                {currentChatroomMessages.map((message) => (
-                                    <MessageBox
-                                        username={message.sender}
-                                        content={message.content}
-                                        time={message.time}
-                                        mine={message.mine}
-                                    ></MessageBox>
-                                ))}
-                            </div>
-                        </Table>
-                    </TableContainer>
+                    <div id="dialogBox" className={classes.messagesArea}>
+                        {currentChatroomMessages.map((message) => (
+                            <MessageBox
+                                username={message.sender}
+                                content={message.content}
+                                time={message.time}
+                                mine={message.mine}
+                            ></MessageBox>
+                        ))}
+                    </div>
 
                     <div className={classes.inputContainer}>
                         <TextField
