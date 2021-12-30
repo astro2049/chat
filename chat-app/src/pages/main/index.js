@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
+const inputContainerHeight = 258;
 
 const useStyles = makeStyles(() => ({
     appBar: {
@@ -81,9 +82,10 @@ const useStyles = makeStyles(() => ({
         marginLeft: 40,
         fontSize: 40,
     },
-    forTableContainer: {
-        flexGrow: 1,
+    chatRooms: {
         width: "100%",
+        height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
+        overflowY: "scroll",
     },
     privateChatCard: {
         width: "100%",
@@ -110,16 +112,18 @@ const useStyles = makeStyles(() => ({
     },
     messagesArea: {
         width: "100%",
-        marginTop: 20,
+        height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
+        paddingTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
         paddingBottom: 25,
         display: "flex",
         flexDirection: "column",
+        overflowY: "scroll",
     },
     inputContainer: {
         width: "100%",
-        height: 258,
+        height: inputContainerHeight,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -317,7 +321,7 @@ export default function Chat(props) {
 
     useEffect(() => {
         var element = document.getElementById("dialogBox");
-        element.scrollIntoView(false);
+        element.scrollTop = element.scrollHeight;
     }, [currentChatroomMessages]);
 
     const handleKeyDown = (e) => {
@@ -412,42 +416,40 @@ export default function Chat(props) {
                     </div>
                     <Divider />
 
-                    <TableContainer className={classes.forTableContainer}>
-                        <Table stickyHeader>
-                            <List>
-                                {rooms === undefined
-                                    ? []
-                                    : rooms.map((room) => (
-                                          <ListItem>
-                                              <Button
-                                                  variant="outline"
-                                                  theme={
-                                                      room.type === "private"
-                                                          ? "primary"
-                                                          : "warning"
-                                                  }
-                                                  onClick={() =>
-                                                      setActiveChat(room)
-                                                  }
-                                                  className={
-                                                      room.type === "private"
-                                                          ? classes.privateChatCard
-                                                          : classes.groupChatCard
-                                                  }
+                    <div className={classes.chatRooms}>
+                        <List>
+                            {rooms === undefined
+                                ? []
+                                : rooms.map((room) => (
+                                      <ListItem>
+                                          <Button
+                                              variant="outline"
+                                              theme={
+                                                  room.type === "private"
+                                                      ? "primary"
+                                                      : "warning"
+                                              }
+                                              onClick={() =>
+                                                  setActiveChat(room)
+                                              }
+                                              className={
+                                                  room.type === "private"
+                                                      ? classes.privateChatCard
+                                                      : classes.groupChatCard
+                                              }
+                                          >
+                                              <Typography
+                                                  variant="h5"
+                                                  gutterBottom
+                                                  align="center"
                                               >
-                                                  <Typography
-                                                      variant="h5"
-                                                      gutterBottom
-                                                      align="center"
-                                                  >
-                                                      {room.name}
-                                                  </Typography>
-                                              </Button>
-                                          </ListItem>
-                                      ))}
-                            </List>
-                        </Table>
-                    </TableContainer>
+                                                  {room.name}
+                                              </Typography>
+                                          </Button>
+                                      </ListItem>
+                                  ))}
+                        </List>
+                    </div>
 
                     <Panels
                         userId={userId}
@@ -555,20 +557,16 @@ export default function Chat(props) {
                         </Toolbar>
                     </AppBar>
 
-                    <TableContainer className={classes.forTableContainer}>
-                        <Table stickyHeader id="dialogBox">
-                            <div className={classes.messagesArea}>
-                                {currentChatroomMessages.map((message) => (
-                                    <MessageBox
-                                        username={message.sender}
-                                        content={message.content}
-                                        time={message.time}
-                                        mine={message.mine}
-                                    ></MessageBox>
-                                ))}
-                            </div>
-                        </Table>
-                    </TableContainer>
+                    <div id="dialogBox" className={classes.messagesArea}>
+                        {currentChatroomMessages.map((message) => (
+                            <MessageBox
+                                username={message.sender}
+                                content={message.content}
+                                time={message.time}
+                                mine={message.mine}
+                            ></MessageBox>
+                        ))}
+                    </div>
 
                     <div className={classes.inputContainer}>
                         <TextField
