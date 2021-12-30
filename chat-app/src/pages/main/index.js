@@ -82,6 +82,11 @@ const useStyles = makeStyles(() => ({
         marginLeft: 40,
         fontSize: 40,
     },
+    chatRooms: {
+        width: "100%",
+        height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
+        overflowY: "scroll",
+    },
     privateChatCard: {
         width: "100%",
         height: 50,
@@ -411,42 +416,40 @@ export default function Chat(props) {
                     </div>
                     <Divider />
 
-                    <TableContainer className={classes.forTableContainer}>
-                        <Table stickyHeader>
-                            <List>
-                                {rooms === undefined
-                                    ? []
-                                    : rooms.map((room) => (
-                                          <ListItem>
-                                              <Button
-                                                  variant="outline"
-                                                  theme={
-                                                      room.type === "private"
-                                                          ? "primary"
-                                                          : "warning"
-                                                  }
-                                                  onClick={() =>
-                                                      setActiveChat(room)
-                                                  }
-                                                  className={
-                                                      room.type === "private"
-                                                          ? classes.privateChatCard
-                                                          : classes.groupChatCard
-                                                  }
+                    <div className={classes.chatRooms}>
+                        <List>
+                            {rooms === undefined
+                                ? []
+                                : rooms.map((room) => (
+                                      <ListItem>
+                                          <Button
+                                              variant="outline"
+                                              theme={
+                                                  room.type === "private"
+                                                      ? "primary"
+                                                      : "warning"
+                                              }
+                                              onClick={() =>
+                                                  setActiveChat(room)
+                                              }
+                                              className={
+                                                  room.type === "private"
+                                                      ? classes.privateChatCard
+                                                      : classes.groupChatCard
+                                              }
+                                          >
+                                              <Typography
+                                                  variant="h5"
+                                                  gutterBottom
+                                                  align="center"
                                               >
-                                                  <Typography
-                                                      variant="h5"
-                                                      gutterBottom
-                                                      align="center"
-                                                  >
-                                                      {room.name}
-                                                  </Typography>
-                                              </Button>
-                                          </ListItem>
-                                      ))}
-                            </List>
-                        </Table>
-                    </TableContainer>
+                                                  {room.name}
+                                              </Typography>
+                                          </Button>
+                                      </ListItem>
+                                  ))}
+                        </List>
+                    </div>
 
                     <Panels
                         userId={userId}
