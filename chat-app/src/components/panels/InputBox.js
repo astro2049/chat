@@ -6,32 +6,16 @@ import { Paper, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-const panelsWidth = "95%";
-
 const useStyles = makeStyles((theme) => ({
     container: {
-        width: panelsWidth,
         marginTop: 14,
         marginBottom: 14,
         display: "flex",
         alignItems: "center",
     },
-    root: {
-        padding: "2px 4px",
-        display: "flex",
-        alignItems: "center",
-        width: "100%",
-    },
     input: {
         marginLeft: theme.spacing(1),
         flex: 1,
-    },
-    iconButton: {
-        padding: 10,
-    },
-    divider: {
-        height: 28,
-        margin: 4,
     },
 }));
 
@@ -105,7 +89,6 @@ export default function CustomizedInputBase(props) {
                 data["name"] = guest;
                 break;
             default:
-                console.log("check parameter");
         }
         axios
             .request({
@@ -124,7 +107,12 @@ export default function CustomizedInputBase(props) {
         <div className={classes.container}>
             <Paper
                 component="form"
-                className={classes.root}
+                style={{
+                    padding: "2px 4px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                }}
                 elevation={0}
                 onSubmit={(e) => onSubmit(e)}
             >
@@ -136,7 +124,7 @@ export default function CustomizedInputBase(props) {
                 />
                 <IconButton
                     type="submit"
-                    className={classes.iconButton}
+                    style={{ padding: 10 }}
                     aria-label="search"
                 >
                     <ArrowForwardIcon />
