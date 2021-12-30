@@ -27,7 +27,7 @@ Now at https://www.astro.ski/ !
 
 ## Some Thoughts...
 
-In realizing chatting, the application adopts a publish-subscribe pattern:
+The application adopts a publish-subscribe pattern to realize Web-based chatting:
 
 - *Spring Boot server* + *RabbitMQ server* as *Event notification server (ENS)*
 - *React app Web client* as *Consumer client* & *Publisher client*
