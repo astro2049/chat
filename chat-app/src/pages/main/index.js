@@ -136,6 +136,20 @@ const { REACT_APP_PROFILE_SERVER_ADDRESS, REACT_APP_CHAT_SERVER_ADDRESS } =
 
 var stompClient = null;
 
+const findChatMessages = (receivedMessages, activeChat) => {
+    let messages = [];
+    for (let i = 0; i < receivedMessages.length; i++) {
+        let message = receivedMessages[i];
+        if (
+            message.chatId === activeChat.id &&
+            message.type === activeChat.type
+        ) {
+            messages.push(message);
+        }
+    }
+    return messages;
+};
+
 export default function Chat(props) {
     const classes = useStyles();
 
@@ -213,26 +227,13 @@ export default function Chat(props) {
         }
     }, [rooms]);
 
-    const refreshChatroomMessages = () => {
-        let messages = findChatMessages();
-        setCurrentChatroomMessages(messages);
-    };
-
-    useEffect(refreshChatroomMessages, [activeChat, receivedMessages]);
-
-    const findChatMessages = () => {
-        let messages = [];
-        for (let i = 0; i < receivedMessages.length; i++) {
-            let message = receivedMessages[i];
-            if (
-                message.chatId === activeChat.id &&
-                message.type === activeChat.type
-            ) {
-                messages.push(message);
-            }
+    useEffect(() => {
+        function refreshChatroomMessages(receivedMessages, activeChat) {
+            let messages = findChatMessages(receivedMessages, activeChat);
+            setCurrentChatroomMessages(messages);
         }
-        return messages;
-    };
+        refreshChatroomMessages(receivedMessages, activeChat);
+    }, [activeChat, receivedMessages]);
 
     const initializeStompCommunication = () => {
         const Stomp = require("stompjs");
