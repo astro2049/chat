@@ -78,12 +78,8 @@ export default function SignIn(props) {
             setUsername("");
             setPassword("");
             if (response.status === 200) {
-                let user = props.user;
-                user.id = response.data.user.id;
-                user.name = response.data.user.name;
-                setUser(user);
-                let token = response.data.token;
-                setToken(token);
+                setUser(response.data.user);
+                setToken(response.data.token);
             }
         } catch (error) {
             console.log(error);

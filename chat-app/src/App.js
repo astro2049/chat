@@ -6,10 +6,7 @@ import SignUp from "./pages/sign-up/index";
 import axios from "axios";
 
 export default function App() {
-    const [user, setUser] = useState({
-        id: null,
-        name: null,
-    });
+    const [user, setUser] = useState({});
     const [online, setOnline] = useState(false);
     const [token, setToken] = useState(null);
     const [pageOnDisplay, setPageOnDisplay] = useState("sign-in");
@@ -28,9 +25,7 @@ export default function App() {
             if (displaySignInPage) {
                 return (
                     <SignIn
-                        user={props.user}
                         setUser={props.setUser}
-                        token={props.token}
                         setToken={props.setToken}
                         setPage={props.setPage}
                     ></SignIn>
@@ -51,7 +46,6 @@ export default function App() {
                 user={user}
                 setUser={setUser}
                 setPage={setPageOnDisplay}
-                token={token}
                 setToken={setToken}
             ></Main>
         </Suspense>

@@ -10,8 +10,6 @@ import { Button } from "tdesign-react";
 import {
     List,
     ListItem,
-    Table,
-    TableContainer,
     TextField,
     Popover,
     FormControl,
