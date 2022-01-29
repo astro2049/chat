@@ -10,8 +10,6 @@ export default function App() {
     const [online, setOnline] = useState(false);
     const [token, setToken] = useState(null);
     const [pageOnDisplay, setPageOnDisplay] = useState("sign-in");
-    const displaySignInPage = pageOnDisplay === "sign-in";
-    const displaySignUpPage = pageOnDisplay === "sign-up";
 
     useEffect(() => {
         if (user.name !== null && token != null) {
@@ -20,20 +18,25 @@ export default function App() {
         }
     }, [user, token]);
 
+    useEffect(() => {
+        if (online === false) {
+            setPageOnDisplay("sign-in");
+        } else {
+            setPageOnDisplay("chat");
+        }
+    }, [online]);
+
     function Main(props) {
-        if (props.online === false) {
-            if (displaySignInPage) {
-                return (
-                    <SignIn
-                        setUser={props.setUser}
-                        setToken={props.setToken}
-                        setPage={props.setPage}
-                    ></SignIn>
-                );
-            }
-            if (displaySignUpPage) {
-                return <SignUp setPage={props.setPage}></SignUp>;
-            }
+        if (pageOnDisplay === "sign-in") {
+            return (
+                <SignIn
+                    setUser={props.setUser}
+                    setToken={props.setToken}
+                    setPage={props.setPage}
+                ></SignIn>
+            );
+        } else if (pageOnDisplay === "sign-up") {
+            return <SignUp setPage={props.setPage}></SignUp>;
         } else {
             return <Chat user={props.user}></Chat>;
         }
