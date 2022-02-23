@@ -496,9 +496,10 @@ export default function Chat(props) {
                             className={classes.appBarContentContainer}
                             style={{
                                 backgroundImage:
-                                    "url(/images/Christmas-Table.png)",
+                                    "url(/images/Purple-Moon-Vaporwave-Music-Album-Cover-Art.png)",
                                 backgroundSize: "cover",
                                 backgroundRepeat: "no-repeat",
+                                backgroundPosition: "center",
                             }}
                         >
                             <div className={classes.chatroomName}>
@@ -509,7 +510,11 @@ export default function Chat(props) {
                                     className={classes.activeChatButton}
                                     onClick={handleClick}
                                 >
-                                    <Typography variant="h4" noWrap>
+                                    <Typography
+                                        variant="h4"
+                                        noWrap
+                                        style={{ color: "#FFCF36" }}
+                                    >
                                         {activeChat.name}
                                     </Typography>
                                 </Button>
@@ -542,12 +547,13 @@ export default function Chat(props) {
                                 </Popover>
                             </div>
                             <FormControl className={classes.languageSelector}>
-                                <InputLabel>
+                                <InputLabel style={{ color: "#FFCF36" }}>
                                     {t("chat.languageIndicator")}
                                 </InputLabel>
                                 <Select
                                     value={language}
                                     onChange={(e) => handleChangeLanguage(e)}
+                                    style={{ color: "#FFCF36" }}
                                 >
                                     <MenuItem value="en">English</MenuItem>
                                     <MenuItem value="zh-CN">中文</MenuItem>
