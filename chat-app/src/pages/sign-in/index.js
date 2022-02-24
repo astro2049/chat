@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+    logo: {
+        width: 200,
+        height: 50,
     },
     form: {
         width: "100%", // Fix IE 11 issue.
@@ -90,15 +90,15 @@ export default function SignIn(props) {
         <div className={classes.outerContainer}>
             <CssBaseline />
             <div className={classes.paper}>
-                <Typography
-                    component="div"
-                    variant="h2"
+                <div
+                    className={classes.logo}
                     style={{
-                        fontFamily: "'Bungee', cursive",
+                        backgroundImage: "url(/images/logo.png)",
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
                     }}
-                >
-                    Chat!
-                </Typography>
+                />
                 <form className={classes.form} noValidate onSubmit={onSubmit}>
                     <TextField
                         variant="outlined"

@@ -70,15 +70,16 @@ const useStyles = makeStyles(() => ({
     drawerPaperOnRight: {
         width: `calc(100% - ${menuWidth})`,
     },
-    titleContainer: {
+    logoContainer: {
         height: 80,
         display: "flex",
         alignItems: "center",
         borderTop: "2px solid black",
     },
-    title: {
-        marginLeft: 40,
-        fontSize: 40,
+    logo: {
+        marginLeft: 20,
+        width: 200,
+        height: 50,
     },
     chatRooms: {
         width: "100%",
@@ -401,16 +402,16 @@ export default function Chat(props) {
                     }}
                 >
                     <div className={classes.toolbar}>
-                        <div className={classes.titleContainer}>
+                        <div className={classes.logoContainer}>
                             <div
-                                className={classes.title}
+                                className={classes.logo}
                                 style={{
-                                    fontFamily: "'Bungee', cursive",
-                                    fontSize: "46px",
+                                    backgroundImage: "url(/images/logo.png)",
+                                    backgroundSize: "cover",
+                                    backgroundRepeat: "no-repeat",
+                                    backgroundPosition: "center",
                                 }}
-                            >
-                                Chat!
-                            </div>
+                            />
                         </div>
                     </div>
                     <Divider />
