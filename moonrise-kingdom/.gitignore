@@ -20,3 +20,5 @@ yarn-error.log
 
 # composer-git-hooks
 /cghooks.lock
+
+/.php-cs-fixer.cache
