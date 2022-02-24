@@ -84,7 +84,19 @@ const useStyles = makeStyles(() => ({
     chatRooms: {
         width: "100%",
         height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
-        overflowY: "scroll",
+    },
+    chatRoomsListContainer: {
+        height: "50%",
+        display: "flex",
+        flexDirection: "column",
+    },
+    chatRoomTypeTitle: {
+        marginTop: 10,
+        marginLeft: 15,
+    },
+    chatRoomsList: {
+        flex: 1,
+        overflowY: "auto",
     },
     privateChatCard: {
         width: "100%",
@@ -425,57 +437,81 @@ export default function Chat(props) {
                     <Divider />
 
                     <div className={classes.chatRooms}>
-                        <List>
-                            {rooms === undefined
-                                ? []
-                                : friends.map((friend) => (
-                                      <ListItem key={friend.id}>
-                                          <Button
-                                              variant="outline"
-                                              theme="primary"
-                                              onClick={() =>
-                                                  setActiveChat(friend)
-                                              }
-                                              className={
-                                                  classes.privateChatCard
-                                              }
-                                          >
-                                              <Typography
-                                                  variant="h5"
-                                                  gutterBottom
-                                                  align="center"
-                                              >
-                                                  {friend.name}
-                                              </Typography>
-                                          </Button>
-                                      </ListItem>
-                                  ))}
-                        </List>
-
-                        <List>
-                            {rooms === undefined
-                                ? []
-                                : groupChats.map((groupChat) => (
-                                      <ListItem key={groupChat.id}>
-                                          <Button
-                                              variant="outline"
-                                              theme="warning"
-                                              onClick={() =>
-                                                  setActiveChat(groupChat)
-                                              }
-                                              className={classes.groupChatCard}
-                                          >
-                                              <Typography
-                                                  variant="h5"
-                                                  gutterBottom
-                                                  align="center"
-                                              >
-                                                  {groupChat.name}
-                                              </Typography>
-                                          </Button>
-                                      </ListItem>
-                                  ))}
-                        </List>
+                        <div className={classes.chatRoomsListContainer}>
+                            <Typography
+                                variant="button"
+                                className={classes.chatRoomTypeTitle}
+                            >
+                                {t("chat.chatRoomTypes.friends")}
+                            </Typography>
+                            <div className={classes.chatRoomsList}>
+                                <List>
+                                    {rooms === undefined
+                                        ? []
+                                        : friends.map((friend) => (
+                                              <ListItem key={friend.id}>
+                                                  <Button
+                                                      variant="outline"
+                                                      theme="primary"
+                                                      onClick={() =>
+                                                          setActiveChat(friend)
+                                                      }
+                                                      className={
+                                                          classes.privateChatCard
+                                                      }
+                                                  >
+                                                      <Typography
+                                                          variant="h5"
+                                                          gutterBottom
+                                                          align="center"
+                                                      >
+                                                          {friend.name}
+                                                      </Typography>
+                                                  </Button>
+                                              </ListItem>
+                                          ))}
+                                </List>
+                            </div>
+                        </div>
+                        <div className={classes.chatRoomsListContainer}>
+                            <Divider></Divider>
+                            <Typography
+                                variant="button"
+                                className={classes.chatRoomTypeTitle}
+                            >
+                                {t("chat.chatRoomTypes.groupChats")}
+                            </Typography>
+                            <div className={classes.chatRoomsList}>
+                                <List>
+                                    {rooms === undefined
+                                        ? []
+                                        : groupChats.map((groupChat) => (
+                                              <ListItem key={groupChat.id}>
+                                                  <Button
+                                                      variant="outline"
+                                                      theme="warning"
+                                                      onClick={() =>
+                                                          setActiveChat(
+                                                              groupChat
+                                                          )
+                                                      }
+                                                      className={
+                                                          classes.groupChatCard
+                                                      }
+                                                  >
+                                                      <Typography
+                                                          variant="h5"
+                                                          gutterBottom
+                                                          align="center"
+                                                      >
+                                                          {groupChat.name}
+                                                      </Typography>
+                                                  </Button>
+                                              </ListItem>
+                                          ))}
+                                </List>
+                            </div>
+                        </div>
                     </div>
 
                     <Panels
