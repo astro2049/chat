@@ -14,7 +14,7 @@ Now at https://www.astro.ski/ !
 
 ### Architecture Map:
 
-![archi (3840 x 2160 px)](https://user-images.githubusercontent.com/45759373/147645137-ad1fd945-62f3-4f2e-b11e-68ccb7492c33.png)
+![archi (3840 x 2160 px)](https://user-images.githubusercontent.com/45759373/155460544-784cc44f-89c8-45a1-a5f2-c935b562ddc4.png)
 
 ## Requirements:
 
