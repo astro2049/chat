@@ -19,7 +19,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {t("signIn.contact")}
             {" @"}
-            <Link color="inherit" href="https://github.com/astro2049">
+            <Link color="inherit" href="https://github.com/astro2049/chat">
                 Jerry,
             </Link>{" "}
             {new Date().getFullYear()}
