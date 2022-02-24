@@ -172,6 +172,8 @@ export default function Chat(props) {
     const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
+    const [friends, setFriends] = useState();
+    const [groupChats, setGroupChats] = useState();
     const [rooms, setRooms] = useState();
     const [activeChat, setActiveChat] = useState({
         id: "",
@@ -190,21 +192,27 @@ export default function Chat(props) {
         axios
             .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
-                let rooms = [];
+                let friends = [];
                 for (const friend of response.data.friends) {
-                    rooms.push({
+                    friends.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: "private",
                     });
                 }
+                setFriends(friends);
+
+                let groupChats = [];
                 for (const chatRoom of response.data.chat_rooms) {
-                    rooms.push({
+                    groupChats.push({
                         id: chatRoom.id,
                         name: chatRoom.name,
                         type: "group",
                     });
                 }
+                setGroupChats(groupChats);
+
+                let rooms = friends.concat(groupChats);
                 setRooms(rooms);
             });
     };
@@ -420,22 +428,16 @@ export default function Chat(props) {
                         <List>
                             {rooms === undefined
                                 ? []
-                                : rooms.map((room) => (
-                                      <ListItem>
+                                : friends.map((friend) => (
+                                      <ListItem key={friend.id}>
                                           <Button
                                               variant="outline"
-                                              theme={
-                                                  room.type === "private"
-                                                      ? "primary"
-                                                      : "warning"
-                                              }
+                                              theme="primary"
                                               onClick={() =>
-                                                  setActiveChat(room)
+                                                  setActiveChat(friend)
                                               }
                                               className={
-                                                  room.type === "private"
-                                                      ? classes.privateChatCard
-                                                      : classes.groupChatCard
+                                                  classes.privateChatCard
                                               }
                                           >
                                               <Typography
@@ -443,7 +445,32 @@ export default function Chat(props) {
                                                   gutterBottom
                                                   align="center"
                                               >
-                                                  {room.name}
+                                                  {friend.name}
+                                              </Typography>
+                                          </Button>
+                                      </ListItem>
+                                  ))}
+                        </List>
+
+                        <List>
+                            {rooms === undefined
+                                ? []
+                                : groupChats.map((groupChat) => (
+                                      <ListItem key={groupChat.id}>
+                                          <Button
+                                              variant="outline"
+                                              theme="warning"
+                                              onClick={() =>
+                                                  setActiveChat(groupChat)
+                                              }
+                                              className={classes.groupChatCard}
+                                          >
+                                              <Typography
+                                                  variant="h5"
+                                                  gutterBottom
+                                                  align="center"
+                                              >
+                                                  {groupChat.name}
                                               </Typography>
                                           </Button>
                                       </ListItem>
