@@ -17,6 +17,10 @@
     },
     "chat": {
         "languageIndicator": "Language",
+        "chatRoomTypes": {
+            "friends": "Friends",
+            "groupChats": "Chat Rooms"
+        },
         "chatRoomInfo": "Chat Room Info",
         "panels": {
             "createChatroom": {

@@ -84,7 +84,19 @@ const useStyles = makeStyles(() => ({
     chatRooms: {
         width: "100%",
         height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
-        overflowY: "scroll",
+    },
+    chatRoomsListContainer: {
+        height: "50%",
+        display: "flex",
+        flexDirection: "column",
+    },
+    chatRoomTypeTitle: {
+        marginTop: 10,
+        marginLeft: 15,
+    },
+    chatRoomsList: {
+        flex: 1,
+        overflowY: "auto",
     },
     privateChatCard: {
         width: "100%",
@@ -172,6 +184,8 @@ export default function Chat(props) {
     const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
+    const [friends, setFriends] = useState();
+    const [groupChats, setGroupChats] = useState();
     const [rooms, setRooms] = useState();
     const [activeChat, setActiveChat] = useState({
         id: "",
@@ -190,21 +204,27 @@ export default function Chat(props) {
         axios
             .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
-                let rooms = [];
+                let friends = [];
                 for (const friend of response.data.friends) {
-                    rooms.push({
+                    friends.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: "private",
                     });
                 }
+                setFriends(friends);
+
+                let groupChats = [];
                 for (const chatRoom of response.data.chat_rooms) {
-                    rooms.push({
+                    groupChats.push({
                         id: chatRoom.id,
                         name: chatRoom.name,
                         type: "group",
                     });
                 }
+                setGroupChats(groupChats);
+
+                let rooms = friends.concat(groupChats);
                 setRooms(rooms);
             });
     };
@@ -417,38 +437,81 @@ export default function Chat(props) {
                     <Divider />
 
                     <div className={classes.chatRooms}>
-                        <List>
-                            {rooms === undefined
-                                ? []
-                                : rooms.map((room) => (
-                                      <ListItem>
-                                          <Button
-                                              variant="outline"
-                                              theme={
-                                                  room.type === "private"
-                                                      ? "primary"
-                                                      : "warning"
-                                              }
-                                              onClick={() =>
-                                                  setActiveChat(room)
-                                              }
-                                              className={
-                                                  room.type === "private"
-                                                      ? classes.privateChatCard
-                                                      : classes.groupChatCard
-                                              }
-                                          >
-                                              <Typography
-                                                  variant="h5"
-                                                  gutterBottom
-                                                  align="center"
-                                              >
-                                                  {room.name}
-                                              </Typography>
-                                          </Button>
-                                      </ListItem>
-                                  ))}
-                        </List>
+                        <div className={classes.chatRoomsListContainer}>
+                            <Typography
+                                variant="button"
+                                className={classes.chatRoomTypeTitle}
+                            >
+                                {t("chat.chatRoomTypes.friends")}
+                            </Typography>
+                            <div className={classes.chatRoomsList}>
+                                <List>
+                                    {rooms === undefined
+                                        ? []
+                                        : friends.map((friend) => (
+                                              <ListItem key={friend.id}>
+                                                  <Button
+                                                      variant="outline"
+                                                      theme="primary"
+                                                      onClick={() =>
+                                                          setActiveChat(friend)
+                                                      }
+                                                      className={
+                                                          classes.privateChatCard
+                                                      }
+                                                  >
+                                                      <Typography
+                                                          variant="h5"
+                                                          gutterBottom
+                                                          align="center"
+                                                      >
+                                                          {friend.name}
+                                                      </Typography>
+                                                  </Button>
+                                              </ListItem>
+                                          ))}
+                                </List>
+                            </div>
+                        </div>
+                        <div className={classes.chatRoomsListContainer}>
+                            <Divider></Divider>
+                            <Typography
+                                variant="button"
+                                className={classes.chatRoomTypeTitle}
+                            >
+                                {t("chat.chatRoomTypes.groupChats")}
+                            </Typography>
+                            <div className={classes.chatRoomsList}>
+                                <List>
+                                    {rooms === undefined
+                                        ? []
+                                        : groupChats.map((groupChat) => (
+                                              <ListItem key={groupChat.id}>
+                                                  <Button
+                                                      variant="outline"
+                                                      theme="warning"
+                                                      onClick={() =>
+                                                          setActiveChat(
+                                                              groupChat
+                                                          )
+                                                      }
+                                                      className={
+                                                          classes.groupChatCard
+                                                      }
+                                                  >
+                                                      <Typography
+                                                          variant="h5"
+                                                          gutterBottom
+                                                          align="center"
+                                                      >
+                                                          {groupChat.name}
+                                                      </Typography>
+                                                  </Button>
+                                              </ListItem>
+                                          ))}
+                                </List>
+                            </div>
+                        </div>
                     </div>
 
                     <Panels
