@@ -17,8 +17,8 @@ import {
     Select,
     MenuItem,
 } from "@material-ui/core";
-import MessageBox from "../../components/message/index";
-import Panels from "../../components/panels/index";
+import MessageBox from "../../components/Message/index";
+import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
