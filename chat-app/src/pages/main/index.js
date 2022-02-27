@@ -523,8 +523,9 @@ export default function Chat(props) {
                     </AppBar>
 
                     <div id="dialogBox" className={classes.messagesArea}>
-                        {currentChatroomMessages.map((message) => (
+                        {currentChatroomMessages.map((message, index) => (
                             <MessageBox
+                                key={index}
                                 username={message.sender}
                                 content={message.content}
                                 time={message.time}
