@@ -17,10 +17,6 @@
     },
     "chat": {
         "languageIndicator": "语言",
-        "chatRoomTypes": {
-            "friends": "好友",
-            "groupChats": "聊天室"
-        },
         "chatRoomInfo": "聊天信息",
         "panels": {
             "createChatroom": {

@@ -8,8 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "tdesign-react";
 import {
-    List,
-    ListItem,
     TextField,
     Popover,
     FormControl,
@@ -21,6 +19,7 @@ import MessageBox from "../../components/Message/index";
 import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import ChatProfileCards from "../../components/ChatProfileCards";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
@@ -84,35 +83,7 @@ const useStyles = makeStyles(() => ({
     chatRooms: {
         width: "100%",
         height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
-    },
-    chatRoomsListContainer: {
-        height: "50%",
-        display: "flex",
-        flexDirection: "column",
-    },
-    chatRoomTypeTitle: {
-        marginTop: 10,
-        marginLeft: 15,
-    },
-    chatRoomsList: {
-        flex: 1,
         overflowY: "auto",
-    },
-    privateChatCard: {
-        width: "100%",
-        height: 50,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        textTransform: "none",
-    },
-    groupChatCard: {
-        width: "100%",
-        height: 50,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        textTransform: "none",
     },
     // make sure contents are below app bar!
     toolbar: {
@@ -184,8 +155,6 @@ export default function Chat(props) {
     const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
-    const [friends, setFriends] = useState();
-    const [groupChats, setGroupChats] = useState();
     const [rooms, setRooms] = useState();
     const [activeChat, setActiveChat] = useState({
         id: "",
@@ -204,27 +173,21 @@ export default function Chat(props) {
         axios
             .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
-                let friends = [];
+                let rooms = [];
                 for (const friend of response.data.friends) {
-                    friends.push({
+                    rooms.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: "private",
                     });
                 }
-                setFriends(friends);
-
-                let groupChats = [];
                 for (const chatRoom of response.data.chat_rooms) {
-                    groupChats.push({
+                    rooms.push({
                         id: chatRoom.id,
                         name: chatRoom.name,
                         type: "group",
                     });
                 }
-                setGroupChats(groupChats);
-
-                let rooms = friends.concat(groupChats);
                 setRooms(rooms);
             });
     };
@@ -437,81 +400,11 @@ export default function Chat(props) {
                     <Divider />
 
                     <div className={classes.chatRooms}>
-                        <div className={classes.chatRoomsListContainer}>
-                            <Typography
-                                variant="button"
-                                className={classes.chatRoomTypeTitle}
-                            >
-                                {t("chat.chatRoomTypes.friends")}
-                            </Typography>
-                            <div className={classes.chatRoomsList}>
-                                <List>
-                                    {rooms === undefined
-                                        ? []
-                                        : friends.map((friend) => (
-                                              <ListItem key={friend.id}>
-                                                  <Button
-                                                      variant="outline"
-                                                      theme="primary"
-                                                      onClick={() =>
-                                                          setActiveChat(friend)
-                                                      }
-                                                      className={
-                                                          classes.privateChatCard
-                                                      }
-                                                  >
-                                                      <Typography
-                                                          variant="h5"
-                                                          gutterBottom
-                                                          align="center"
-                                                      >
-                                                          {friend.name}
-                                                      </Typography>
-                                                  </Button>
-                                              </ListItem>
-                                          ))}
-                                </List>
-                            </div>
-                        </div>
-                        <div className={classes.chatRoomsListContainer}>
-                            <Divider></Divider>
-                            <Typography
-                                variant="button"
-                                className={classes.chatRoomTypeTitle}
-                            >
-                                {t("chat.chatRoomTypes.groupChats")}
-                            </Typography>
-                            <div className={classes.chatRoomsList}>
-                                <List>
-                                    {rooms === undefined
-                                        ? []
-                                        : groupChats.map((groupChat) => (
-                                              <ListItem key={groupChat.id}>
-                                                  <Button
-                                                      variant="outline"
-                                                      theme="warning"
-                                                      onClick={() =>
-                                                          setActiveChat(
-                                                              groupChat
-                                                          )
-                                                      }
-                                                      className={
-                                                          classes.groupChatCard
-                                                      }
-                                                  >
-                                                      <Typography
-                                                          variant="h5"
-                                                          gutterBottom
-                                                          align="center"
-                                                      >
-                                                          {groupChat.name}
-                                                      </Typography>
-                                                  </Button>
-                                              </ListItem>
-                                          ))}
-                                </List>
-                            </div>
-                        </div>
+                        <ChatProfileCards
+                            chats={rooms}
+                            activeChat={activeChat}
+                            setActiveChat={setActiveChat}
+                        ></ChatProfileCards>
                     </div>
 
                     <Panels
