@@ -17,7 +17,10 @@
     },
     "chat": {
         "languageIndicator": "Language",
-        "chatRoomInfo": "Chat Room Info",
+        "chatRoomInfo": {
+            "title": "Chat Room Info",
+            "type": "Type"
+        },
         "panels": {
             "createChatroom": {
                 "name": "Create Chatroom",

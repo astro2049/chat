@@ -9,7 +9,6 @@ import {
     Typography,
     Divider,
     TextField,
-    Popover,
     FormControl,
     InputLabel,
     Select,
@@ -20,6 +19,7 @@ import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import ChatProfileCards from "../../components/ChatProfileCards";
+import ChatRoomInfoPopOver from "../../components/ChatRoomInfoPopover";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
@@ -46,14 +46,6 @@ const useStyles = makeStyles(() => ({
     },
     activeChatButton: {
         textTransform: "none",
-    },
-    chatRoomInfo: {
-        padding: "10px",
-    },
-    chatRoomInfoTitle: {
-        marginBottom: "5px",
-        paddingRight: "20px",
-        borderBottom: "2px solid black",
     },
     drawerOnLeft: {
         width: menuWidth,
@@ -361,8 +353,6 @@ export default function Chat(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const open = Boolean(anchorEl);
     //
 
     return (
@@ -475,33 +465,11 @@ export default function Chat(props) {
                                         {activeChat.name}
                                     </Typography>
                                 </Button>
-                                <Popover
-                                    open={open}
+                                <ChatRoomInfoPopOver
                                     anchorEl={anchorEl}
-                                    onClose={handleClose}
-                                    anchorOrigin={{
-                                        vertical: "center",
-                                        horizontal: "right",
-                                    }}
-                                    transformOrigin={{
-                                        vertical: "center",
-                                        horizontal: "left",
-                                    }}
-                                >
-                                    <div className={classes.chatRoomInfo}>
-                                        <Typography
-                                            variant="h6"
-                                            className={
-                                                classes.chatRoomInfoTitle
-                                            }
-                                        >
-                                            {t("chat.chatRoomInfo")}
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            ID: {activeChat.id}
-                                        </Typography>
-                                    </div>
-                                </Popover>
+                                    handleClose={handleClose}
+                                    activeChat={activeChat}
+                                />
                             </div>
                             <FormControl
                                 variant="standard"

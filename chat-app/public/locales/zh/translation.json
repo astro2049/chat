@@ -17,7 +17,10 @@
     },
     "chat": {
         "languageIndicator": "语言",
-        "chatRoomInfo": "聊天信息",
+        "chatRoomInfo": {
+            "title": "聊天信息",
+            "type": "分类"
+        },
         "panels": {
             "createChatroom": {
                 "name": "创建聊天室",
