@@ -503,7 +503,10 @@ export default function Chat(props) {
                                     </div>
                                 </Popover>
                             </div>
-                            <FormControl className={classes.languageSelector}>
+                            <FormControl
+                                variant="standard"
+                                className={classes.languageSelector}
+                            >
                                 <InputLabel style={{ color: "#FFCF36" }}>
                                     {t("chat.languageIndicator")}
                                 </InputLabel>
@@ -535,7 +538,7 @@ export default function Chat(props) {
                             variant="outlined"
                             fullWidth
                             multiline
-                            rows="8"
+                            rows="7"
                             value={chatText}
                             onChange={(e) => setChatText(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e)}
