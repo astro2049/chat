@@ -85,8 +85,12 @@ export default function ChatProfileCards(props) {
                                   }
                                   secondary={
                                       <React.Fragment>
-                                          <Typography noWrap>
-                                              a recent message goes here
+                                          <Typography
+                                              noWrap
+                                              sx={{ color: "gray" }}
+                                          >
+                                              * Preview of the most recent
+                                              message here *
                                           </Typography>
                                       </React.Fragment>
                                   }
