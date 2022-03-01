@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "tdesign-react";
 import {
@@ -147,7 +147,9 @@ export default function Chat(props) {
     const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
-    const [rooms, setRooms] = useState();
+    const [rooms, setRooms] = useState([]);
+    const roomsRef = useRef();
+    roomsRef.current = rooms;
     const [activeChat, setActiveChat] = useState({
         id: "",
         name: "",
@@ -165,22 +167,43 @@ export default function Chat(props) {
         axios
             .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
-                let rooms = [];
+                let currentRooms = roomsRef.current;
+                let newRooms = [];
                 for (const friend of response.data.friends) {
-                    rooms.push({
+                    if (
+                        currentRooms.some(
+                            (currentRoom) =>
+                                currentRoom.id === friend.pivot.duet_id &&
+                                currentRoom.type === "private"
+                        )
+                    ) {
+                        continue;
+                    }
+                    newRooms.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: "private",
+                        messages: [],
                     });
                 }
                 for (const chatRoom of response.data.chat_rooms) {
-                    rooms.push({
+                    if (
+                        currentRooms.some(
+                            (currentRoom) =>
+                                currentRoom.id === chatRoom.id &&
+                                currentRoom.type === "group"
+                        )
+                    ) {
+                        continue;
+                    }
+                    newRooms.push({
                         id: chatRoom.id,
                         name: chatRoom.name,
                         type: "group",
+                        messages: [],
                     });
                 }
-                setRooms(rooms);
+                setRooms([...currentRooms, ...newRooms]);
             });
     };
 
