@@ -311,6 +311,16 @@ export default function Chat(props) {
             message.mine = false;
         }
         setReceivedMessages((messages) => [...messages, message]);
+        deliverMessageToChat(message);
+    };
+
+    const deliverMessageToChat = (message) => {
+        for (const room of rooms) {
+            if (message.chatId === room.id && message.type === room.type) {
+                room.messages.push(message);
+                break;
+            }
+        }
     };
 
     const onError = (err) => {
