@@ -69,7 +69,7 @@ const useStyles = makeStyles(() => ({
     },
     logo: {
         marginLeft: 20,
-        width: 200,
+        minWidth: 200,
         height: 50,
     },
     chatRooms: {
