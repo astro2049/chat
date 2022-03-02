@@ -36,5 +36,8 @@
             }
         },
         "sendButton": "Send"
+    },
+    "ChatProfileCards": {
+        "noMessages": "- no messages -"
     }
 }

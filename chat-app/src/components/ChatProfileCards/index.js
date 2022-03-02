@@ -9,7 +9,7 @@ import {
     ListItemAvatar,
     Typography,
 } from "@mui/material";
-import { height } from "@mui/system";
+import { useTranslation } from "react-i18next";
 
 const stringToColor = (str) => {
     let hash = 0;
@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({}));
 
 export default function ChatProfileCards(props) {
     const classes = useStyles();
+
+    // i18n
+    const { t } = useTranslation();
 
     const chats = props.chats;
     const activeChat = props.activeChat;
@@ -119,7 +122,9 @@ export default function ChatProfileCards(props) {
                                                       }}
                                                       variant="caption"
                                                   >
-                                                      - no messages -
+                                                      {t(
+                                                          "ChatProfileCards.noMessages"
+                                                      )}
                                                   </Typography>
                                               )}
                                           </div>

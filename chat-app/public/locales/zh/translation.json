@@ -36,5 +36,8 @@
             }
         },
         "sendButton": "发送"
+    },
+    "ChatProfileCards": {
+        "noMessages": "- 没有消息 -"
     }
 }
