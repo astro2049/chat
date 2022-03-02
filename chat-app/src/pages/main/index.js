@@ -147,7 +147,7 @@ export default function Chat(props) {
     const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
-    const [rooms, setRooms] = useState([]);
+    const [rooms, setRooms] = useState();
     const roomsRef = useRef();
     roomsRef.current = rooms;
     const [activeChat, setActiveChat] = useState({
@@ -167,7 +167,8 @@ export default function Chat(props) {
         axios
             .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
-                let currentRooms = roomsRef.current;
+                let currentRooms =
+                    roomsRef.current === undefined ? [] : roomsRef.current;
                 let newRooms = [];
                 for (const friend of response.data.friends) {
                     if (
