@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import { Button } from "tdesign-react";
 import {
-    List,
-    ListItem,
+    Drawer,
+    CssBaseline,
+    AppBar,
+    Toolbar,
+    Typography,
+    Divider,
     TextField,
-    Popover,
     FormControl,
     InputLabel,
     Select,
     MenuItem,
-} from "@material-ui/core";
-import MessageBox from "../../components/message/index";
-import Panels from "../../components/panels/index";
+} from "@mui/material";
+import MessageBox from "../../components/Message/index";
+import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import ChatProfileCards from "../../components/ChatProfileCards";
+import ChatRoomInfoPopOver from "../../components/ChatRoomInfoPopover";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
@@ -48,14 +47,6 @@ const useStyles = makeStyles(() => ({
     activeChatButton: {
         textTransform: "none",
     },
-    chatRoomInfo: {
-        padding: "10px",
-    },
-    chatRoomInfoTitle: {
-        marginBottom: "5px",
-        paddingRight: "20px",
-        borderBottom: "2px solid black",
-    },
     drawerOnLeft: {
         width: menuWidth,
         flexShrink: 0,
@@ -78,41 +69,13 @@ const useStyles = makeStyles(() => ({
     },
     logo: {
         marginLeft: 20,
-        width: 200,
+        minWidth: 200,
         height: 50,
     },
     chatRooms: {
         width: "100%",
         height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
-    },
-    chatRoomsListContainer: {
-        height: "50%",
-        display: "flex",
-        flexDirection: "column",
-    },
-    chatRoomTypeTitle: {
-        marginTop: 10,
-        marginLeft: 15,
-    },
-    chatRoomsList: {
-        flex: 1,
         overflowY: "auto",
-    },
-    privateChatCard: {
-        width: "100%",
-        height: 50,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        textTransform: "none",
-    },
-    groupChatCard: {
-        width: "100%",
-        height: 50,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        textTransform: "none",
     },
     // make sure contents are below app bar!
     toolbar: {
@@ -184,9 +147,9 @@ export default function Chat(props) {
     const userId = props.user.id;
     const username = props.user.name;
     const [chatText, setChatText] = useState("");
-    const [friends, setFriends] = useState();
-    const [groupChats, setGroupChats] = useState();
-    const [rooms, setRooms] = useState();
+    const [rooms, setRooms] = useState([]);
+    const roomsRef = useRef();
+    roomsRef.current = rooms;
     const [activeChat, setActiveChat] = useState({
         id: "",
         name: "",
@@ -204,28 +167,43 @@ export default function Chat(props) {
         axios
             .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
-                let friends = [];
+                let currentRooms = roomsRef.current;
+                let newRooms = [];
                 for (const friend of response.data.friends) {
-                    friends.push({
+                    if (
+                        currentRooms.some(
+                            (currentRoom) =>
+                                currentRoom.id === friend.pivot.duet_id &&
+                                currentRoom.type === "private"
+                        )
+                    ) {
+                        continue;
+                    }
+                    newRooms.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: "private",
+                        messages: [],
                     });
                 }
-                setFriends(friends);
-
-                let groupChats = [];
                 for (const chatRoom of response.data.chat_rooms) {
-                    groupChats.push({
+                    if (
+                        currentRooms.some(
+                            (currentRoom) =>
+                                currentRoom.id === chatRoom.id &&
+                                currentRoom.type === "group"
+                        )
+                    ) {
+                        continue;
+                    }
+                    newRooms.push({
                         id: chatRoom.id,
                         name: chatRoom.name,
                         type: "group",
+                        messages: [],
                     });
                 }
-                setGroupChats(groupChats);
-
-                let rooms = friends.concat(groupChats);
-                setRooms(rooms);
+                setRooms([...currentRooms, ...newRooms]);
             });
     };
 
@@ -333,6 +311,16 @@ export default function Chat(props) {
             message.mine = false;
         }
         setReceivedMessages((messages) => [...messages, message]);
+        deliverMessageToChat(message);
+    };
+
+    const deliverMessageToChat = (message) => {
+        for (const room of rooms) {
+            if (message.chatId === room.id && message.type === room.type) {
+                room.messages.push(message);
+                break;
+            }
+        }
     };
 
     const onError = (err) => {
@@ -398,8 +386,6 @@ export default function Chat(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const open = Boolean(anchorEl);
     //
 
     return (
@@ -437,81 +423,11 @@ export default function Chat(props) {
                     <Divider />
 
                     <div className={classes.chatRooms}>
-                        <div className={classes.chatRoomsListContainer}>
-                            <Typography
-                                variant="button"
-                                className={classes.chatRoomTypeTitle}
-                            >
-                                {t("chat.chatRoomTypes.friends")}
-                            </Typography>
-                            <div className={classes.chatRoomsList}>
-                                <List>
-                                    {rooms === undefined
-                                        ? []
-                                        : friends.map((friend) => (
-                                              <ListItem key={friend.id}>
-                                                  <Button
-                                                      variant="outline"
-                                                      theme="primary"
-                                                      onClick={() =>
-                                                          setActiveChat(friend)
-                                                      }
-                                                      className={
-                                                          classes.privateChatCard
-                                                      }
-                                                  >
-                                                      <Typography
-                                                          variant="h5"
-                                                          gutterBottom
-                                                          align="center"
-                                                      >
-                                                          {friend.name}
-                                                      </Typography>
-                                                  </Button>
-                                              </ListItem>
-                                          ))}
-                                </List>
-                            </div>
-                        </div>
-                        <div className={classes.chatRoomsListContainer}>
-                            <Divider></Divider>
-                            <Typography
-                                variant="button"
-                                className={classes.chatRoomTypeTitle}
-                            >
-                                {t("chat.chatRoomTypes.groupChats")}
-                            </Typography>
-                            <div className={classes.chatRoomsList}>
-                                <List>
-                                    {rooms === undefined
-                                        ? []
-                                        : groupChats.map((groupChat) => (
-                                              <ListItem key={groupChat.id}>
-                                                  <Button
-                                                      variant="outline"
-                                                      theme="warning"
-                                                      onClick={() =>
-                                                          setActiveChat(
-                                                              groupChat
-                                                          )
-                                                      }
-                                                      className={
-                                                          classes.groupChatCard
-                                                      }
-                                                  >
-                                                      <Typography
-                                                          variant="h5"
-                                                          gutterBottom
-                                                          align="center"
-                                                      >
-                                                          {groupChat.name}
-                                                      </Typography>
-                                                  </Button>
-                                              </ListItem>
-                                          ))}
-                                </List>
-                            </div>
-                        </div>
+                        <ChatProfileCards
+                            chats={rooms}
+                            activeChat={activeChat}
+                            setActiveChat={setActiveChat}
+                        ></ChatProfileCards>
                     </div>
 
                     <Panels
@@ -582,35 +498,16 @@ export default function Chat(props) {
                                         {activeChat.name}
                                     </Typography>
                                 </Button>
-                                <Popover
-                                    open={open}
+                                <ChatRoomInfoPopOver
                                     anchorEl={anchorEl}
-                                    onClose={handleClose}
-                                    anchorOrigin={{
-                                        vertical: "center",
-                                        horizontal: "right",
-                                    }}
-                                    transformOrigin={{
-                                        vertical: "center",
-                                        horizontal: "left",
-                                    }}
-                                >
-                                    <div className={classes.chatRoomInfo}>
-                                        <Typography
-                                            variant="h6"
-                                            className={
-                                                classes.chatRoomInfoTitle
-                                            }
-                                        >
-                                            {t("chat.chatRoomInfo")}
-                                        </Typography>
-                                        <Typography variant="subtitle1">
-                                            ID: {activeChat.id}
-                                        </Typography>
-                                    </div>
-                                </Popover>
+                                    handleClose={handleClose}
+                                    activeChat={activeChat}
+                                />
                             </div>
-                            <FormControl className={classes.languageSelector}>
+                            <FormControl
+                                variant="standard"
+                                className={classes.languageSelector}
+                            >
                                 <InputLabel style={{ color: "#FFCF36" }}>
                                     {t("chat.languageIndicator")}
                                 </InputLabel>
@@ -627,8 +524,9 @@ export default function Chat(props) {
                     </AppBar>
 
                     <div id="dialogBox" className={classes.messagesArea}>
-                        {currentChatroomMessages.map((message) => (
+                        {currentChatroomMessages.map((message, index) => (
                             <MessageBox
+                                key={index}
                                 username={message.sender}
                                 content={message.content}
                                 time={message.time}
@@ -642,7 +540,7 @@ export default function Chat(props) {
                             variant="outlined"
                             fullWidth
                             multiline
-                            rows="8"
+                            rows="7"
                             value={chatText}
                             onChange={(e) => setChatText(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e)}

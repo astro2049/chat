@@ -17,11 +17,10 @@
     },
     "chat": {
         "languageIndicator": "语言",
-        "chatRoomTypes": {
-            "friends": "好友",
-            "groupChats": "聊天室"
+        "chatRoomInfo": {
+            "title": "聊天信息",
+            "type": "分类"
         },
-        "chatRoomInfo": "聊天信息",
         "panels": {
             "createChatroom": {
                 "name": "创建聊天室",
@@ -37,5 +36,8 @@
             }
         },
         "sendButton": "发送"
+    },
+    "ChatProfileCards": {
+        "noMessages": "- 没有消息 -"
     }
 }

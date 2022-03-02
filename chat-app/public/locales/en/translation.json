@@ -17,11 +17,10 @@
     },
     "chat": {
         "languageIndicator": "Language",
-        "chatRoomTypes": {
-            "friends": "Friends",
-            "groupChats": "Chat Rooms"
+        "chatRoomInfo": {
+            "title": "Chat Room Info",
+            "type": "Type"
         },
-        "chatRoomInfo": "Chat Room Info",
         "panels": {
             "createChatroom": {
                 "name": "Create Chatroom",
@@ -37,5 +36,8 @@
             }
         },
         "sendButton": "Send"
+    },
+    "ChatProfileCards": {
+        "noMessages": "- no messages -"
     }
 }
