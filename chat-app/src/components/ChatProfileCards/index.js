@@ -9,6 +9,7 @@ import {
     ListItemAvatar,
     Typography,
 } from "@mui/material";
+import { height } from "@mui/system";
 
 const stringToColor = (str) => {
     let hash = 0;
@@ -52,19 +53,27 @@ export default function ChatProfileCards(props) {
             {chats === undefined
                 ? []
                 : chats.map((chat, index) => (
-                      <ListItem key={index} disablePadding divider>
+                      <ListItem
+                          sx={{ height: 82 }}
+                          key={index}
+                          disablePadding
+                          divider
+                      >
                           <ListItemButton
-                              style={{
-                                  width: "100%",
-                              }}
-                              alignItems="flex-start"
+                              sx={{ height: "100%" }}
+                              alignItems="space-between"
                               onClick={() => setActiveChat(chat)}
                               selected={
                                   activeChat.id === chat.id &&
                                   activeChat.type === chat.type
                               }
                           >
-                              <ListItemAvatar>
+                              <ListItemAvatar
+                                  sx={{
+                                      paddingLeft: "3px",
+                                      paddingRight: "3px",
+                                  }}
+                              >
                                   <Avatar
                                       sx={{
                                           bgcolor: stringToColor(chat.name),
@@ -85,13 +94,35 @@ export default function ChatProfileCards(props) {
                                   }
                                   secondary={
                                       <React.Fragment>
-                                          <Typography
-                                              noWrap
-                                              sx={{ color: "gray" }}
-                                          >
-                                              * Preview of the most recent
-                                              message here *
-                                          </Typography>
+                                          <div style={{ height: "30px" }}>
+                                              {chat.messages.length > 0 ? (
+                                                  <Typography
+                                                      noWrap
+                                                      sx={{
+                                                          color: "gray",
+                                                          lineHeight: "30px",
+                                                      }}
+                                                  >
+                                                      {
+                                                          chat.messages.at(
+                                                              chat.messages
+                                                                  .length - 1
+                                                          ).content
+                                                      }
+                                                  </Typography>
+                                              ) : (
+                                                  <Typography
+                                                      noWrap
+                                                      sx={{
+                                                          color: "gray",
+                                                          fontStyle: "italic",
+                                                      }}
+                                                      variant="caption"
+                                                  >
+                                                      - no messages -
+                                                  </Typography>
+                                              )}
+                                          </div>
                                       </React.Fragment>
                                   }
                               />
