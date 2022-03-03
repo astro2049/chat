@@ -74,6 +74,7 @@ export default function ChatProfileCards(props) {
                           >
                               <ListItemAvatar
                                   sx={{
+                                      marginLeft: 1,
                                       paddingLeft: "3px",
                                       paddingRight: "3px",
                                   }}
