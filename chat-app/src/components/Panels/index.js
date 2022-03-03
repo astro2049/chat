@@ -32,6 +32,7 @@ export default function SimpleBreadcrumbs(props) {
     const { t } = useTranslation();
 
     const setChatrooms = props.setChatrooms;
+    const pageIsReady = props.pageIsReady;
     const [activeOption, setActiveOption] = useState("");
 
     const createChatroomIsActive = activeOption === "Create Chatroom";
@@ -93,6 +94,7 @@ export default function SimpleBreadcrumbs(props) {
                     userId={props.userId}
                     username={props.username}
                     setChatrooms={setChatrooms}
+                    pageIsReady={pageIsReady}
                 ></InputBox>
             </div>
         </div>

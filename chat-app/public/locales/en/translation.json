@@ -38,6 +38,10 @@
         "sendButton": "Send"
     },
     "ChatProfileCards": {
+        "chatRoomType": {
+            "private": "friend",
+            "group": "chat room"
+        },
         "noMessages": "- no messages -"
     }
 }

@@ -162,6 +162,7 @@ export default function Chat(props) {
     const [notificationsSubscribed, setNotificationsSubscribed] =
         useState(false);
     const [subscribedChatrooms, setSubscribedChatrooms] = useState([]);
+    const [pageIsReady, setPageIsReady] = useState(false);
 
     const setChatrooms = () => {
         axios
@@ -263,7 +264,9 @@ export default function Chat(props) {
 
     const onNoticeReceived = (ntc) => {
         let notice = JSON.parse(ntc.body);
-        if (notice.type === 1) {
+        if (notice.type === 0) {
+            setPageIsReady(true);
+        } else if (notice.type === 1) {
             setChatrooms();
         }
     };
@@ -435,6 +438,7 @@ export default function Chat(props) {
                         userId={userId}
                         username={username}
                         setChatrooms={setChatrooms}
+                        pageIsReady={pageIsReady}
                     ></Panels>
 
                     <div
@@ -545,11 +549,13 @@ export default function Chat(props) {
                             value={chatText}
                             onChange={(e) => setChatText(e.target.value)}
                             onKeyDown={(e) => handleKeyDown(e)}
+                            disabled={!pageIsReady}
                         ></TextField>
                         <Button
                             theme="primary"
                             variant="outline"
                             onClick={sendChatMessage}
+                            disabled={!pageIsReady}
                         >
                             {t("chat.sendButton")}
                         </Button>
