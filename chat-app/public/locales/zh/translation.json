@@ -38,6 +38,10 @@
         "sendButton": "发送"
     },
     "ChatProfileCards": {
+        "chatRoomType": {
+            "private": "好友",
+            "group": "聊天室"
+        },
         "noMessages": "- 没有消息 -"
     }
 }

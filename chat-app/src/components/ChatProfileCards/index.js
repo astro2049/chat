@@ -8,6 +8,7 @@ import {
     ListItemText,
     ListItemAvatar,
     Typography,
+    Chip,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -90,9 +91,35 @@ export default function ChatProfileCards(props) {
                                   disableTypography
                                   primary={
                                       <React.Fragment>
-                                          <Typography variant="h5" noWrap>
-                                              {chat.name}
-                                          </Typography>
+                                          <div
+                                              style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                              }}
+                                          >
+                                              <Typography variant="h5" noWrap>
+                                                  {chat.name}
+                                              </Typography>
+                                              <Chip
+                                                  variant="outlined"
+                                                  label={
+                                                      chat.type === "private"
+                                                          ? t(
+                                                                "ChatProfileCards.chatRoomType.private"
+                                                            )
+                                                          : t(
+                                                                "ChatProfileCards.chatRoomType.group"
+                                                            )
+                                                  }
+                                                  color={
+                                                      chat.type === "private"
+                                                          ? "primary"
+                                                          : "secondary"
+                                                  }
+                                                  sx={{ ml: 1 }}
+                                                  size="small"
+                                              />
+                                          </div>
                                       </React.Fragment>
                                   }
                                   secondary={
