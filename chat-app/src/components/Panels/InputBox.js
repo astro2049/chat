@@ -31,6 +31,7 @@ export default function CustomizedInputBase(props) {
     const username = props.username;
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
+    const pageIsReady = props.pageIsReady;
     const [inputPlaceholder, setInputPlaceholder] = useState("");
     const [inputText, setInputText] = useState("");
 
@@ -121,11 +122,13 @@ export default function CustomizedInputBase(props) {
                     placeholder={inputPlaceholder}
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
+                    disabled={!pageIsReady}
                 />
                 <IconButton
                     type="submit"
                     style={{ padding: 10 }}
                     aria-label="search"
+                    disabled={!pageIsReady}
                 >
                     <ArrowForwardIcon />
                 </IconButton>
