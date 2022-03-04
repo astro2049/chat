@@ -28,7 +28,7 @@
             },
             "joinChatroom": {
                 "name": "Join Chatroom",
-                "promptText": "Chat Room ID goes here..."
+                "promptText": "Chat room ID goes here..."
             },
             "newFriend": {
                 "name": "New Friend",
