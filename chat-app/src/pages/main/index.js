@@ -13,6 +13,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Skeleton,
 } from "@mui/material";
 import MessageBox from "../../components/Message/index";
 import Panels from "../../components/Panels/index";
@@ -431,6 +432,7 @@ export default function Chat(props) {
                             chats={rooms}
                             activeChat={activeChat}
                             setActiveChat={setActiveChat}
+                            pageIsReady={pageIsReady}
                         ></ChatProfileCards>
                     </div>
 
@@ -488,26 +490,40 @@ export default function Chat(props) {
                             }}
                         >
                             <div className={classes.chatroomName}>
-                                <Button
-                                    theme="default"
-                                    variant="text"
-                                    size="large"
-                                    className={classes.activeChatButton}
-                                    onClick={handleClick}
-                                >
-                                    <Typography
-                                        variant="h4"
-                                        noWrap
-                                        style={{ color: "#FFCF36" }}
-                                    >
-                                        {activeChat.name}
-                                    </Typography>
-                                </Button>
-                                <ChatRoomInfoPopOver
-                                    anchorEl={anchorEl}
-                                    handleClose={handleClose}
-                                    activeChat={activeChat}
-                                />
+                                {activeChat.name === "" ? (
+                                    <Skeleton
+                                        sx={{
+                                            marginLeft: 2,
+                                            width: 130,
+                                            height: 60,
+                                        }}
+                                        variant="text"
+                                        animation="wave"
+                                    />
+                                ) : (
+                                    <div>
+                                        <Button
+                                            theme="default"
+                                            variant="text"
+                                            size="large"
+                                            className={classes.activeChatButton}
+                                            onClick={handleClick}
+                                        >
+                                            <Typography
+                                                variant="h4"
+                                                noWrap
+                                                style={{ color: "#FFCF36" }}
+                                            >
+                                                {activeChat.name}
+                                            </Typography>
+                                        </Button>
+                                        <ChatRoomInfoPopOver
+                                            anchorEl={anchorEl}
+                                            handleClose={handleClose}
+                                            activeChat={activeChat}
+                                        />
+                                    </div>
+                                )}
                             </div>
                             <FormControl
                                 variant="standard"

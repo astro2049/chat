@@ -9,6 +9,7 @@ import {
     ListItemAvatar,
     Typography,
     Chip,
+    Skeleton,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
@@ -51,11 +52,67 @@ export default function ChatProfileCards(props) {
     const chats = props.chats;
     const activeChat = props.activeChat;
     const setActiveChat = props.setActiveChat;
+    const pageIsReady = props.pageIsReady;
+
+    const renderChatList = chats && pageIsReady;
+
+    const skeletons = () => {
+        let chatSkeletons = [];
+        for (let i = 0; i < 4; i++) {
+            chatSkeletons.push(
+                <ListItem sx={{ height: 82 }} key={i} disablePadding>
+                    <ListItemButton
+                        sx={{ height: "100%" }}
+                        alignItems="space-between"
+                    >
+                        <div style={{ marginRight: 20 }}>
+                            <Skeleton
+                                sx={{
+                                    marginLeft: 1,
+                                    paddingLeft: "3px",
+                                    paddingRight: "3px",
+                                }}
+                                variant="circular"
+                                width={40}
+                                height={40}
+                            />
+                        </div>
+                        <ListItemText
+                            disableTypography
+                            primary={
+                                <React.Fragment>
+                                    <div>
+                                        <Skeleton
+                                            variant="text"
+                                            width={80}
+                                            height={46}
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            }
+                            secondary={
+                                <React.Fragment>
+                                    <div>
+                                        <Skeleton
+                                            variant="text"
+                                            width={120}
+                                            height={32}
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            }
+                        />
+                    </ListItemButton>
+                </ListItem>
+            );
+        }
+        return chatSkeletons;
+    };
 
     return (
         <List disablePadding>
-            {chats === undefined
-                ? []
+            {!renderChatList
+                ? skeletons()
                 : chats.map((chat, index) => (
                       <ListItem
                           sx={{ height: 82 }}
