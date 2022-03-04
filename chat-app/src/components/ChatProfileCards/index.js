@@ -84,7 +84,7 @@ export default function ChatProfileCards(props) {
                                     <div>
                                         <Skeleton
                                             variant="text"
-                                            width={80}
+                                            width={130}
                                             height={46}
                                         />
                                     </div>
@@ -95,7 +95,7 @@ export default function ChatProfileCards(props) {
                                     <div>
                                         <Skeleton
                                             variant="text"
-                                            width={120}
+                                            width={166}
                                             height={32}
                                         />
                                     </div>
