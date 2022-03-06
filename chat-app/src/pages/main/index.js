@@ -113,18 +113,9 @@ const { REACT_APP_PROFILE_SERVER_ADDRESS, REACT_APP_CHAT_SERVER_ADDRESS } =
 
 var stompClient = null;
 
-const findChatMessages = (receivedMessages, activeChat) => {
-    let messages = [];
-    for (let i = 0; i < receivedMessages.length; i++) {
-        let message = receivedMessages[i];
-        if (
-            message.chatId === activeChat.id &&
-            message.type === activeChat.type
-        ) {
-            messages.push(message);
-        }
-    }
-    return messages;
+const scrollToDialogBoxBottom = () => {
+    var element = document.getElementById("dialogBox");
+    element.scrollTop = element.scrollHeight;
 };
 
 export default function Chat(props) {
@@ -147,23 +138,26 @@ export default function Chat(props) {
 
     const userId = props.user.id;
     const username = props.user.name;
-    const [chatText, setChatText] = useState("");
     const [rooms, setRooms] = useState();
     const roomsRef = useRef();
     roomsRef.current = rooms;
-    const [activeChat, setActiveChat] = useState({
-        id: "",
-        name: "",
-        type: "",
-    });
-    const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
-    const [receivedMessages, setReceivedMessages] = useState([]);
+    const [activeChat, setActiveChat] = useState();
+    const activeChatRef = useRef();
+    activeChatRef.current = activeChat;
     const [StompCommunicationInitialized, setStompCommunicationInitialized] =
         useState(false);
     const [notificationsSubscribed, setNotificationsSubscribed] =
         useState(false);
     const [subscribedChatrooms, setSubscribedChatrooms] = useState([]);
     const [pageIsReady, setPageIsReady] = useState(false);
+
+    const [rerender, setRerender] = useState(false);
+    const rerenderRef = useRef();
+    rerenderRef.current = rerender;
+
+    const pleaseRerender = () => {
+        setRerender(!rerenderRef.current);
+    };
 
     const setChatrooms = () => {
         axios
@@ -187,6 +181,7 @@ export default function Chat(props) {
                         name: friend.name,
                         type: "private",
                         messages: [],
+                        chatText: "",
                     });
                 }
                 for (const chatRoom of response.data.chat_rooms) {
@@ -204,6 +199,7 @@ export default function Chat(props) {
                         name: chatRoom.name,
                         type: "group",
                         messages: [],
+                        chatText: "",
                     });
                 }
                 setRooms([...currentRooms, ...newRooms]);
@@ -217,7 +213,7 @@ export default function Chat(props) {
             return;
         }
         if (rooms.length > 0) {
-            if (activeChat.id === "") {
+            if (!activeChat) {
                 setActiveChat(rooms[0]);
             }
         }
@@ -228,14 +224,6 @@ export default function Chat(props) {
             subscribeStuffs();
         }
     }, [rooms]);
-
-    useEffect(() => {
-        function refreshChatroomMessages(receivedMessages, activeChat) {
-            let messages = findChatMessages(receivedMessages, activeChat);
-            setCurrentChatroomMessages(messages);
-        }
-        refreshChatroomMessages(receivedMessages, activeChat);
-    }, [activeChat, receivedMessages]);
 
     const initializeStompCommunication = () => {
         const Stomp = require("stompjs");
@@ -315,7 +303,6 @@ export default function Chat(props) {
         } else {
             message.mine = false;
         }
-        setReceivedMessages((messages) => [...messages, message]);
         deliverMessageToChat(message);
     };
 
@@ -323,6 +310,13 @@ export default function Chat(props) {
         for (const room of rooms) {
             if (message.chatId === room.id && message.type === room.type) {
                 room.messages.push(message);
+                pleaseRerender();
+                if (
+                    room.id === activeChatRef.current.id &&
+                    room.type === activeChatRef.current.type
+                ) {
+                    scrollToDialogBoxBottom();
+                }
                 break;
             }
         }
@@ -331,11 +325,6 @@ export default function Chat(props) {
     const onError = (err) => {
         console.log(err);
     };
-
-    useEffect(() => {
-        var element = document.getElementById("dialogBox");
-        element.scrollTop = element.scrollHeight;
-    }, [currentChatroomMessages]);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -350,8 +339,7 @@ export default function Chat(props) {
     }
 
     const sendMessage = (time) => {
-        setChatText("");
-        let msg = chatText;
+        let msg = activeChat.chatText;
         if (msg.trim() !== "") {
             let id = activeChat.id;
             let type = activeChat.type;
@@ -378,6 +366,10 @@ export default function Chat(props) {
                     JSON.stringify(message)
                 );
             }
+
+            setActiveChat((prevState) => {
+                return { ...prevState, chatText: "" };
+            });
         }
     };
 
@@ -490,7 +482,7 @@ export default function Chat(props) {
                             }}
                         >
                             <div className={classes.chatroomName}>
-                                {activeChat.name === "" ? (
+                                {activeChat === undefined ? (
                                     <Skeleton
                                         sx={{
                                             marginLeft: 2,
@@ -545,15 +537,16 @@ export default function Chat(props) {
                     </AppBar>
 
                     <div id="dialogBox" className={classes.messagesArea}>
-                        {currentChatroomMessages.map((message, index) => (
-                            <MessageBox
-                                key={index}
-                                username={message.sender}
-                                content={message.content}
-                                time={message.time}
-                                mine={message.mine}
-                            ></MessageBox>
-                        ))}
+                        {activeChat &&
+                            activeChat.messages.map((message, index) => (
+                                <MessageBox
+                                    key={index}
+                                    username={message.sender}
+                                    content={message.content}
+                                    time={message.time}
+                                    mine={message.mine}
+                                ></MessageBox>
+                            ))}
                     </div>
 
                     <div className={classes.inputContainer}>
@@ -562,8 +555,15 @@ export default function Chat(props) {
                             fullWidth
                             multiline
                             rows="7"
-                            value={chatText}
-                            onChange={(e) => setChatText(e.target.value)}
+                            value={activeChat ? activeChat.chatText : ""}
+                            onChange={(e) => {
+                                setActiveChat((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        chatText: e.target.value,
+                                    };
+                                });
+                            }}
                             onKeyDown={(e) => handleKeyDown(e)}
                             disabled={!pageIsReady}
                         ></TextField>
