@@ -138,15 +138,10 @@ export default function Chat(props) {
 
     const userId = props.user.id;
     const username = props.user.name;
-    const [chatText, setChatText] = useState("");
     const [rooms, setRooms] = useState();
     const roomsRef = useRef();
     roomsRef.current = rooms;
-    const [activeChat, setActiveChat] = useState({
-        id: "",
-        name: "",
-        type: "",
-    });
+    const [activeChat, setActiveChat] = useState();
     const activeChatRef = useRef();
     activeChatRef.current = activeChat;
     const [StompCommunicationInitialized, setStompCommunicationInitialized] =
@@ -186,6 +181,7 @@ export default function Chat(props) {
                         name: friend.name,
                         type: "private",
                         messages: [],
+                        chatText: "",
                     });
                 }
                 for (const chatRoom of response.data.chat_rooms) {
@@ -203,6 +199,7 @@ export default function Chat(props) {
                         name: chatRoom.name,
                         type: "group",
                         messages: [],
+                        chatText: "",
                     });
                 }
                 setRooms([...currentRooms, ...newRooms]);
@@ -216,7 +213,7 @@ export default function Chat(props) {
             return;
         }
         if (rooms.length > 0) {
-            if (activeChat.id === "") {
+            if (!activeChat) {
                 setActiveChat(rooms[0]);
             }
         }
@@ -342,8 +339,7 @@ export default function Chat(props) {
     }
 
     const sendMessage = (time) => {
-        setChatText("");
-        let msg = chatText;
+        let msg = activeChat.chatText;
         if (msg.trim() !== "") {
             let id = activeChat.id;
             let type = activeChat.type;
@@ -370,6 +366,10 @@ export default function Chat(props) {
                     JSON.stringify(message)
                 );
             }
+
+            setActiveChat((prevState) => {
+                return { ...prevState, chatText: "" };
+            });
         }
     };
 
@@ -482,7 +482,7 @@ export default function Chat(props) {
                             }}
                         >
                             <div className={classes.chatroomName}>
-                                {activeChat.name === "" ? (
+                                {activeChat === undefined ? (
                                     <Skeleton
                                         sx={{
                                             marginLeft: 2,
@@ -537,7 +537,7 @@ export default function Chat(props) {
                     </AppBar>
 
                     <div id="dialogBox" className={classes.messagesArea}>
-                        {activeChat.messages &&
+                        {activeChat &&
                             activeChat.messages.map((message, index) => (
                                 <MessageBox
                                     key={index}
@@ -555,8 +555,15 @@ export default function Chat(props) {
                             fullWidth
                             multiline
                             rows="7"
-                            value={chatText}
-                            onChange={(e) => setChatText(e.target.value)}
+                            value={activeChat ? activeChat.chatText : ""}
+                            onChange={(e) => {
+                                setActiveChat((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        chatText: e.target.value,
+                                    };
+                                });
+                            }}
                             onKeyDown={(e) => handleKeyDown(e)}
                             disabled={!pageIsReady}
                         ></TextField>
