@@ -113,18 +113,9 @@ const { REACT_APP_PROFILE_SERVER_ADDRESS, REACT_APP_CHAT_SERVER_ADDRESS } =
 
 var stompClient = null;
 
-const findChatMessages = (receivedMessages, activeChat) => {
-    let messages = [];
-    for (let i = 0; i < receivedMessages.length; i++) {
-        let message = receivedMessages[i];
-        if (
-            message.chatId === activeChat.id &&
-            message.type === activeChat.type
-        ) {
-            messages.push(message);
-        }
-    }
-    return messages;
+const scrollToDialogBoxBottom = () => {
+    var element = document.getElementById("dialogBox");
+    element.scrollTop = element.scrollHeight;
 };
 
 export default function Chat(props) {
@@ -156,14 +147,22 @@ export default function Chat(props) {
         name: "",
         type: "",
     });
-    const [currentChatroomMessages, setCurrentChatroomMessages] = useState([]);
-    const [receivedMessages, setReceivedMessages] = useState([]);
+    const activeChatRef = useRef();
+    activeChatRef.current = activeChat;
     const [StompCommunicationInitialized, setStompCommunicationInitialized] =
         useState(false);
     const [notificationsSubscribed, setNotificationsSubscribed] =
         useState(false);
     const [subscribedChatrooms, setSubscribedChatrooms] = useState([]);
     const [pageIsReady, setPageIsReady] = useState(false);
+
+    const [rerender, setRerender] = useState(false);
+    const rerenderRef = useRef();
+    rerenderRef.current = rerender;
+
+    const pleaseRerender = () => {
+        setRerender(!rerenderRef.current);
+    };
 
     const setChatrooms = () => {
         axios
@@ -228,14 +227,6 @@ export default function Chat(props) {
             subscribeStuffs();
         }
     }, [rooms]);
-
-    useEffect(() => {
-        function refreshChatroomMessages(receivedMessages, activeChat) {
-            let messages = findChatMessages(receivedMessages, activeChat);
-            setCurrentChatroomMessages(messages);
-        }
-        refreshChatroomMessages(receivedMessages, activeChat);
-    }, [activeChat, receivedMessages]);
 
     const initializeStompCommunication = () => {
         const Stomp = require("stompjs");
@@ -315,7 +306,6 @@ export default function Chat(props) {
         } else {
             message.mine = false;
         }
-        setReceivedMessages((messages) => [...messages, message]);
         deliverMessageToChat(message);
     };
 
@@ -323,6 +313,13 @@ export default function Chat(props) {
         for (const room of rooms) {
             if (message.chatId === room.id && message.type === room.type) {
                 room.messages.push(message);
+                pleaseRerender();
+                if (
+                    room.id === activeChatRef.current.id &&
+                    room.type === activeChatRef.current.type
+                ) {
+                    scrollToDialogBoxBottom();
+                }
                 break;
             }
         }
@@ -331,11 +328,6 @@ export default function Chat(props) {
     const onError = (err) => {
         console.log(err);
     };
-
-    useEffect(() => {
-        var element = document.getElementById("dialogBox");
-        element.scrollTop = element.scrollHeight;
-    }, [currentChatroomMessages]);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -545,15 +537,16 @@ export default function Chat(props) {
                     </AppBar>
 
                     <div id="dialogBox" className={classes.messagesArea}>
-                        {currentChatroomMessages.map((message, index) => (
-                            <MessageBox
-                                key={index}
-                                username={message.sender}
-                                content={message.content}
-                                time={message.time}
-                                mine={message.mine}
-                            ></MessageBox>
-                        ))}
+                        {activeChat.messages &&
+                            activeChat.messages.map((message, index) => (
+                                <MessageBox
+                                    key={index}
+                                    username={message.sender}
+                                    content={message.content}
+                                    time={message.time}
+                                    mine={message.mine}
+                                ></MessageBox>
+                            ))}
                     </div>
 
                     <div className={classes.inputContainer}>
