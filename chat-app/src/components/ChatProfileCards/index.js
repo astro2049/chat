@@ -58,7 +58,7 @@ export default function ChatProfileCards(props) {
 
     const skeletons = () => {
         let chatSkeletons = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             chatSkeletons.push(
                 <ListItem sx={{ height: 82 }} key={i} disablePadding>
                     <ListItemButton
