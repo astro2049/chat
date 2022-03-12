@@ -148,7 +148,6 @@ export default function Chat(props) {
         useState(false);
     const [notificationsSubscribed, setNotificationsSubscribed] =
         useState(false);
-    const [subscribedChatrooms, setSubscribedChatrooms] = useState([]);
     const [pageIsReady, setPageIsReady] = useState(false);
 
     const [rerender, setRerender] = useState(false);
@@ -182,6 +181,7 @@ export default function Chat(props) {
                         type: "private",
                         messages: [],
                         chatText: "",
+                        subscribed: false,
                     });
                 }
                 for (const chatRoom of response.data.chat_rooms) {
@@ -200,6 +200,7 @@ export default function Chat(props) {
                         type: "group",
                         messages: [],
                         chatText: "",
+                        subscribed: false,
                     });
                 }
                 setRooms([...currentRooms, ...newRooms]);
@@ -264,12 +265,7 @@ export default function Chat(props) {
         rooms.forEach((room) => {
             let id = room.id;
             let type = room.type;
-            if (
-                subscribedChatrooms.some(
-                    (chatRoom) =>
-                        chatRoom["id"] === id && chatRoom["type"] === type
-                )
-            ) {
+            if (room.subscribed) {
                 return;
             }
 
@@ -278,20 +274,14 @@ export default function Chat(props) {
                     "/topic/friends." + id,
                     onMessageReceived
                 );
+                room.subscribed = true;
             } else if (type === "group") {
                 stompClient.subscribe(
                     "/topic/chatrooms." + id,
                     onMessageReceived
                 );
+                room.subscribed = true;
             }
-
-            setSubscribedChatrooms((subscribedChatrooms) => [
-                ...subscribedChatrooms,
-                {
-                    id: id,
-                    type: type,
-                },
-            ]);
         });
     };
 
