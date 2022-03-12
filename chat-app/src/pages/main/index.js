@@ -8,7 +8,6 @@ import {
     Toolbar,
     Typography,
     Divider,
-    TextField,
     FormControl,
     InputLabel,
     Select,
@@ -21,6 +20,7 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import ChatProfileCards from "../../components/ChatProfileCards";
 import ChatRoomInfoPopOver from "../../components/ChatRoomInfoPopover";
+import ContentInput from "../../components/ContentInput";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
@@ -95,16 +95,6 @@ const useStyles = makeStyles(() => ({
         display: "flex",
         flexDirection: "column",
         overflowY: "scroll",
-    },
-    inputContainer: {
-        width: "100%",
-        height: inputContainerHeight,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "flex-end",
-        padding: 12,
-        borderTop: "1px solid lightgray",
     },
 }));
 
@@ -314,13 +304,6 @@ export default function Chat(props) {
 
     const onError = (err) => {
         console.log(err);
-    };
-
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            sendChatMessage();
-        }
     };
 
     async function sendChatMessage() {
@@ -539,33 +522,12 @@ export default function Chat(props) {
                             ))}
                     </div>
 
-                    <div className={classes.inputContainer}>
-                        <TextField
-                            variant="outlined"
-                            fullWidth
-                            multiline
-                            rows="7"
-                            value={activeChat ? activeChat.chatText : ""}
-                            onChange={(e) => {
-                                setActiveChat((prevState) => {
-                                    return {
-                                        ...prevState,
-                                        chatText: e.target.value,
-                                    };
-                                });
-                            }}
-                            onKeyDown={(e) => handleKeyDown(e)}
-                            disabled={!pageIsReady}
-                        ></TextField>
-                        <Button
-                            theme="primary"
-                            variant="outline"
-                            onClick={sendChatMessage}
-                            disabled={!pageIsReady}
-                        >
-                            {t("chat.sendButton")}
-                        </Button>
-                    </div>
+                    <ContentInput
+                        activeChat={activeChat}
+                        setActiveChat={setActiveChat}
+                        pageIsReady={pageIsReady}
+                        sendChatMessage={sendChatMessage}
+                    />
                 </div>
             </Drawer>
         </div>
