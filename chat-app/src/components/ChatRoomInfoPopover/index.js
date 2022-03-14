@@ -1,11 +1,23 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
-import { Popover, Typography } from "@mui/material";
+import {
+    Chip,
+    Divider,
+    Grid,
+    List,
+    ListItem,
+    Popover,
+    Typography,
+} from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     chatRoomInfo: {
-        padding: "10px",
+        width: 183,
+        paddingTop: "10px",
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        paddingBottom: "2px",
     },
     chatRoomInfoTitle: {
         paddingRight: "20px",
@@ -54,11 +66,73 @@ export default function ChatRoomInfoPopOver(props) {
                 <Typography variant="h6" className={classes.chatRoomInfoTitle}>
                     {t("chat.chatRoomInfo.title")}
                 </Typography>
-                <Typography style={{ marginTop: 5 }} variant="subtitle1">
-                    {t("chat.chatRoomInfo.type")}:{" "}
-                    {typeText[`${i18n.language}`][`${activeChat.type}`]}
-                </Typography>
-                <Typography variant="subtitle1">ID: {activeChat.id}</Typography>
+                <List disablePadding>
+                    <ListItem disableGutters>
+                        <Grid container>
+                            <Grid
+                                item
+                                xs={6}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                }}
+                            >
+                                <Typography variant="subtitle1">
+                                    {t("chat.chatRoomInfo.type")}
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={6}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                }}
+                            >
+                                <Chip
+                                    variant="outlined"
+                                    label={
+                                        typeText[`${i18n.language}`][
+                                            `${activeChat.type}`
+                                        ]
+                                    }
+                                    color={
+                                        activeChat.type === "private"
+                                            ? "primary"
+                                            : "secondary"
+                                    }
+                                />
+                            </Grid>
+                        </Grid>
+                    </ListItem>
+                    <Divider />
+                    <ListItem disableGutters>
+                        <Grid container>
+                            <Grid
+                                item
+                                xs={6}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                }}
+                            >
+                                <Typography variant="subtitle1">ID</Typography>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={6}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                }}
+                            >
+                                <Typography variant="h6">
+                                    {activeChat.id}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </ListItem>
+                </List>
             </div>
         </Popover>
     );
