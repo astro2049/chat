@@ -52,7 +52,7 @@ class UserTest extends TestCase
         $this->assertSame($user->name, $response['name']);
     }
 
-    public function test_user_can_be_updated()
+    public function test_user_can_add_a_friend()
     {
         /** @var User $me */
         $me = User::factory()->create();
@@ -63,13 +63,11 @@ class UserTest extends TestCase
             config('notification.service_url') . '/api/notifications/new-friend' => Http::response()
         ]);
 
-        $this->patchJson('api/users/1', [
-            'newFriend' => $friend->name
-        ])->assertUnauthorized();
+        $this->post('api/users/1/friends/' . $friend->name)->assertUnauthorized();
 
-        $this->actingAs($me)->patchJson('api/users/1', [
-            'newFriend' => $friend->name
-        ])->assertNoContent();
+        $this->actingAs($me);
+        $this->post('api/users/1/friends/' . $friend->name)->assertNoContent();
+        $this->post('api/users/1/friends/' . $friend->name)->assertForbidden();
 
         $this->assertSame($me->friends()->get()[0]->name, $friend->name);
         $this->assertSame($friend->friends()->get()[0]->name, $me->name);
