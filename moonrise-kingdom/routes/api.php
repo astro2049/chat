@@ -21,6 +21,7 @@ Route::post('login', [LoginController::class, 'authenticate']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/me', [UserController::class, 'me']);
-    Route::patch('users/{user}', [UserController::class, 'update']);
+    Route::post('users/{user}/friends/{friend}', [UserController::class, 'addFriend']);
+    Route::delete('users/{user}/friends/{friend}', [UserController::class, 'deleteFriend']);
     Route::resource('chatRooms', ChatRoomController::class);
 });
