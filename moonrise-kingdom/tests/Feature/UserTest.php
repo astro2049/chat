@@ -72,4 +72,24 @@ class UserTest extends TestCase
         $this->assertSame($me->friends()->get()[0]->name, $friend->name);
         $this->assertSame($friend->friends()->get()[0]->name, $me->name);
     }
+
+    public function test_user_can_delete_a_friend()
+    {
+        /** @var User $me */
+        $me = User::factory()->create();
+        /** @var User $friend */
+        $friend = User::factory()->create();
+
+        $me->friends()->save($friend);
+        $friend->friends()->save($me);
+
+        $this->delete('api/users/1/friends/' . $friend->name)->assertUnauthorized();
+
+        $this->actingAs($me);
+        $this->delete('api/users/1/friends/' . $friend->name)->assertNoContent();
+        $this->delete('api/users/1/friends/' . $friend->name)->assertForbidden();
+
+        $this->assertEmpty($me->friends()->get());
+        $this->assertEmpty($friend->friends()->get());
+    }
 }
