@@ -53,14 +53,15 @@ export default function ChatProfileCards(props) {
     const activeChat = props.activeChat;
     const setActiveChat = props.setActiveChat;
     const pageIsReady = props.pageIsReady;
+    const skeletonsCount = props.skeletonsCount;
 
     const renderChatList = chats && pageIsReady;
 
     const skeletons = () => {
         let chatSkeletons = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < skeletonsCount; i++) {
             chatSkeletons.push(
-                <ListItem sx={{ height: 82 }} key={i} disablePadding>
+                <ListItem sx={{ height: 86 }} key={i} disablePadding>
                     <ListItemButton
                         sx={{ height: "100%" }}
                         alignItems="space-between"
@@ -95,7 +96,7 @@ export default function ChatProfileCards(props) {
                                     <div>
                                         <Skeleton
                                             variant="text"
-                                            width={166}
+                                            width={186}
                                             height={32}
                                         />
                                     </div>

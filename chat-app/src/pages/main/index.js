@@ -139,6 +139,7 @@ export default function Chat(props) {
     const [notificationsSubscribed, setNotificationsSubscribed] =
         useState(false);
     const [pageIsReady, setPageIsReady] = useState(false);
+    const [skeletonsCount, setSkeletonsCount] = useState();
 
     const [rerender, setRerender] = useState(false);
     const rerenderRef = useRef();
@@ -147,6 +148,11 @@ export default function Chat(props) {
     const pleaseRerender = () => {
         setRerender(!rerenderRef.current);
     };
+
+    useEffect(() => {
+        let height = window.innerHeight - appBarHeight - inputContainerHeight;
+        setSkeletonsCount(height / 86 - 1);
+    }, []);
 
     const setChatrooms = () => {
         axios
@@ -398,6 +404,7 @@ export default function Chat(props) {
                             activeChat={activeChat}
                             setActiveChat={setActiveChat}
                             pageIsReady={pageIsReady}
+                            skeletonsCount={skeletonsCount}
                         ></ChatProfileCards>
                     </div>
 
