@@ -44,21 +44,10 @@ class UserController extends Controller
      * @throws ValidationException
      * @throws AuthorizationException
      */
-    public function update(Request $request, User $user): Response
+    public function addFriend(User $user, User $friend): Response
     {
-        $this->validate($request, [
-            'newFriend' => ['required', 'string']
-        ]);
-
         $this->authorize('operatingOnMyself', $user);
 
-        $friendName = $request->input('newFriend');
-
-        /** @var User $friend */
-        $friend = User::query()->where('name', $friendName)->first();
-        if ($friend == null) {
-            abort(403, 'target friend does not exist');
-        }
         if ($user->name == $friend->name) {
             abort(403, 'nah');
         }
@@ -96,7 +85,7 @@ class UserController extends Controller
 
         Http::withoutVerifying()
             ->Post(config('notification.service_url') . '/api/notifications/new-friend', [
-                'name' => $friendName
+                'name' => $friend->name
             ]);
 
         return response()->noContent();
