@@ -94,4 +94,29 @@ class UserController extends Controller
             )
             ->get();
     }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function deleteFriend(User $user, User $friend): Response
+    {
+        $this->authorize('operatingOnMyself', $user);
+
+        if ($user->name == $friend->name) {
+            abort(403, 'nah');
+        }
+
+        $friendPivots = $this->findFriendPivots($user, $friend);
+
+        // abort if friendship is not established
+        if ($friendPivots->isEmpty()) {
+            abort(403, 'not friends yet');
+        }
+
+        foreach ($friendPivots as $friendPivot) {
+            $friendPivot->delete();
+        }
+
+        return response()->noContent();
+    }
 }
