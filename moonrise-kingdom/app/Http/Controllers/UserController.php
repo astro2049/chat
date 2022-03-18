@@ -41,7 +41,6 @@ class UserController extends Controller
     }
 
     /**
-     * @throws ValidationException
      * @throws AuthorizationException
      */
     public function addFriend(User $user, User $friend): Response
@@ -52,22 +51,11 @@ class UserController extends Controller
             abort(403, 'nah');
         }
 
-        $friendPivot = FriendPivot::query()
-            ->where(
-                fn ($q) => $q
-                    ->where(
-                        fn ($q1) => $q1->where('host_user_id', $user->id)
-                            ->where('guest_user_id', $friend->id)
-                    )->orWhere(
-                        fn ($q2) => $q2->where('host_user_id', $friend->id)
-                            ->where('guest_user_id', $user->id)
-                    )
-            )
-            ->first();
+        $friendPivots = $this->findFriendPivots($user, $friend);
 
-        // return if friendship is already established
-        if ($friendPivot != null) {
-            return response()->noContent();
+        // abort if friendship is already established
+        if ($friendPivots->isNotEmpty()) {
+            abort(403, 'already friends :)');
         }
 
         /** @var FriendPivot $newFriendPivot0 */
@@ -89,5 +77,21 @@ class UserController extends Controller
             ]);
 
         return response()->noContent();
+    }
+
+    private function findFriendPivots(User $user, User $friend): Collection|array
+    {
+        return FriendPivot::query()
+            ->where(
+                fn ($q) => $q
+                    ->where(
+                        fn ($q1) => $q1->where('host_user_id', $user->id)
+                            ->where('guest_user_id', $friend->id)
+                    )->orWhere(
+                        fn ($q2) => $q2->where('host_user_id', $friend->id)
+                            ->where('guest_user_id', $user->id)
+                    )
+            )
+            ->get();
     }
 }
