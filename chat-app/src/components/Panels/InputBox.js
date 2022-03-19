@@ -54,46 +54,29 @@ export default function CustomizedInputBase(props) {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        let route;
+        let method;
+        let data = {};
         switch (activeOption) {
             case "New Friend":
-                launchCommand(username, inputText, "new friend!");
+                route = "/users/" + userId + "/friends/" + inputText;
+                method = "POST";
                 break;
             case "Join Chatroom":
-                launchCommand(username, inputText, "join chatroom!");
+                route = "/chatRooms/" + inputText + "/members";
+                method = "POST";
                 break;
             case "Create Chatroom":
-                launchCommand(username, inputText, "new chatroom!");
-                break;
-            default:
-                console.log("check parameter");
-        }
-        setInputText("");
-    };
-
-    const launchCommand = (username, guest, type) => {
-        let requestAddress;
-        let method = "";
-        let data = {};
-        switch (type) {
-            case "new friend!":
-                requestAddress = "/users/" + userId;
-                method = "PATCH";
-                data["newFriend"] = guest;
-                break;
-            case "join chatroom!":
-                requestAddress = "/chatRooms/" + guest;
-                method = "PATCH";
-                break;
-            case "new chatroom!":
-                requestAddress = "/chatRooms";
+                route = "/chatRooms";
                 method = "POST";
-                data["name"] = guest;
+                data["name"] = inputText;
                 break;
             default:
+                break;
         }
         axios
             .request({
-                url: REACT_APP_PROFILE_SERVER_ADDRESS + requestAddress,
+                url: REACT_APP_PROFILE_SERVER_ADDRESS + route,
                 method: method,
                 data: data,
             })
@@ -102,6 +85,7 @@ export default function CustomizedInputBase(props) {
                     setChatrooms();
                 }
             });
+        setInputText("");
     };
 
     return (
