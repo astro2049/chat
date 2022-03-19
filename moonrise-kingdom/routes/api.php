@@ -23,5 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/me', [UserController::class, 'me']);
     Route::post('users/{user}/friends/{friend}', [UserController::class, 'addFriend']);
     Route::delete('users/{user}/friends/{friend}', [UserController::class, 'deleteFriend']);
-    Route::resource('chatRooms', ChatRoomController::class);
+    Route::resource('chatRooms', ChatRoomController::class)->only('store');
+    Route::post('chatRooms/{chatRoom}/members', [ChatRoomController::class, 'addMember']);
+    Route::delete('chatRooms/{chatRoom}/members', [ChatRoomController::class, 'deleteMember']);
 });
