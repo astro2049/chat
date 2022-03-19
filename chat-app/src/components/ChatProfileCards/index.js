@@ -126,6 +126,7 @@ export default function ChatProfileCards(props) {
                               alignItems="space-between"
                               onClick={() => setActiveChat(chat)}
                               selected={
+                                  activeChat &&
                                   activeChat.id === chat.id &&
                                   activeChat.type === chat.type
                               }
