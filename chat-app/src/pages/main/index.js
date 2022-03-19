@@ -18,6 +18,7 @@ import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import ChatProfileCards from "../../components/ChatProfileCards";
+import ChatIcon from "@mui/icons-material/Chat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentInput from "../../components/ContentInput";
 import MessageZone from "../../components/MessageZone";
@@ -469,9 +470,19 @@ export default function Chat(props) {
                                             variant="text"
                                             shape="square"
                                             icon={
-                                                <MoreVertIcon
-                                                    sx={{ color: "#FFCF36" }}
-                                                />
+                                                displayActivechatInfo ? (
+                                                    <ChatIcon
+                                                        sx={{
+                                                            color: "#FFCF36",
+                                                        }}
+                                                    ></ChatIcon>
+                                                ) : (
+                                                    <MoreVertIcon
+                                                        sx={{
+                                                            color: "#FFCF36",
+                                                        }}
+                                                    />
+                                                )
                                             }
                                             onClick={() => {
                                                 setDisplayActivechatInfo(

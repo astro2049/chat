@@ -17,10 +17,6 @@
     },
     "chat": {
         "languageIndicator": "Language",
-        "chatRoomInfo": {
-            "title": "Chat Room Info",
-            "type": "Type"
-        },
         "panels": {
             "createChatroom": {
                 "name": "Create Chatroom",
@@ -43,5 +39,11 @@
             "group": "chat room"
         },
         "noMessages": "- no messages -"
+    },
+    "MessageZone": {
+        "chatInfo": {
+            "header": "Chat Information",
+            "type": "Type"
+        }
     }
 }
