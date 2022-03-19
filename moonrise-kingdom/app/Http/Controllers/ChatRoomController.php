@@ -20,22 +20,22 @@ class ChatRoomController extends Controller
 
         /** @var ChatRoom $chatRoom */
         $chatRoom = ChatRoom::query()->create($request->all());
-        $this->addUserToChatroom($chatRoom);
+        $chatRoom->members()->syncWithoutDetaching(auth()->user()->id);
 
         return $chatRoom->refresh();
     }
 
-    public function update(ChatRoom $chatRoom): Response
+    public function addMember(ChatRoom $chatRoom): Response
     {
-        $this->addUserToChatroom($chatRoom);
+        $chatRoom->members()->syncWithoutDetaching(auth()->user()->id);
 
         return response()->noContent();
     }
 
-    public function addUserToChatroom(ChatRoom $chatRoom): ChatRoom
+    public function deleteMember(ChatRoom $chatRoom): Response
     {
-        $chatRoom->members()->syncWithoutDetaching(auth()->user()->id);
+        $chatRoom->members()->detach(auth()->user()->id);
 
-        return $chatRoom->refresh();
+        return response()->noContent();
     }
 }
