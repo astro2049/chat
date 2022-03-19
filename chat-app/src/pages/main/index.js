@@ -19,7 +19,7 @@ import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import ChatProfileCards from "../../components/ChatProfileCards";
-import ChatRoomInfoPopOver from "../../components/ChatRoomInfoPopover";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentInput from "../../components/ContentInput";
 
 const appBarHeight = 80;
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
         borderTop: "2px solid black",
     },
     appBarContentContainer: {
-        height: appBarHeight,
+        height: "100%",
         width: "100%",
         display: "flex",
         justifyContent: "space-between",
@@ -44,9 +44,6 @@ const useStyles = makeStyles(() => ({
     chatroomName: {
         display: "flex",
         alignItems: "center",
-    },
-    activeChatButton: {
-        textTransform: "none",
     },
     drawerOnLeft: {
         width: menuWidth,
@@ -352,18 +349,6 @@ export default function Chat(props) {
         }
     };
 
-    // for popover
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    //
-
     return (
         <div>
             <CssBaseline />
@@ -473,27 +458,32 @@ export default function Chat(props) {
                                         animation="wave"
                                     />
                                 ) : (
-                                    <div>
-                                        <Button
-                                            theme="default"
-                                            variant="text"
-                                            size="large"
-                                            className={classes.activeChatButton}
-                                            onClick={handleClick}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="h4"
+                                            noWrap
+                                            sx={{
+                                                marginLeft: 2,
+                                                marginRight: 1,
+                                            }}
+                                            style={{ color: "#FFCF36" }}
                                         >
-                                            <Typography
-                                                variant="h4"
-                                                noWrap
-                                                style={{ color: "#FFCF36" }}
-                                            >
-                                                {activeChat.name}
-                                            </Typography>
-                                        </Button>
-                                        <ChatRoomInfoPopOver
-                                            anchorEl={anchorEl}
-                                            handleClose={handleClose}
-                                            activeChat={activeChat}
-                                        />
+                                            {activeChat.name}
+                                        </Typography>
+                                        <Button
+                                            variant="text"
+                                            shape="square"
+                                            icon={
+                                                <MoreVertIcon
+                                                    sx={{ color: "#FFCF36" }}
+                                                />
+                                            }
+                                        ></Button>
                                     </div>
                                 )}
                             </div>
