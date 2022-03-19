@@ -14,13 +14,13 @@ import {
     MenuItem,
     Skeleton,
 } from "@mui/material";
-import MessageBox from "../../components/Message/index";
 import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import ChatProfileCards from "../../components/ChatProfileCards";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentInput from "../../components/ContentInput";
+import MessageZone from "../../components/MessageZone";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
@@ -81,17 +81,6 @@ const useStyles = makeStyles(() => ({
     },
     languageSelector: {
         justifySelf: "flex-end",
-    },
-    messagesArea: {
-        width: "100%",
-        height: `calc(100% - ${appBarHeight}px - ${inputContainerHeight}px)`,
-        paddingTop: 20,
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom: 25,
-        display: "flex",
-        flexDirection: "column",
-        overflowY: "scroll",
     },
 }));
 
@@ -506,18 +495,7 @@ export default function Chat(props) {
                         </Toolbar>
                     </AppBar>
 
-                    <div id="dialogBox" className={classes.messagesArea}>
-                        {activeChat &&
-                            activeChat.messages.map((message, index) => (
-                                <MessageBox
-                                    key={index}
-                                    username={message.sender}
-                                    content={message.content}
-                                    time={message.time}
-                                    mine={message.mine}
-                                ></MessageBox>
-                            ))}
-                    </div>
+                    <MessageZone activeChat={activeChat} />
 
                     <ContentInput
                         activeChat={activeChat}
