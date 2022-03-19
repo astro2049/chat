@@ -17,10 +17,6 @@
     },
     "chat": {
         "languageIndicator": "语言",
-        "chatRoomInfo": {
-            "title": "聊天信息",
-            "type": "分类"
-        },
         "panels": {
             "createChatroom": {
                 "name": "创建聊天室",
@@ -43,5 +39,11 @@
             "group": "聊天室"
         },
         "noMessages": "- 没有消息 -"
+    },
+    "MessageZone": {
+        "chatInfo": {
+            "header": "聊天信息",
+            "type": "类型"
+        }
     }
 }
