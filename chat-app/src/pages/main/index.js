@@ -117,6 +117,7 @@ export default function Chat(props) {
     const [rooms, setRooms] = useState();
     const roomsRef = useRef();
     roomsRef.current = rooms;
+    const [displayActivechatInfo, setDisplayActivechatInfo] = useState(false);
     const [activeChat, setActiveChat] = useState();
     const activeChatRef = useRef();
     activeChatRef.current = activeChat;
@@ -472,6 +473,11 @@ export default function Chat(props) {
                                                     sx={{ color: "#FFCF36" }}
                                                 />
                                             }
+                                            onClick={() => {
+                                                setDisplayActivechatInfo(
+                                                    !displayActivechatInfo
+                                                );
+                                            }}
                                         ></Button>
                                     </div>
                                 )}
@@ -495,12 +501,16 @@ export default function Chat(props) {
                         </Toolbar>
                     </AppBar>
 
-                    <MessageZone activeChat={activeChat} />
+                    <MessageZone
+                        activeChat={activeChat}
+                        displayActivechatInfo={displayActivechatInfo}
+                    />
 
                     <ContentInput
                         activeChat={activeChat}
                         setActiveChat={setActiveChat}
                         pageIsReady={pageIsReady}
+                        displayActivechatInfo={displayActivechatInfo}
                         sendChatMessage={sendChatMessage}
                     />
                 </div>
