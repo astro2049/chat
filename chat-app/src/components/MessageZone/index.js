@@ -2,8 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import {
+    Button,
     Chip,
-    Grid,
     List,
     ListItem,
     ListItemIcon,
@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 20,
         width: 300,
         height: "100%",
+        paddingBottom: 5,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
     },
     dialogContainer: {
         width: "100%",
@@ -103,6 +107,45 @@ export default function MessageZone(props) {
                             <Typography variant="body1">
                                 {activeChat.id}
                             </Typography>
+                        </ListItem>
+                    </List>
+                    <List
+                        subheader={
+                            <ListSubheader component="div">
+                                {t("MessageZone.chatInfo.dangerZone.header")}
+                            </ListSubheader>
+                        }
+                    >
+                        <ListItem
+                            secondaryAction={
+                                <Button
+                                    variant="outlined"
+                                    color="error"
+                                    sx={{ textTransform: "none" }}
+                                >
+                                    {t(
+                                        `MessageZone.chatInfo.dangerZone.${
+                                            activeChat.type === "private"
+                                                ? "delete"
+                                                : "leave"
+                                        }`
+                                    ) +
+                                        " " +
+                                        activeChat.name}
+                                </Button>
+                            }
+                        >
+                            <ListItemIcon>
+                                <Typography body1>
+                                    {t(
+                                        `MessageZone.chatInfo.dangerZone.${
+                                            activeChat.type === "private"
+                                                ? "delete"
+                                                : "leave"
+                                        }`
+                                    )}
+                                </Typography>
+                            </ListItemIcon>
                         </ListItem>
                     </List>
                 </Paper>

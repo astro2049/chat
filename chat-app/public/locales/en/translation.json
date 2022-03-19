@@ -43,7 +43,12 @@
     "MessageZone": {
         "chatInfo": {
             "header": "Chat Information",
-            "type": "Type"
+            "type": "Type",
+            "dangerZone": {
+                "header": "Danger Zone",
+                "delete": "Delete",
+                "leave": "Leave"
+            }
         }
     }
 }

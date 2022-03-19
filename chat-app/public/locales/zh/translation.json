@@ -43,7 +43,12 @@
     "MessageZone": {
         "chatInfo": {
             "header": "聊天信息",
-            "type": "类型"
+            "type": "类型",
+            "dangerZone": {
+                "header": "危险区域",
+                "delete": "删除",
+                "leave": "离开"
+            }
         }
     }
 }
