@@ -5,6 +5,7 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { Paper, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import global from "../../utils/globalVars";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -18,8 +19,6 @@ const useStyles = makeStyles((theme) => ({
         flex: 1,
     },
 }));
-
-const { REACT_APP_PROFILE_SERVER_ADDRESS } = process.env;
 
 export default function CustomizedInputBase(props) {
     const classes = useStyles();
@@ -76,7 +75,7 @@ export default function CustomizedInputBase(props) {
         }
         axios
             .request({
-                url: REACT_APP_PROFILE_SERVER_ADDRESS + route,
+                url: global.PROFILE_SERVER_ADDRESS + route,
                 method: method,
                 data: data,
             })
