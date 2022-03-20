@@ -177,6 +177,7 @@ export default function Chat(props) {
             .then((response) => {
                 let currentRooms =
                     roomsRef.current === undefined ? [] : roomsRef.current;
+
                 let currentFriends = currentRooms.filter(
                     (room) => room.type === global.CHAT_TYPE_FRIEND
                 );
@@ -189,7 +190,6 @@ export default function Chat(props) {
                     response.data.friends,
                     "friends"
                 );
-
                 let comeAndGoGroupChats = getComeAndGoChats(
                     currentGroupChats,
                     response.data.chat_rooms,
@@ -199,9 +199,9 @@ export default function Chat(props) {
                 console.log(comeAndGoFriends);
                 console.log(comeAndGoGroupChats);
 
-                let newRooms = [];
+                let comers = [];
                 for (const friend of comeAndGoFriends.comers) {
-                    newRooms.push({
+                    comers.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: global.CHAT_TYPE_FRIEND,
@@ -211,7 +211,7 @@ export default function Chat(props) {
                     });
                 }
                 for (const groupChat of comeAndGoGroupChats.comers) {
-                    newRooms.push({
+                    comers.push({
                         id: groupChat.id,
                         name: groupChat.name,
                         type: global.CHAT_TYPE_GROUP_CHAT,
@@ -221,12 +221,31 @@ export default function Chat(props) {
                     });
                 }
 
-                setRooms([
-                    ...currentFriends,
-                    ...currentGroupChats,
-                    ...newRooms,
-                ]);
+                let goers = [
+                    ...comeAndGoFriends.goers,
+                    ...comeAndGoGroupChats.goers,
+                ];
+                unsubscribeChats(goers);
+
+                let survivors = [...currentRooms].filter(
+                    (room) =>
+                        !goers.some(
+                            (goer) =>
+                                goer.id === room.id && goer.type && room.type
+                        )
+                );
+
+                console.log(survivors);
+
+                setRooms([...survivors, ...comers]);
             });
+    };
+
+    const unsubscribeChats = (goers) => {
+        for (const goer of goers) {
+            // TODO
+            // unsubscribe this goer chat
+        }
     };
 
     useEffect(setChatrooms, [username]); // set chatrooms after entering the chat page
