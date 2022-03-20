@@ -523,6 +523,8 @@ export default function Chat(props) {
                     <MessageZone
                         activeChat={activeChat}
                         displayActivechatInfo={displayActivechatInfo}
+                        userId={userId}
+                        setChatrooms={setChatrooms}
                     />
 
                     <ContentInput

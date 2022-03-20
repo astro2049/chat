@@ -11,6 +11,7 @@ import {
     Paper,
     Typography,
 } from "@mui/material";
+import axios from "axios";
 import MessageBox from "../Message";
 
 const appBarHeight = 80;
@@ -49,6 +50,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const { REACT_APP_PROFILE_SERVER_ADDRESS } = process.env;
+
 export default function MessageZone(props) {
     const classes = useStyles();
 
@@ -57,6 +60,8 @@ export default function MessageZone(props) {
 
     const activeChat = props.activeChat;
     const displayActivechatInfo = props.displayActivechatInfo;
+    const userId = props.userId;
+    const setChatrooms = props.setChatrooms;
 
     const typeText = {
         en: {
@@ -67,6 +72,30 @@ export default function MessageZone(props) {
             private: "好友",
             group: "聊天组",
         },
+    };
+
+    const deleteChat = () => {
+        let route;
+        switch (activeChat.type) {
+            case "private":
+                route = "/users/" + userId + "/friends/" + activeChat.name;
+                break;
+            case "group":
+                route = "/chatRooms/" + activeChat.id + "/members";
+                break;
+            default:
+                break;
+        }
+        axios
+            .request({
+                url: REACT_APP_PROFILE_SERVER_ADDRESS + route,
+                method: "DELETE",
+            })
+            .then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    setChatrooms();
+                }
+            });
     };
 
     const chatInfo = () => {
@@ -122,6 +151,7 @@ export default function MessageZone(props) {
                                     variant="outlined"
                                     color="error"
                                     sx={{ textTransform: "none" }}
+                                    onClick={() => deleteChat()}
                                 >
                                     {t(
                                         `MessageZone.chatInfo.dangerZone.${
