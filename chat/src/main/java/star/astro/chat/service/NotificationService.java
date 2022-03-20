@@ -1,5 +1,7 @@
 package star.astro.chat.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -34,9 +36,22 @@ public class NotificationService {
         sendMessage(username, notification);
     }
 
+    public void noticeUserOfAnEndedFriendship(String username, String friendName) {
+        JSONObject content = new JSONObject();
+        content.put("friend_name", friendName);
+        Notification notification = new Notification(
+                "system",
+                username,
+                NotificationType.ENDED_FRIENDSHIP.getType(),
+                JSON.toJSONString(content),
+                timeService.getUnixTime());
+        sendMessage(username, notification);
+    }
+
     public enum NotificationType {
         ACKNOWLEDGE_SUBSCRIPTION(0),
-        NEW_CHATROOM(1);
+        NEW_CHATROOM(1),
+        ENDED_FRIENDSHIP(2);
 
         private final int type;
 

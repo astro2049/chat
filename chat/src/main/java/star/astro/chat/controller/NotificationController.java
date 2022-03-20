@@ -26,4 +26,13 @@ public class NotificationController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/ended-friendship")
+    public ResponseEntity<?> noticeUserOfAnEndedFriendship(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+        String username = (String) params.get("guest_name");
+        String friendName = (String) params.get("initiator_name");
+        notificationService.noticeUserOfAnEndedFriendship(username, friendName);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
