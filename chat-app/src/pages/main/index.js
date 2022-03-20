@@ -306,6 +306,14 @@ export default function Chat(props) {
             setPageIsReady(true);
         } else if (notice.type === 1) {
             setChatrooms();
+        } else if (notice.type === 2) {
+            let content = JSON.parse(notice.content);
+            if (content.friend_name === activeChatRef.current.name) {
+                // if the ended friendship is the current one
+                setDisplayActiveChatInfo(false);
+                setActiveChat(undefined);
+            }
+            setChatrooms();
         }
     };
 

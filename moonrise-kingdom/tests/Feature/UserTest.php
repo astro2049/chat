@@ -80,6 +80,10 @@ class UserTest extends TestCase
         /** @var User $friend */
         $friend = User::factory()->create();
 
+        Http::fake([
+            config('notification.service_url') . '/api/notifications/ended-friendship' => Http::response()
+        ]);
+
         $me->friends()->save($friend);
         $friend->friends()->save($me);
 

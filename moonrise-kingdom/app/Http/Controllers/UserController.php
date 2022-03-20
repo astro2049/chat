@@ -117,6 +117,12 @@ class UserController extends Controller
             $friendPivot->delete();
         }
 
+        Http::withoutVerifying()
+            ->Post(config('notification.service_url') . '/api/notifications/ended-friendship', [
+                'guest_name' => $friend->name,
+                'initiator_name' => $user->name
+            ]);
+
         return response()->noContent();
     }
 }
