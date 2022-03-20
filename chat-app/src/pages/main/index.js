@@ -86,9 +86,6 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const { REACT_APP_PROFILE_SERVER_ADDRESS, REACT_APP_CHAT_SERVER_ADDRESS } =
-    process.env;
-
 var stompClient = null;
 
 const scrollToDialogBoxBottom = () => {
@@ -146,7 +143,7 @@ export default function Chat(props) {
 
     const setChatrooms = () => {
         axios
-            .get(REACT_APP_PROFILE_SERVER_ADDRESS + "/users/me")
+            .get(global.PROFILE_SERVER_ADDRESS + "/users/me")
             .then((response) => {
                 let currentRooms =
                     roomsRef.current === undefined ? [] : roomsRef.current;
@@ -222,7 +219,7 @@ export default function Chat(props) {
     const initializeStompCommunication = () => {
         const Stomp = require("stompjs");
         var SockJS = require("sockjs-client");
-        SockJS = new SockJS(REACT_APP_CHAT_SERVER_ADDRESS + "/chat");
+        SockJS = new SockJS(global.CHAT_SERVER_ADDRESS + "/chat");
         stompClient = Stomp.over(SockJS);
         stompClient.connect({ username: username }, onConnected, onError);
     };
@@ -310,7 +307,7 @@ export default function Chat(props) {
     };
 
     async function sendChatMessage() {
-        let response = await axios.get(REACT_APP_CHAT_SERVER_ADDRESS + "/time");
+        let response = await axios.get(global.CHAT_SERVER_ADDRESS + "/time");
         sendMessage(response.data.UTCTime.UnixTime);
     }
 

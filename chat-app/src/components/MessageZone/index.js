@@ -51,8 +51,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const { REACT_APP_PROFILE_SERVER_ADDRESS } = process.env;
-
 export default function MessageZone(props) {
     const classes = useStyles();
 
@@ -89,7 +87,7 @@ export default function MessageZone(props) {
         }
         axios
             .request({
-                url: REACT_APP_PROFILE_SERVER_ADDRESS + route,
+                url: global.PROFILE_SERVER_ADDRESS + route,
                 method: "DELETE",
             })
             .then((response) => {
