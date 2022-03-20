@@ -88,6 +88,36 @@ const useStyles = makeStyles(() => ({
 
 var stompClient = null;
 
+const getComeAndGoChats = (chats, incomingChats, type) => {
+    let comeAndGoChats = [];
+    if (type === "friends") {
+        comeAndGoChats.comers = incomingChats.filter(
+            (incomingChat) =>
+                !chats.some((chat) => chat.id === incomingChat.pivot.duet_id)
+        );
+        comeAndGoChats.goers = chats.filter(
+            (chat) =>
+                !incomingChats.some(
+                    (incomingChat) => incomingChat.pivot.duet_id === chat.id
+                )
+        );
+        return comeAndGoChats;
+    } else if (type === "group chats") {
+        comeAndGoChats.comers = incomingChats.filter(
+            (incomingChat) => !chats.some((chat) => chat.id === incomingChat.id)
+        );
+        comeAndGoChats.goers = chats.filter(
+            (chat) =>
+                !incomingChats.some(
+                    (incomingChat) => incomingChat.id === chat.id
+                )
+        );
+        return comeAndGoChats;
+    } else {
+        return;
+    }
+};
+
 const scrollToDialogBoxBottom = () => {
     var element = document.getElementById("dialogBox");
     element.scrollTop = element.scrollHeight;
@@ -147,17 +177,30 @@ export default function Chat(props) {
             .then((response) => {
                 let currentRooms =
                     roomsRef.current === undefined ? [] : roomsRef.current;
+                let currentFriends = currentRooms.filter(
+                    (room) => room.type === global.CHAT_TYPE_FRIEND
+                );
+                let currentGroupChats = currentRooms.filter(
+                    (room) => room.type === global.CHAT_TYPE_GROUP_CHAT
+                );
+
+                let comeAndGoFriends = getComeAndGoChats(
+                    currentFriends,
+                    response.data.friends,
+                    "friends"
+                );
+
+                let comeAndGoGroupChats = getComeAndGoChats(
+                    currentGroupChats,
+                    response.data.chat_rooms,
+                    "group chats"
+                );
+
+                console.log(comeAndGoFriends);
+                console.log(comeAndGoGroupChats);
+
                 let newRooms = [];
-                for (const friend of response.data.friends) {
-                    if (
-                        currentRooms.some(
-                            (currentRoom) =>
-                                currentRoom.id === friend.pivot.duet_id &&
-                                currentRoom.type === global.CHAT_TYPE_FRIEND
-                        )
-                    ) {
-                        continue;
-                    }
+                for (const friend of comeAndGoFriends.comers) {
                     newRooms.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
@@ -167,26 +210,22 @@ export default function Chat(props) {
                         subscribed: false,
                     });
                 }
-                for (const chatRoom of response.data.chat_rooms) {
-                    if (
-                        currentRooms.some(
-                            (currentRoom) =>
-                                currentRoom.id === chatRoom.id &&
-                                currentRoom.type === global.CHAT_TYPE_GROUP_CHAT
-                        )
-                    ) {
-                        continue;
-                    }
+                for (const groupChat of comeAndGoGroupChats.comers) {
                     newRooms.push({
-                        id: chatRoom.id,
-                        name: chatRoom.name,
+                        id: groupChat.id,
+                        name: groupChat.name,
                         type: global.CHAT_TYPE_GROUP_CHAT,
                         messages: [],
                         chatText: "",
                         subscribed: false,
                     });
                 }
-                setRooms([...currentRooms, ...newRooms]);
+
+                setRooms([
+                    ...currentFriends,
+                    ...currentGroupChats,
+                    ...newRooms,
+                ]);
             });
     };
 
