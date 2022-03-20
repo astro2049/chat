@@ -56,7 +56,7 @@ export default function ContentInput(props) {
                 }}
                 onKeyDown={(e) => handleKeyDown(e)}
                 disabled={!pageIsReady || displayActiveChatInfo}
-            ></TextField>
+            />
             <Button
                 theme="primary"
                 variant="outline"

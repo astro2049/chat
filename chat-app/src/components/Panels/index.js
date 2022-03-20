@@ -92,10 +92,9 @@ export default function SimpleBreadcrumbs(props) {
                 <InputBox
                     activeOption={activeOption}
                     userId={props.userId}
-                    username={props.username}
                     setChatrooms={setChatrooms}
                     pageIsReady={pageIsReady}
-                ></InputBox>
+                />
             </div>
         </div>
     );

@@ -445,15 +445,14 @@ export default function Chat(props) {
                             setActiveChat={setActiveChat}
                             pageIsReady={pageIsReady}
                             skeletonsCount={skeletonsCount}
-                        ></ChatProfileCards>
+                        />
                     </div>
 
                     <Panels
                         userId={userId}
-                        username={username}
                         setChatrooms={setChatrooms}
                         pageIsReady={pageIsReady}
-                    ></Panels>
+                    />
 
                     <div
                         style={{
@@ -539,7 +538,7 @@ export default function Chat(props) {
                                                         sx={{
                                                             color: "#FFCF36",
                                                         }}
-                                                    ></ChatIcon>
+                                                    />
                                                 ) : (
                                                     <MoreVertIcon
                                                         sx={{
@@ -553,7 +552,7 @@ export default function Chat(props) {
                                                     !displayActiveChatInfo
                                                 );
                                             }}
-                                        ></Button>
+                                        />
                                     </div>
                                 )}
                             </div>

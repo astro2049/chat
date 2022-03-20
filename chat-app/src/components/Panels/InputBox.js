@@ -27,7 +27,6 @@ export default function CustomizedInputBase(props) {
     const { t, i18n } = useTranslation();
 
     const userId = props.userId;
-    const username = props.username;
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
     const pageIsReady = props.pageIsReady;
