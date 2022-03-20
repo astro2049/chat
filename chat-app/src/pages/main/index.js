@@ -196,9 +196,6 @@ export default function Chat(props) {
                     "group chats"
                 );
 
-                console.log(comeAndGoFriends);
-                console.log(comeAndGoGroupChats);
-
                 let comers = [];
                 for (const friend of comeAndGoFriends.comers) {
                     comers.push({
@@ -234,8 +231,6 @@ export default function Chat(props) {
                                 goer.id === room.id && goer.type && room.type
                         )
                 );
-
-                console.log(survivors);
 
                 setRooms([...survivors, ...comers]);
             });
