@@ -118,6 +118,7 @@ export default function Chat(props) {
     const [rooms, setRooms] = useState();
     const roomsRef = useRef();
     roomsRef.current = rooms;
+    const [roomsCount, setRoomsCount] = useState();
     const [displayActivechatInfo, setDisplayActivechatInfo] = useState(false);
     const [activeChat, setActiveChat] = useState();
     const activeChatRef = useRef();
@@ -195,7 +196,14 @@ export default function Chat(props) {
 
     useEffect(() => {
         if (rooms === undefined) {
+            // return if rooms[] is undefined
             return;
+        } else {
+            if (rooms.length === roomsCount) {
+                // return if the length of rooms[] is not changed
+                return;
+            }
+            setRoomsCount(rooms.length);
         }
         if (rooms.length > 0) {
             if (!activeChat) {
