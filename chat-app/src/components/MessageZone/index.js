@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import MessageBox from "../Message";
+import global from "../../utils/globalVars";
 
 const appBarHeight = 80;
 const inputContainerHeight = 258;
@@ -59,28 +60,28 @@ export default function MessageZone(props) {
     const { t, i18n } = useTranslation();
 
     const activeChat = props.activeChat;
-    const displayActivechatInfo = props.displayActivechatInfo;
+    const displayActiveChatInfo = props.displayActiveChatInfo;
     const userId = props.userId;
     const setChatrooms = props.setChatrooms;
 
     const typeText = {
         en: {
-            private: "Friend",
-            group: "Group Chat",
+            friend: "Friend",
+            group_chat: "Group Chat",
         },
         "zh-CN": {
-            private: "好友",
-            group: "聊天组",
+            friend: "好友",
+            group_chat: "聊天组",
         },
     };
 
     const deleteChat = () => {
         let route;
         switch (activeChat.type) {
-            case "private":
+            case global.CHAT_TYPE_FRIEND:
                 route = "/users/" + userId + "/friends/" + activeChat.name;
                 break;
-            case "group":
+            case global.CHAT_TYPE_GROUP_CHAT:
                 route = "/chatRooms/" + activeChat.id + "/members";
                 break;
             default:
@@ -123,7 +124,7 @@ export default function MessageZone(props) {
                                     ]
                                 }
                                 color={
-                                    activeChat.type === "private"
+                                    activeChat.type === global.CHAT_TYPE_FRIEND
                                         ? "primary"
                                         : "secondary"
                                 }
@@ -155,7 +156,8 @@ export default function MessageZone(props) {
                                 >
                                     {t(
                                         `MessageZone.chatInfo.dangerZone.${
-                                            activeChat.type === "private"
+                                            activeChat.type ===
+                                            global.CHAT_TYPE_FRIEND
                                                 ? "delete"
                                                 : "leave"
                                         }`
@@ -169,7 +171,8 @@ export default function MessageZone(props) {
                                 <Typography body1>
                                     {t(
                                         `MessageZone.chatInfo.dangerZone.${
-                                            activeChat.type === "private"
+                                            activeChat.type ===
+                                            global.CHAT_TYPE_FRIEND
                                                 ? "delete"
                                                 : "leave"
                                         }`
@@ -202,7 +205,7 @@ export default function MessageZone(props) {
 
     return (
         <div className={classes.container}>
-            {displayActivechatInfo === true ? chatInfo() : dialogBox()}
+            {displayActiveChatInfo === true ? chatInfo() : dialogBox()}
         </div>
     );
 }

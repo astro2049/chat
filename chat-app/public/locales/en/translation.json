@@ -35,8 +35,8 @@
     },
     "ChatProfileCards": {
         "chatRoomType": {
-            "private": "friend",
-            "group": "chat room"
+            "friend": "friend",
+            "group_chat": "chat room"
         },
         "noMessages": "- no messages -"
     },

@@ -22,6 +22,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentInput from "../../components/ContentInput";
 import MessageZone from "../../components/MessageZone";
+import global from "../../utils/globalVars";
 
 const appBarHeight = 80;
 const menuWidth = "26%";
@@ -119,7 +120,7 @@ export default function Chat(props) {
     const roomsRef = useRef();
     roomsRef.current = rooms;
     const [roomsCount, setRoomsCount] = useState();
-    const [displayActivechatInfo, setDisplayActivechatInfo] = useState(false);
+    const [displayActiveChatInfo, setDisplayActiveChatInfo] = useState(false);
     const [activeChat, setActiveChat] = useState();
     const activeChatRef = useRef();
     activeChatRef.current = activeChat;
@@ -155,7 +156,7 @@ export default function Chat(props) {
                         currentRooms.some(
                             (currentRoom) =>
                                 currentRoom.id === friend.pivot.duet_id &&
-                                currentRoom.type === "private"
+                                currentRoom.type === global.CHAT_TYPE_FRIEND
                         )
                     ) {
                         continue;
@@ -163,7 +164,7 @@ export default function Chat(props) {
                     newRooms.push({
                         id: friend.pivot.duet_id,
                         name: friend.name,
-                        type: "private",
+                        type: global.CHAT_TYPE_FRIEND,
                         messages: [],
                         chatText: "",
                         subscribed: false,
@@ -174,7 +175,7 @@ export default function Chat(props) {
                         currentRooms.some(
                             (currentRoom) =>
                                 currentRoom.id === chatRoom.id &&
-                                currentRoom.type === "group"
+                                currentRoom.type === global.CHAT_TYPE_GROUP_CHAT
                         )
                     ) {
                         continue;
@@ -182,7 +183,7 @@ export default function Chat(props) {
                     newRooms.push({
                         id: chatRoom.id,
                         name: chatRoom.name,
-                        type: "group",
+                        type: global.CHAT_TYPE_GROUP_CHAT,
                         messages: [],
                         chatText: "",
                         subscribed: false,
@@ -261,13 +262,13 @@ export default function Chat(props) {
                 return;
             }
 
-            if (type === "private") {
+            if (type === global.CHAT_TYPE_FRIEND) {
                 stompClient.subscribe(
                     "/topic/friends." + id,
                     onMessageReceived
                 );
                 room.subscribed = true;
-            } else if (type === "group") {
+            } else if (type === global.CHAT_TYPE_GROUP_CHAT) {
                 stompClient.subscribe(
                     "/topic/chatrooms." + id,
                     onMessageReceived
@@ -328,13 +329,13 @@ export default function Chat(props) {
                 time: new Date(time),
             };
 
-            if (activeChat.type === "private") {
+            if (activeChat.type === global.CHAT_TYPE_FRIEND) {
                 stompClient.send(
                     "/app/friends/" + id,
                     {},
                     JSON.stringify(message)
                 );
-            } else if (activeChat.type === "group") {
+            } else if (activeChat.type === global.CHAT_TYPE_GROUP_CHAT) {
                 stompClient.send(
                     "/app/chatrooms/" + id,
                     {},
@@ -478,7 +479,7 @@ export default function Chat(props) {
                                             variant="text"
                                             shape="square"
                                             icon={
-                                                displayActivechatInfo ? (
+                                                displayActiveChatInfo ? (
                                                     <ChatIcon
                                                         sx={{
                                                             color: "#FFCF36",
@@ -493,8 +494,8 @@ export default function Chat(props) {
                                                 )
                                             }
                                             onClick={() => {
-                                                setDisplayActivechatInfo(
-                                                    !displayActivechatInfo
+                                                setDisplayActiveChatInfo(
+                                                    !displayActiveChatInfo
                                                 );
                                             }}
                                         ></Button>
@@ -522,7 +523,7 @@ export default function Chat(props) {
 
                     <MessageZone
                         activeChat={activeChat}
-                        displayActivechatInfo={displayActivechatInfo}
+                        displayActiveChatInfo={displayActiveChatInfo}
                         userId={userId}
                         setChatrooms={setChatrooms}
                     />
@@ -531,7 +532,7 @@ export default function Chat(props) {
                         activeChat={activeChat}
                         setActiveChat={setActiveChat}
                         pageIsReady={pageIsReady}
-                        displayActivechatInfo={displayActivechatInfo}
+                        displayActiveChatInfo={displayActiveChatInfo}
                         sendChatMessage={sendChatMessage}
                     />
                 </div>
