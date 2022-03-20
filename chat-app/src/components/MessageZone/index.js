@@ -199,7 +199,7 @@ export default function MessageZone(props) {
                             content={message.content}
                             time={message.time}
                             mine={message.mine}
-                        ></MessageBox>
+                        />
                     ))}
             </div>
         );
