@@ -581,6 +581,8 @@ export default function Chat(props) {
                         displayActiveChatInfo={displayActiveChatInfo}
                         userId={userId}
                         setChatrooms={setChatrooms}
+                        setDisplayActiveChatInfo={setDisplayActiveChatInfo}
+                        setActiveChat={setActiveChat}
                     />
 
                     <ContentInput
