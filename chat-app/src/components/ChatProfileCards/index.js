@@ -12,6 +12,7 @@ import {
     Skeleton,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import global from "../../utils/globalVars";
 
 const stringToColor = (str) => {
     let hash = 0;
@@ -163,16 +164,18 @@ export default function ChatProfileCards(props) {
                                               <Chip
                                                   variant="outlined"
                                                   label={
-                                                      chat.type === "private"
+                                                      chat.type ===
+                                                      global.CHAT_TYPE_FRIEND
                                                           ? t(
-                                                                "ChatProfileCards.chatRoomType.private"
+                                                                "ChatProfileCards.chatRoomType.friend"
                                                             )
                                                           : t(
-                                                                "ChatProfileCards.chatRoomType.group"
+                                                                "ChatProfileCards.chatRoomType.group_chat"
                                                             )
                                                   }
                                                   color={
-                                                      chat.type === "private"
+                                                      chat.type ===
+                                                      global.CHAT_TYPE_FRIEND
                                                           ? "primary"
                                                           : "secondary"
                                                   }

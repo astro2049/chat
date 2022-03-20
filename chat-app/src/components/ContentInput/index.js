@@ -28,7 +28,7 @@ export default function ContentInput(props) {
     const activeChat = props.activeChat;
     const setActiveChat = props.setActiveChat;
     const pageIsReady = props.pageIsReady;
-    const displayActivechatInfo = props.displayActivechatInfo;
+    const displayActiveChatInfo = props.displayActiveChatInfo;
     const sendChatMessage = props.sendChatMessage;
 
     const handleKeyDown = (e) => {
@@ -55,13 +55,13 @@ export default function ContentInput(props) {
                     });
                 }}
                 onKeyDown={(e) => handleKeyDown(e)}
-                disabled={!pageIsReady || displayActivechatInfo}
+                disabled={!pageIsReady || displayActiveChatInfo}
             ></TextField>
             <Button
                 theme="primary"
                 variant="outline"
                 onClick={sendChatMessage}
-                disabled={!pageIsReady || displayActivechatInfo}
+                disabled={!pageIsReady || displayActiveChatInfo}
             >
                 {t("chat.sendButton")}
             </Button>
