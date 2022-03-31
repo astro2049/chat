@@ -53,6 +53,10 @@ export default function CustomizedInputBase(props) {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if (inputText.length === 0) {
+            return;
+        }
+
         let route;
         let method;
         let data = {};
