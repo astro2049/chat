@@ -10,7 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { useTranslation } from "react-i18next";
-import { signInOrOut } from "../../utils/HttpRequest";
+import axios from "axios";
+import global from "../../utils/globalVars";
 
 function Copyright() {
     // i18n
@@ -71,10 +72,13 @@ export default function SignUp(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            let response = await signInOrOut("/users", {
-                name: username,
-                password: password,
-            });
+            let response = await axios.post(
+                global.PROFILE_SERVER_ADDRESS + "/users",
+                {
+                    name: username,
+                    password: password,
+                }
+            );
             if (response.status === 201) {
                 setPage("sign-in");
             }
