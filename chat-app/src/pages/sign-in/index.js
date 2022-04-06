@@ -93,7 +93,7 @@ export default function SignIn(props) {
     return (
         <div className={classes.outerContainer}>
             <CssBaseline />
-            <div className={classes.paper}>
+            <Box className={classes.paper} sx={{ m: 2 }}>
                 <div
                     className={classes.logo}
                     style={{
@@ -158,7 +158,7 @@ export default function SignIn(props) {
                         </Grid>
                     </Grid>
                 </form>
-            </div>
+            </Box>
             <Box mt={3}>
                 <Copyright />
             </Box>
