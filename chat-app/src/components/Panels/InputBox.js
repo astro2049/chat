@@ -30,6 +30,7 @@ export default function CustomizedInputBase(props) {
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
     const pageIsReady = props.pageIsReady;
+    const setSnackbar = props.setSnackbar;
     const [inputPlaceholder, setInputPlaceholder] = useState("");
     const [inputText, setInputText] = useState("");
 
@@ -52,22 +53,34 @@ export default function CustomizedInputBase(props) {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if (inputText.length === 0) {
+            return;
+        }
+
         let route;
         let method;
         let data = {};
+        let successMessage;
+        let failureMessage;
         switch (activeOption) {
             case "New Friend":
                 route = "/users/" + userId + "/friends/" + inputText;
                 method = "POST";
+                successMessage = t("operations.addFriend.success");
+                failureMessage = t("operations.addFriend.failure");
                 break;
             case "Join Chatroom":
                 route = "/chatRooms/" + inputText + "/members";
                 method = "POST";
+                successMessage = t("operations.joinGroupChat.success");
+                failureMessage = t("operations.joinGroupChat.failure");
                 break;
             case "Create Chatroom":
                 route = "/chatRooms";
                 method = "POST";
                 data["name"] = inputText;
+                successMessage = t("operations.createGroupChat.success");
+                failureMessage = t("operations.createGroupChat.failure");
                 break;
             default:
                 break;
@@ -78,10 +91,20 @@ export default function CustomizedInputBase(props) {
                 method: method,
                 data: data,
             })
-            .then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    setChatrooms();
-                }
+            .then(() => {
+                setSnackbar({
+                    open: true,
+                    message: successMessage,
+                    type: "success",
+                });
+                setChatrooms();
+            })
+            .catch((e) => {
+                setSnackbar({
+                    open: true,
+                    message: failureMessage,
+                    type: "warning",
+                });
             });
         setInputText("");
     };

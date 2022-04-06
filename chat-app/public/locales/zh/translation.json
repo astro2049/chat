@@ -50,5 +50,19 @@
                 "leave": "离开"
             }
         }
+    },
+    "operations": {
+        "addFriend": {
+            "success": "已添加好友 :)",
+            "failure": "抱歉，我们没有找到相应用户"
+        },
+        "createGroupChat": {
+            "success": "成功",
+            "failure": "噢..."
+        },
+        "joinGroupChat": {
+            "success": "成功",
+            "failure": "噢..."
+        }
     }
 }

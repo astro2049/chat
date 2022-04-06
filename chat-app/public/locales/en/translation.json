@@ -50,5 +50,19 @@
                 "leave": "Leave"
             }
         }
+    },
+    "operations": {
+        "addFriend": {
+            "success": "friend added :)",
+            "failure": "sorry, we didn't find a matching user"
+        },
+        "createGroupChat": {
+            "success": "success",
+            "failure": "what..."
+        },
+        "joinGroupChat": {
+            "success": "success",
+            "failure": "what..."
+        }
     }
 }

@@ -8,7 +8,8 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
-import { signInOrOut } from "../../utils/HttpRequest";
+import axios from "axios";
+import global from "../../utils/globalVars";
 
 function Copyright() {
     // i18n
@@ -71,10 +72,13 @@ export default function SignIn(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            let response = await signInOrOut("/login", {
-                name: username,
-                password: password,
-            });
+            let response = await await axios.post(
+                global.PROFILE_SERVER_ADDRESS + "/login",
+                {
+                    name: username,
+                    password: password,
+                }
+            );
             setUsername("");
             setPassword("");
             if (response.status === 200) {
@@ -89,7 +93,7 @@ export default function SignIn(props) {
     return (
         <div className={classes.outerContainer}>
             <CssBaseline />
-            <div className={classes.paper}>
+            <Box className={classes.paper} sx={{ m: 2 }}>
                 <div
                     className={classes.logo}
                     style={{
@@ -154,7 +158,7 @@ export default function SignIn(props) {
                         </Grid>
                     </Grid>
                 </form>
-            </div>
+            </Box>
             <Box mt={3}>
                 <Copyright />
             </Box>
