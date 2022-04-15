@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
     innerInfoContainer: {
         marginLeft: 20,
-        width: 300,
+        width: 330,
         height: "100%",
         paddingBottom: 5,
         display: "flex",
@@ -73,6 +73,24 @@ export default function MessageZone(props) {
             friend: "好友",
             group_chat: "聊天组",
         },
+    };
+
+    const deleteGroupChat = () => {
+        axios
+            .request({
+                url:
+                    global.PROFILE_SERVER_ADDRESS +
+                    "/chatRooms/" +
+                    activeChat.id,
+                method: "DELETE",
+            })
+            .then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    setDisplayActiveChatInfo(false);
+                    setActiveChat(undefined);
+                    setChatrooms();
+                }
+            });
     };
 
     const deleteChat = () => {
@@ -141,10 +159,47 @@ export default function MessageZone(props) {
                             </Typography>
                         </ListItem>
                     </List>
+                    {activeChat.type === global.CHAT_TYPE_GROUP_CHAT &&
+                        activeChat.creator_id === userId && (
+                            <List
+                                subheader={
+                                    <ListSubheader component="div">
+                                        {t(
+                                            "MessageZone.chatInfo.creatorAbilities.title"
+                                        )}
+                                    </ListSubheader>
+                                }
+                            >
+                                <ListItem
+                                    secondaryAction={
+                                        <Button
+                                            variant="outlined"
+                                            color="error"
+                                            sx={{ textTransform: "none" }}
+                                            onClick={() => deleteGroupChat()}
+                                        >
+                                            {t(
+                                                "MessageZone.chatInfo.dangerZone.group_chat.delete.buttonText"
+                                            ) +
+                                                " " +
+                                                activeChat.name}
+                                        </Button>
+                                    }
+                                >
+                                    <ListItemIcon>
+                                        <Typography variant="body1">
+                                            {t(
+                                                "MessageZone.chatInfo.dangerZone.group_chat.delete.title"
+                                            )}
+                                        </Typography>
+                                    </ListItemIcon>
+                                </ListItem>
+                            </List>
+                        )}
                     <List
                         subheader={
                             <ListSubheader component="div">
-                                {t("MessageZone.chatInfo.dangerZone.header")}
+                                {t("MessageZone.chatInfo.dangerZone.title")}
                             </ListSubheader>
                         }
                     >
@@ -152,7 +207,12 @@ export default function MessageZone(props) {
                             secondaryAction={
                                 <Button
                                     variant="outlined"
-                                    color="error"
+                                    color={
+                                        activeChat.type ===
+                                        global.CHAT_TYPE_FRIEND
+                                            ? "error"
+                                            : "warning"
+                                    }
                                     sx={{ textTransform: "none" }}
                                     onClick={() => deleteChat()}
                                 >
@@ -160,8 +220,8 @@ export default function MessageZone(props) {
                                         `MessageZone.chatInfo.dangerZone.${
                                             activeChat.type ===
                                             global.CHAT_TYPE_FRIEND
-                                                ? "delete"
-                                                : "leave"
+                                                ? "friend.delete.buttonText"
+                                                : "group_chat.leave"
                                         }`
                                     ) +
                                         " " +
@@ -170,13 +230,13 @@ export default function MessageZone(props) {
                             }
                         >
                             <ListItemIcon>
-                                <Typography body1>
+                                <Typography variant="body1">
                                     {t(
                                         `MessageZone.chatInfo.dangerZone.${
                                             activeChat.type ===
                                             global.CHAT_TYPE_FRIEND
-                                                ? "delete"
-                                                : "leave"
+                                                ? "friend.delete.title"
+                                                : "group_chat.leave"
                                         }`
                                     )}
                                 </Typography>

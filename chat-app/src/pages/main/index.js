@@ -214,6 +214,7 @@ export default function Chat(props) {
                     comers.push({
                         id: groupChat.id,
                         name: groupChat.name,
+                        creator_id: groupChat.creator_id,
                         type: global.CHAT_TYPE_GROUP_CHAT,
                         messages: [],
                         chatText: "",
