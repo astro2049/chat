@@ -25,6 +25,38 @@ class ChatRoomTest extends TestCase
         $chatroom = ChatRoom::query()->find(1);
         $this->assertSame($chatroom->name, 'Paradise');
         $this->assertSame($chatroom->members()->get()->first()['name'], $user->name);
+        $this->assertTrue($chatroom->isCreatedBy($user));
+    }
+
+    public function test_user_can_delete_chatroom()
+    {
+        /** @var User $astro */
+        $astro = User::factory()->create([]);
+        /** @var User $thunder */
+        $thunder = User::factory()->create([]);
+
+        /** @var ChatRoom $paradise */
+        $paradise = $this->actingAs($astro)->postJson('api/chatRooms', [
+            'name' => 'Paradise'
+        ])->assertCreated()->getOriginalContent();
+        /** @var ChatRoom $insomnia */
+        $insomnia = $this->actingAs($astro)->postJson('api/chatRooms', [
+            'name' => 'Insomnia'
+        ])->assertCreated()->getOriginalContent();
+
+        $this->actingAs($thunder)->delete('api/chatRooms/1')
+            ->assertForbidden();
+        $this->assertNotSoftDeleted($paradise);
+
+        $this->actingAs($astro)->delete('api/chatRooms/1')
+            ->assertNoContent();
+        $this->assertSoftDeleted($paradise);
+
+        $this->assertCount(1, $astro->chatRooms()->get());
+        /** @var ChatRoom $retrievedInsomnia */
+        $retrievedInsomnia = $astro->chatRooms()->get()->get(0);
+        $this->assertSame($insomnia->id, $retrievedInsomnia->id);
+        $this->assertSame($insomnia->name, $retrievedInsomnia->name);
     }
 
     public function test_user_can_join_a_chat_room()

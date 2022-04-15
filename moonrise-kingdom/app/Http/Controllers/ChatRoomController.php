@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChatRoom;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
@@ -23,6 +24,18 @@ class ChatRoomController extends Controller
         $chatRoom->members()->syncWithoutDetaching(auth()->user()->id);
 
         return $chatRoom->refresh();
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy(ChatRoom $chatRoom): Response
+    {
+        $this->authorize('destroy', $chatRoom);
+
+        $chatRoom->delete();
+
+        return \response()->noContent();
     }
 
     public function addMember(ChatRoom $chatRoom): Response
