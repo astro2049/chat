@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import {
     Button,
     Chip,
+    Divider,
     List,
     ListItem,
     ListItemIcon,
@@ -159,90 +160,99 @@ export default function MessageZone(props) {
                             </Typography>
                         </ListItem>
                     </List>
-                    {activeChat.type === global.CHAT_TYPE_GROUP_CHAT &&
-                        activeChat.creator_id === userId && (
-                            <List
-                                subheader={
-                                    <ListSubheader component="div">
-                                        {t(
-                                            "MessageZone.chatInfo.creatorAbilities.title"
-                                        )}
-                                    </ListSubheader>
-                                }
-                            >
-                                <ListItem
-                                    secondaryAction={
-                                        <Button
-                                            variant="outlined"
-                                            color="error"
-                                            sx={{ textTransform: "none" }}
-                                            onClick={() => deleteGroupChat()}
+                    <div>
+                        {activeChat.type === global.CHAT_TYPE_GROUP_CHAT &&
+                            activeChat.creator_id === userId && (
+                                <div>
+                                    <List
+                                        subheader={
+                                            <ListSubheader component="div">
+                                                {t(
+                                                    "MessageZone.chatInfo.creatorAbilities.title"
+                                                )}
+                                            </ListSubheader>
+                                        }
+                                    >
+                                        <ListItem
+                                            secondaryAction={
+                                                <Button
+                                                    variant="outlined"
+                                                    color="error"
+                                                    sx={{
+                                                        textTransform: "none",
+                                                    }}
+                                                    onClick={() =>
+                                                        deleteGroupChat()
+                                                    }
+                                                >
+                                                    {t(
+                                                        "MessageZone.chatInfo.dangerZone.group_chat.delete.buttonText"
+                                                    ) +
+                                                        " " +
+                                                        activeChat.name}
+                                                </Button>
+                                            }
                                         >
-                                            {t(
-                                                "MessageZone.chatInfo.dangerZone.group_chat.delete.buttonText"
-                                            ) +
-                                                " " +
-                                                activeChat.name}
-                                        </Button>
-                                    }
-                                >
-                                    <ListItemIcon>
-                                        <Typography variant="body1">
-                                            {t(
-                                                "MessageZone.chatInfo.dangerZone.group_chat.delete.title"
-                                            )}
-                                        </Typography>
-                                    </ListItemIcon>
-                                </ListItem>
-                            </List>
-                        )}
-                    <List
-                        subheader={
-                            <ListSubheader component="div">
-                                {t("MessageZone.chatInfo.dangerZone.title")}
-                            </ListSubheader>
-                        }
-                    >
-                        <ListItem
-                            secondaryAction={
-                                <Button
-                                    variant="outlined"
-                                    color={
-                                        activeChat.type ===
-                                        global.CHAT_TYPE_FRIEND
-                                            ? "error"
-                                            : "warning"
-                                    }
-                                    sx={{ textTransform: "none" }}
-                                    onClick={() => deleteChat()}
-                                >
-                                    {t(
-                                        `MessageZone.chatInfo.dangerZone.${
-                                            activeChat.type ===
-                                            global.CHAT_TYPE_FRIEND
-                                                ? "friend.delete.buttonText"
-                                                : "group_chat.leave"
-                                        }`
-                                    ) +
-                                        " " +
-                                        activeChat.name}
-                                </Button>
+                                            <ListItemIcon>
+                                                <Typography variant="body1">
+                                                    {t(
+                                                        "MessageZone.chatInfo.dangerZone.group_chat.delete.title"
+                                                    )}
+                                                </Typography>
+                                            </ListItemIcon>
+                                        </ListItem>
+                                    </List>
+                                    <Divider sx={{ mt: 1 }} variant="middle" />
+                                </div>
+                            )}
+                        <List
+                            subheader={
+                                <ListSubheader component="div">
+                                    {t("MessageZone.chatInfo.dangerZone.title")}
+                                </ListSubheader>
                             }
                         >
-                            <ListItemIcon>
-                                <Typography variant="body1">
-                                    {t(
-                                        `MessageZone.chatInfo.dangerZone.${
+                            <ListItem
+                                secondaryAction={
+                                    <Button
+                                        variant="outlined"
+                                        color={
                                             activeChat.type ===
                                             global.CHAT_TYPE_FRIEND
-                                                ? "friend.delete.title"
-                                                : "group_chat.leave"
-                                        }`
-                                    )}
-                                </Typography>
-                            </ListItemIcon>
-                        </ListItem>
-                    </List>
+                                                ? "error"
+                                                : "warning"
+                                        }
+                                        sx={{ textTransform: "none" }}
+                                        onClick={() => deleteChat()}
+                                    >
+                                        {t(
+                                            `MessageZone.chatInfo.dangerZone.${
+                                                activeChat.type ===
+                                                global.CHAT_TYPE_FRIEND
+                                                    ? "friend.delete.buttonText"
+                                                    : "group_chat.leave"
+                                            }`
+                                        ) +
+                                            " " +
+                                            activeChat.name}
+                                    </Button>
+                                }
+                            >
+                                <ListItemIcon>
+                                    <Typography variant="body1">
+                                        {t(
+                                            `MessageZone.chatInfo.dangerZone.${
+                                                activeChat.type ===
+                                                global.CHAT_TYPE_FRIEND
+                                                    ? "friend.delete.title"
+                                                    : "group_chat.leave"
+                                            }`
+                                        )}
+                                    </Typography>
+                                </ListItemIcon>
+                            </ListItem>
+                        </List>
+                    </div>
                 </Paper>
             </div>
         );
