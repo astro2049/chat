@@ -28,7 +28,6 @@ export default function ContentInput(props) {
     const activeChat = props.activeChat;
     const setActiveChat = props.setActiveChat;
     const pageIsReady = props.pageIsReady;
-    const displayActiveChatInfo = props.displayActiveChatInfo;
     const sendChatMessage = props.sendChatMessage;
 
     const handleKeyDown = (e) => {
@@ -55,13 +54,19 @@ export default function ContentInput(props) {
                     });
                 }}
                 onKeyDown={(e) => handleKeyDown(e)}
-                disabled={!pageIsReady || displayActiveChatInfo}
+                disabled={
+                    !pageIsReady ||
+                    (activeChat && activeChat.display_info === true)
+                }
             />
             <Button
                 theme="primary"
                 variant="outline"
                 onClick={sendChatMessage}
-                disabled={!pageIsReady || displayActiveChatInfo}
+                disabled={
+                    !pageIsReady ||
+                    (activeChat && activeChat.display_info === true)
+                }
             >
                 {t("chat.sendButton")}
             </Button>

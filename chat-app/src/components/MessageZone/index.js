@@ -59,11 +59,9 @@ export default function MessageZone(props) {
     const { t, i18n } = useTranslation();
 
     const activeChat = props.activeChat;
-    const displayActiveChatInfo = props.displayActiveChatInfo;
     const userId = props.userId;
     const setChatrooms = props.setChatrooms;
     const setActiveChat = props.setActiveChat;
-    const setDisplayActiveChatInfo = props.setDisplayActiveChatInfo;
 
     const typeText = {
         en: {
@@ -87,7 +85,6 @@ export default function MessageZone(props) {
             })
             .then((response) => {
                 if (response.status >= 200 && response.status < 300) {
-                    setDisplayActiveChatInfo(false);
                     setActiveChat(undefined);
                     setChatrooms();
                 }
@@ -113,7 +110,6 @@ export default function MessageZone(props) {
             })
             .then((response) => {
                 if (response.status >= 200 && response.status < 300) {
-                    setDisplayActiveChatInfo(false);
                     setActiveChat(undefined);
                     setChatrooms();
                 }
@@ -277,7 +273,9 @@ export default function MessageZone(props) {
 
     return (
         <div className={classes.container}>
-            {displayActiveChatInfo === true ? chatInfo() : dialogBox()}
+            {activeChat && activeChat.display_info === true
+                ? chatInfo()
+                : dialogBox()}
         </div>
     );
 }

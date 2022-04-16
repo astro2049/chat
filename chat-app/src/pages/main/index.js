@@ -149,7 +149,6 @@ export default function Chat(props) {
     const roomsRef = useRef();
     roomsRef.current = rooms;
     const [roomsCount, setRoomsCount] = useState();
-    const [displayActiveChatInfo, setDisplayActiveChatInfo] = useState(false);
     const [activeChat, setActiveChat] = useState();
     const activeChatRef = useRef();
     activeChatRef.current = activeChat;
@@ -205,6 +204,7 @@ export default function Chat(props) {
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: global.CHAT_TYPE_FRIEND,
+                        display_info: false,
                         messages: [],
                         chatText: "",
                         subscribed: false,
@@ -216,6 +216,7 @@ export default function Chat(props) {
                         name: groupChat.name,
                         creator_id: groupChat.creator_id,
                         type: global.CHAT_TYPE_GROUP_CHAT,
+                        display_info: false,
                         messages: [],
                         chatText: "",
                         subscribed: false,
@@ -309,7 +310,6 @@ export default function Chat(props) {
             let content = JSON.parse(notice.content);
             if (content.friend_name === activeChatRef.current.name) {
                 // if the ended friendship is the current one
-                setDisplayActiveChatInfo(false);
                 setActiveChat(undefined);
             }
             setChatrooms();
@@ -549,7 +549,7 @@ export default function Chat(props) {
                                             variant="text"
                                             shape="square"
                                             icon={
-                                                displayActiveChatInfo ? (
+                                                activeChat.display_info ? (
                                                     <ChatIcon
                                                         sx={{
                                                             color: "#FFCF36",
@@ -564,9 +564,9 @@ export default function Chat(props) {
                                                 )
                                             }
                                             onClick={() => {
-                                                setDisplayActiveChatInfo(
-                                                    !displayActiveChatInfo
-                                                );
+                                                activeChat.display_info =
+                                                    !activeChat.display_info;
+                                                pleaseRerender();
                                             }}
                                         />
                                     </div>
@@ -593,10 +593,8 @@ export default function Chat(props) {
 
                     <MessageZone
                         activeChat={activeChat}
-                        displayActiveChatInfo={displayActiveChatInfo}
                         userId={userId}
                         setChatrooms={setChatrooms}
-                        setDisplayActiveChatInfo={setDisplayActiveChatInfo}
                         setActiveChat={setActiveChat}
                     />
 
@@ -604,7 +602,6 @@ export default function Chat(props) {
                         activeChat={activeChat}
                         setActiveChat={setActiveChat}
                         pageIsReady={pageIsReady}
-                        displayActiveChatInfo={displayActiveChatInfo}
                         sendChatMessage={sendChatMessage}
                     />
                 </div>
