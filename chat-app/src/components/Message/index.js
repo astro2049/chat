@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 5,
         paddingLeft: 20,
         paddingRight: 20,
-        paddingBottom: 10,
+        paddingBottom: 5,
     },
     myMessage: {
         backgroundColor: "lightpink",

@@ -7,6 +7,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import star.astro.chat.model.Notification;
 
+import java.util.List;
+
 @Service
 public class NotificationService {
 
@@ -48,10 +50,25 @@ public class NotificationService {
         sendMessage(username, notification);
     }
 
+    public void noticeMembersOfDisbandedChatRoom(int id, List<String> members) {
+        JSONObject content = new JSONObject();
+        content.put("id", id);
+        for (String memberName : members) {
+            Notification notification = new Notification(
+                    "system",
+                    memberName,
+                    NotificationType.CHATROOM_DISBANDED.getType(),
+                    JSON.toJSONString(content),
+                    timeService.getUnixTime());
+            sendMessage(memberName, notification);
+        }
+    }
+
     public enum NotificationType {
         ACKNOWLEDGE_SUBSCRIPTION(0),
         NEW_CHATROOM(1),
-        ENDED_FRIENDSHIP(2);
+        ENDED_FRIENDSHIP(2),
+        CHATROOM_DISBANDED(3);
 
         private final int type;
 

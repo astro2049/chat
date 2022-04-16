@@ -34,6 +34,7 @@
         "sendButton": "发送"
     },
     "ChatProfileCards": {
+        "letsChat": "没有聊天",
         "chatRoomType": {
             "friend": "好友",
             "group_chat": "聊天室"
@@ -44,10 +45,24 @@
         "chatInfo": {
             "header": "聊天信息",
             "type": "类型",
+            "creatorAbilities": {
+                "title": "创建者"
+            },
             "dangerZone": {
-                "header": "危险区域",
-                "delete": "删除",
-                "leave": "离开"
+                "title": "危险区域",
+                "friend": {
+                    "delete": {
+                        "title": "删除好友",
+                        "buttonText": "删除"
+                    }
+                },
+                "group_chat": {
+                    "disband": {
+                        "title": "解散群聊",
+                        "buttonText": "解散"
+                    },
+                    "leave": "离开"
+                }
             }
         }
     },

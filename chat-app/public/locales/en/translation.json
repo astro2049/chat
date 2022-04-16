@@ -34,6 +34,7 @@
         "sendButton": "Send"
     },
     "ChatProfileCards": {
+        "letsChat": "No Chats",
         "chatRoomType": {
             "friend": "friend",
             "group_chat": "chat room"
@@ -44,10 +45,24 @@
         "chatInfo": {
             "header": "Chat Information",
             "type": "Type",
+            "creatorAbilities": {
+                "title": "Creator"
+            },
             "dangerZone": {
-                "header": "Danger Zone",
-                "delete": "Delete",
-                "leave": "Leave"
+                "title": "Danger Zone",
+                "friend": {
+                    "delete": {
+                        "title": "Remove",
+                        "buttonText": "Remove"
+                    }
+                },
+                "group_chat": {
+                    "disband": {
+                        "title": "Disband",
+                        "buttonText": "Disband"
+                    },
+                    "leave": "Leave"
+                }
             }
         }
     },

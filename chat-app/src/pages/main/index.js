@@ -149,7 +149,6 @@ export default function Chat(props) {
     const roomsRef = useRef();
     roomsRef.current = rooms;
     const [roomsCount, setRoomsCount] = useState();
-    const [displayActiveChatInfo, setDisplayActiveChatInfo] = useState(false);
     const [activeChat, setActiveChat] = useState();
     const activeChatRef = useRef();
     activeChatRef.current = activeChat;
@@ -205,6 +204,7 @@ export default function Chat(props) {
                         id: friend.pivot.duet_id,
                         name: friend.name,
                         type: global.CHAT_TYPE_FRIEND,
+                        display_info: false,
                         messages: [],
                         chatText: "",
                         subscribed: false,
@@ -214,7 +214,9 @@ export default function Chat(props) {
                     comers.push({
                         id: groupChat.id,
                         name: groupChat.name,
+                        creator_id: groupChat.creator_id,
                         type: global.CHAT_TYPE_GROUP_CHAT,
+                        display_info: false,
                         messages: [],
                         chatText: "",
                         subscribed: false,
@@ -308,7 +310,13 @@ export default function Chat(props) {
             let content = JSON.parse(notice.content);
             if (content.friend_name === activeChatRef.current.name) {
                 // if the ended friendship is the current one
-                setDisplayActiveChatInfo(false);
+                setActiveChat(undefined);
+            }
+            setChatrooms();
+        } else if (notice.type === 3) {
+            let content = JSON.parse(notice.content);
+            if (content.id === activeChatRef.current.id) {
+                // if the current group chat is disbanded
                 setActiveChat(undefined);
             }
             setChatrooms();
@@ -404,9 +412,7 @@ export default function Chat(props) {
                 );
             }
 
-            setActiveChat((prevState) => {
-                return { ...prevState, chatText: "" };
-            });
+            activeChat.chatText = "";
         }
     };
 
@@ -516,7 +522,7 @@ export default function Chat(props) {
                             }}
                         >
                             <div className={classes.chatroomName}>
-                                {activeChat === undefined ? (
+                                {!pageIsReady ? (
                                     <Skeleton
                                         sx={{
                                             marginLeft: 2,
@@ -527,47 +533,51 @@ export default function Chat(props) {
                                         animation="wave"
                                     />
                                 ) : (
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Typography
-                                            variant="h4"
-                                            noWrap
-                                            sx={{
-                                                marginLeft: 2,
-                                                marginRight: 1,
-                                            }}
-                                            style={{ color: "#FFCF36" }}
-                                        >
-                                            {activeChat.name}
-                                        </Typography>
-                                        <Button
-                                            variant="text"
-                                            shape="square"
-                                            icon={
-                                                displayActiveChatInfo ? (
-                                                    <ChatIcon
-                                                        sx={{
-                                                            color: "#FFCF36",
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    <MoreVertIcon
-                                                        sx={{
-                                                            color: "#FFCF36",
-                                                        }}
-                                                    />
-                                                )
-                                            }
-                                            onClick={() => {
-                                                setDisplayActiveChatInfo(
-                                                    !displayActiveChatInfo
-                                                );
-                                            }}
-                                        />
+                                    <div>
+                                        {activeChat && (
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="h4"
+                                                    noWrap
+                                                    sx={{
+                                                        marginLeft: 2,
+                                                        marginRight: 1,
+                                                    }}
+                                                    style={{ color: "#FFCF36" }}
+                                                >
+                                                    {activeChat.name}
+                                                </Typography>
+                                                <Button
+                                                    variant="text"
+                                                    shape="square"
+                                                    icon={
+                                                        activeChat.display_info ? (
+                                                            <ChatIcon
+                                                                sx={{
+                                                                    color: "#FFCF36",
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <MoreVertIcon
+                                                                sx={{
+                                                                    color: "#FFCF36",
+                                                                }}
+                                                            />
+                                                        )
+                                                    }
+                                                    onClick={() => {
+                                                        activeChat.display_info =
+                                                            !activeChat.display_info;
+                                                        pleaseRerender();
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -592,10 +602,8 @@ export default function Chat(props) {
 
                     <MessageZone
                         activeChat={activeChat}
-                        displayActiveChatInfo={displayActiveChatInfo}
                         userId={userId}
                         setChatrooms={setChatrooms}
-                        setDisplayActiveChatInfo={setDisplayActiveChatInfo}
                         setActiveChat={setActiveChat}
                     />
 
@@ -603,8 +611,8 @@ export default function Chat(props) {
                         activeChat={activeChat}
                         setActiveChat={setActiveChat}
                         pageIsReady={pageIsReady}
-                        displayActiveChatInfo={displayActiveChatInfo}
                         sendChatMessage={sendChatMessage}
+                        pleaseRerender={pleaseRerender}
                     />
                 </div>
             </Drawer>

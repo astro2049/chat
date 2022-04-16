@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import star.astro.chat.service.NotificationService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -31,6 +33,15 @@ public class NotificationController {
         String username = (String) params.get("guest_name");
         String friendName = (String) params.get("initiator_name");
         notificationService.noticeUserOfAnEndedFriendship(username, friendName);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/chat-room-disbanded")
+    public ResponseEntity<?> noticeMembersOfDisbandedChatRoom(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+        int id = (int) params.get("id");
+        List<String> members = (ArrayList<String>) params.get("members");
+        notificationService.noticeMembersOfDisbandedChatRoom(id, members);
 
         return ResponseEntity.noContent().build();
     }
