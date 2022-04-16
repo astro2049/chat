@@ -412,9 +412,7 @@ export default function Chat(props) {
                 );
             }
 
-            setActiveChat((prevState) => {
-                return { ...prevState, chatText: "" };
-            });
+            activeChat.chatText = "";
         }
     };
 

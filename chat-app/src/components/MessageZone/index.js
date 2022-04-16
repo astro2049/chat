@@ -129,7 +129,7 @@ export default function MessageZone(props) {
                     >
                         <ListItem>
                             <ListItemIcon>
-                                <Typography body1>
+                                <Typography variant="body1">
                                     {t("MessageZone.chatInfo.type")}
                                 </Typography>
                             </ListItemIcon>
@@ -149,7 +149,7 @@ export default function MessageZone(props) {
                         </ListItem>
                         <ListItem>
                             <ListItemIcon>
-                                <Typography body1>ID</Typography>
+                                <Typography variant="body1">ID</Typography>
                             </ListItemIcon>
                             <Typography variant="body1">
                                 {activeChat.id}

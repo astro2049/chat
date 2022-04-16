@@ -52,7 +52,8 @@ export default function ContentInput(props) {
                 onKeyDown={(e) => handleKeyDown(e)}
                 disabled={
                     !pageIsReady ||
-                    (activeChat && activeChat.display_info === true)
+                    !activeChat ||
+                    activeChat.display_info === true
                 }
             />
             <Button
@@ -61,7 +62,8 @@ export default function ContentInput(props) {
                 onClick={sendChatMessage}
                 disabled={
                     !pageIsReady ||
-                    (activeChat && activeChat.display_info === true)
+                    !activeChat ||
+                    activeChat.display_info === true
                 }
             >
                 {t("chat.sendButton")}
