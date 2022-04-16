@@ -34,6 +34,7 @@
         "sendButton": "发送"
     },
     "ChatProfileCards": {
+        "letsChat": "没有聊天",
         "chatRoomType": {
             "friend": "好友",
             "group_chat": "聊天室"
