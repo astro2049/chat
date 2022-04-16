@@ -517,7 +517,7 @@ export default function Chat(props) {
                             }}
                         >
                             <div className={classes.chatroomName}>
-                                {activeChat === undefined ? (
+                                {!pageIsReady ? (
                                     <Skeleton
                                         sx={{
                                             marginLeft: 2,
@@ -528,47 +528,51 @@ export default function Chat(props) {
                                         animation="wave"
                                     />
                                 ) : (
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Typography
-                                            variant="h4"
-                                            noWrap
-                                            sx={{
-                                                marginLeft: 2,
-                                                marginRight: 1,
-                                            }}
-                                            style={{ color: "#FFCF36" }}
-                                        >
-                                            {activeChat.name}
-                                        </Typography>
-                                        <Button
-                                            variant="text"
-                                            shape="square"
-                                            icon={
-                                                activeChat.display_info ? (
-                                                    <ChatIcon
-                                                        sx={{
-                                                            color: "#FFCF36",
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    <MoreVertIcon
-                                                        sx={{
-                                                            color: "#FFCF36",
-                                                        }}
-                                                    />
-                                                )
-                                            }
-                                            onClick={() => {
-                                                activeChat.display_info =
-                                                    !activeChat.display_info;
-                                                pleaseRerender();
-                                            }}
-                                        />
+                                    <div>
+                                        {activeChat && (
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="h4"
+                                                    noWrap
+                                                    sx={{
+                                                        marginLeft: 2,
+                                                        marginRight: 1,
+                                                    }}
+                                                    style={{ color: "#FFCF36" }}
+                                                >
+                                                    {activeChat.name}
+                                                </Typography>
+                                                <Button
+                                                    variant="text"
+                                                    shape="square"
+                                                    icon={
+                                                        activeChat.display_info ? (
+                                                            <ChatIcon
+                                                                sx={{
+                                                                    color: "#FFCF36",
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <MoreVertIcon
+                                                                sx={{
+                                                                    color: "#FFCF36",
+                                                                }}
+                                                            />
+                                                        )
+                                                    }
+                                                    onClick={() => {
+                                                        activeChat.display_info =
+                                                            !activeChat.display_info;
+                                                        pleaseRerender();
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
