@@ -614,6 +614,7 @@ export default function Chat(props) {
                         setActiveChat={setActiveChat}
                         pageIsReady={pageIsReady}
                         sendChatMessage={sendChatMessage}
+                        pleaseRerender={pleaseRerender}
                     />
                 </div>
             </Drawer>
