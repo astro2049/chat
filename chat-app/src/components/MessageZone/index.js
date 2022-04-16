@@ -186,7 +186,7 @@ export default function MessageZone(props) {
                                                     }
                                                 >
                                                     {t(
-                                                        "MessageZone.chatInfo.dangerZone.group_chat.delete.buttonText"
+                                                        "MessageZone.chatInfo.dangerZone.group_chat.disband.buttonText"
                                                     ) +
                                                         " " +
                                                         activeChat.name}
@@ -196,7 +196,7 @@ export default function MessageZone(props) {
                                             <ListItemIcon>
                                                 <Typography variant="body1">
                                                     {t(
-                                                        "MessageZone.chatInfo.dangerZone.group_chat.delete.title"
+                                                        "MessageZone.chatInfo.dangerZone.group_chat.disband.title"
                                                     )}
                                                 </Typography>
                                             </ListItemIcon>

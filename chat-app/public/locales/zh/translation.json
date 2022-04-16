@@ -56,7 +56,7 @@
                     }
                 },
                 "group_chat": {
-                    "delete": {
+                    "disband": {
                         "title": "解散群聊",
                         "buttonText": "解散"
                     },

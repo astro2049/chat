@@ -56,9 +56,9 @@
                     }
                 },
                 "group_chat": {
-                    "delete": {
-                        "title": "Delete",
-                        "buttonText": "Delete"
+                    "disband": {
+                        "title": "Disband",
+                        "buttonText": "Disband"
                     },
                     "leave": "Leave"
                 }
