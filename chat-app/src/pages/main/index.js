@@ -313,6 +313,13 @@ export default function Chat(props) {
                 setActiveChat(undefined);
             }
             setChatrooms();
+        } else if (notice.type === 3) {
+            let content = JSON.parse(notice.content);
+            if (content.id === activeChatRef.current.id) {
+                // if the current group chat is disbanded
+                setActiveChat(undefined);
+            }
+            setChatrooms();
         }
     };
 

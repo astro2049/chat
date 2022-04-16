@@ -6,6 +6,7 @@ use App\Models\ChatRoom;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 
 class ChatRoomController extends Controller
@@ -34,6 +35,12 @@ class ChatRoomController extends Controller
         $this->authorize('destroy', $chatRoom);
 
         $chatRoom->delete();
+
+        Http::withoutVerifying()
+            ->Post(config('notification.service_url') . '/api/notifications/chat-room-disbanded', [
+                'id' => $chatRoom->id,
+                'members' => $chatRoom->members()->get()->pluck('name')->toArray()
+            ]);
 
         return \response()->noContent();
     }
