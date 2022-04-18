@@ -20,12 +20,10 @@ const stringToColor = (str) => {
     for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
-    let colour = "#";
-    for (let i = 0; i < 3; i++) {
-        let value = (hash >> (i * 8)) & 0xff;
-        colour += ("00" + value.toString(16)).substr(-2);
-    }
-    return colour;
+    let r = (hash & 0xff0000) >> 16;
+    let g = (hash & 0x00ff00) >> 8;
+    let b = hash & 0x0000ff;
+    return `rgba(${r},${g},${b},0.75)`;
 };
 
 const getNameAbbreviation = (name) => {
