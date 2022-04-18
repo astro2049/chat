@@ -364,6 +364,7 @@ export default function Chat(props) {
                 room.messages.push(message);
                 pleaseRerender();
                 if (
+                    !activeChatRef.current.display_info &&
                     room.id === activeChatRef.current.id &&
                     room.type === activeChatRef.current.type
                 ) {
