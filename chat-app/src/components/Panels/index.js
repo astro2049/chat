@@ -94,7 +94,6 @@ export default function SimpleBreadcrumbs(props) {
                     userId={props.userId}
                     setChatrooms={setChatrooms}
                     pageIsReady={pageIsReady}
-                    setSnackbar={props.setSnackbar}
                 />
             </div>
         </div>

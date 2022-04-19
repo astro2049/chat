@@ -6,6 +6,7 @@ import { Paper, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import global from "../../utils/globalVars";
+import displaySnackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -30,7 +31,6 @@ export default function CustomizedInputBase(props) {
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
     const pageIsReady = props.pageIsReady;
-    const setSnackbar = props.setSnackbar;
     const [inputPlaceholder, setInputPlaceholder] = useState("");
     const [inputText, setInputText] = useState("");
 
@@ -92,19 +92,11 @@ export default function CustomizedInputBase(props) {
                 data: data,
             })
             .then(() => {
-                setSnackbar({
-                    open: true,
-                    message: successMessage,
-                    type: "success",
-                });
+                displaySnackbar(successMessage, "success");
                 setChatrooms();
             })
             .catch((e) => {
-                setSnackbar({
-                    open: true,
-                    message: failureMessage,
-                    type: "warning",
-                });
+                displaySnackbar(failureMessage, "warning");
             });
         setInputText("");
     };

@@ -51,6 +51,7 @@ export default function App() {
                 setPage={setPageOnDisplay}
                 setToken={setToken}
             ></Main>
+            <div id="snackbar" />
         </Suspense>
     );
 }

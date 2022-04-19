@@ -68,8 +68,8 @@
     },
     "operations": {
         "addFriend": {
-            "success": "friend added :)",
-            "failure": "sorry, we didn't find a matching user"
+            "success": "new friend added",
+            "failure": "sorry, didn't find the matching user"
         },
         "createGroupChat": {
             "success": "success",
