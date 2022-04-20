@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import global from "../../utils/globalVars";
+import displaySnackbar from "../../components/Snackbar";
 
 function Copyright() {
     // i18n
@@ -71,23 +72,23 @@ export default function SignIn(props) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        try {
-            let response = await await axios.post(
-                global.PROFILE_SERVER_ADDRESS + "/login",
-                {
-                    name: username,
-                    password: password,
-                }
-            );
-            setUsername("");
-            setPassword("");
-            if (response.status === 200) {
+        axios
+            .post(global.PROFILE_SERVER_ADDRESS + "/login", {
+                name: username,
+                password: password,
+            })
+            .then((response) => {
+                setUsername("");
+                setPassword("");
                 setUser(response.data.user);
                 setToken(response.data.token);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+            })
+            .catch((e) => {
+                displaySnackbar(
+                    t("operations.signIn.wrongPassword"),
+                    "warning"
+                );
+            });
     };
 
     return (

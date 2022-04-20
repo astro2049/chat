@@ -64,20 +64,30 @@
                     "leave": "Leave"
                 }
             }
+        },
+        "operations": {
+            "failure": "sorry, something went wrong"
         }
     },
     "operations": {
+        "signIn": {
+            "wrongPassword": "The username or password is incorrect"
+        },
+        "signUp": {
+            "success": "Account Created",
+            "failure": "sorry, something went wrong"
+        },
         "addFriend": {
             "success": "new friend added",
             "failure": "sorry, didn't find the matching user"
         },
         "createGroupChat": {
             "success": "success",
-            "failure": "what..."
+            "failure": "sorry, something went wrong"
         },
         "joinGroupChat": {
             "success": "success",
-            "failure": "what..."
+            "failure": "sorry, something went wrong"
         }
     }
 }

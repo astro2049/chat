@@ -12,6 +12,7 @@ import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import global from "../../utils/globalVars";
+import displaySnackbar from "../../components/Snackbar";
 
 function Copyright() {
     // i18n
@@ -71,22 +72,20 @@ export default function SignUp(props) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        try {
-            let response = await axios.post(
-                global.PROFILE_SERVER_ADDRESS + "/users",
-                {
-                    name: username,
-                    password: password,
-                }
-            );
-            if (response.status === 201) {
+        axios
+            .post(global.PROFILE_SERVER_ADDRESS + "/users", {
+                name: username,
+                password: password,
+            })
+            .then(() => {
+                setUsername("");
+                setPassword("");
+                displaySnackbar(t("operations.signUp.success"), "success");
                 setPage("sign-in");
-            }
-            setUsername("");
-            setPassword("");
-        } catch (error) {
-            console.log(error);
-        }
+            })
+            .catch((e) => {
+                displaySnackbar(t("operations.signUp.failure"), "warning");
+            });
     };
 
     return (

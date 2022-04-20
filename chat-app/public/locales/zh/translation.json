@@ -64,20 +64,30 @@
                     "leave": "离开"
                 }
             }
+        },
+        "operations": {
+            "failure": "出了点小问题..."
         }
     },
     "operations": {
+        "signIn": {
+            "wrongPassword": "账号或密码错误"
+        },
+        "signUp": {
+            "success": "注册成功",
+            "failure": "出了点小问题..."
+        },
         "addFriend": {
             "success": "已添加好友",
             "failure": "抱歉，没有找到相应用户"
         },
         "createGroupChat": {
             "success": "成功",
-            "failure": "噢..."
+            "failure": "出了点小问题..."
         },
         "joinGroupChat": {
             "success": "成功",
-            "failure": "噢..."
+            "failure": "出了点小问题..."
         }
     }
 }
