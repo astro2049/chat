@@ -20,7 +20,7 @@
         "panels": {
             "createChatroom": {
                 "name": "Create Chatroom",
-                "promptText": "New chat room will be..."
+                "promptText": "The new chat room is called..."
             },
             "joinChatroom": {
                 "name": "Join Chatroom",

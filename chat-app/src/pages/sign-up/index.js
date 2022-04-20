@@ -133,7 +133,7 @@ export default function SignUp(props) {
                     >
                         {t("signUp.signUpButton")}
                     </Button>
-                    <Grid container justify="flex-end">
+                    <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Link
                                 href="#"

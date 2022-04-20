@@ -31,53 +31,61 @@ export default function CustomizedInputBase(props) {
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
     const pageIsReady = props.pageIsReady;
+    const pleaseRerender = props.pleaseRerender;
     const [inputPlaceholder, setInputPlaceholder] = useState("");
-    const [inputText, setInputText] = useState("");
+    const [options] = useState({
+        CREATE_CHATROOM: {
+            inputText: "",
+        },
+        JOIN_CHATROOM: {
+            inputText: "",
+        },
+        ADD_FRIEND: {
+            inputText: "",
+        },
+    });
 
     useEffect(() => {
         switch (activeOption) {
-            case "Create Chatroom":
+            case "CREATE_CHATROOM":
                 setInputPlaceholder(t("chat.panels.createChatroom.promptText"));
                 break;
-            case "Join Chatroom":
+            case "JOIN_CHATROOM":
                 setInputPlaceholder(t("chat.panels.joinChatroom.promptText"));
                 break;
-            case "New Friend":
+            case "ADD_FRIEND":
                 setInputPlaceholder(t("chat.panels.newFriend.promptText"));
                 break;
             default:
                 break;
         }
-        setInputText("");
-    }, [activeOption, i18n.language, t]);
+    }, [activeOption, i18n.language]);
 
     const onSubmit = (e) => {
         e.preventDefault();
+        let inputText = options[`${activeOption}`].inputText;
         if (inputText.length === 0) {
             return;
         }
 
         let route;
-        let method;
+        let method = "POST";
         let data = {};
         let successMessage;
         let failureMessage;
         switch (activeOption) {
-            case "New Friend":
+            case "ADD_FRIEND":
                 route = "/users/" + userId + "/friends/" + inputText;
-                method = "POST";
                 successMessage = t("operations.addFriend.success");
                 failureMessage = t("operations.addFriend.failure");
                 break;
-            case "Join Chatroom":
+            case "JOIN_CHATROOM":
                 route = "/chatRooms/" + inputText + "/members";
-                method = "POST";
                 successMessage = t("operations.joinGroupChat.success");
                 failureMessage = t("operations.joinGroupChat.failure");
                 break;
-            case "Create Chatroom":
+            case "CREATE_CHATROOM":
                 route = "/chatRooms";
-                method = "POST";
                 data["name"] = inputText;
                 successMessage = t("operations.createGroupChat.success");
                 failureMessage = t("operations.createGroupChat.failure");
@@ -92,13 +100,13 @@ export default function CustomizedInputBase(props) {
                 data: data,
             })
             .then(() => {
+                options[`${activeOption}`].inputText = "";
                 displaySnackbar(successMessage, "success");
                 setChatrooms();
             })
             .catch((e) => {
                 displaySnackbar(failureMessage, "warning");
             });
-        setInputText("");
     };
 
     return (
@@ -117,8 +125,11 @@ export default function CustomizedInputBase(props) {
                 <TextField
                     className={classes.input}
                     placeholder={inputPlaceholder}
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
+                    value={options[`${activeOption}`].inputText}
+                    onChange={(e) => {
+                        options[`${activeOption}`].inputText = e.target.value;
+                        pleaseRerender();
+                    }}
                     disabled={!pageIsReady}
                 />
                 <IconButton

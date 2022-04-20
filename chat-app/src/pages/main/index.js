@@ -462,6 +462,7 @@ export default function Chat(props) {
                         userId={userId}
                         setChatrooms={setChatrooms}
                         pageIsReady={pageIsReady}
+                        pleaseRerender={pleaseRerender}
                     />
 
                     <div
