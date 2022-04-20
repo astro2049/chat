@@ -17,7 +17,7 @@ class ChatRoomController extends Controller
     public function store(Request $request): ChatRoom
     {
         $this->validate($request, [
-            'name' => ['required', 'between:2,21'],
+            'name' => ['required', 'between:1,21'],
         ]);
 
         /** @var ChatRoom $chatRoom */

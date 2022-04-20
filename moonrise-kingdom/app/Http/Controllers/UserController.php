@@ -23,8 +23,8 @@ class UserController extends Controller
     public function store(Request $request): Model|Builder
     {
         $this->validate($request, [
-            'name' => ['required', 'between:2,21', (new Unique('users'))->withoutTrashed()],
-            'password' => ['required', 'between:2,21']
+            'name' => ['required', 'between:1,21', (new Unique('users'))->withoutTrashed()],
+            'password' => ['required', 'between:1,21']
         ]);
 
         return User::query()->create([

@@ -13,8 +13,8 @@ class LoginController extends Controller
     public function authenticate(Request $request): array
     {
         $this->validate($request, [
-            'name' => ['required', 'between:2,21'],
-            'password' => ['required', 'between:2,21']
+            'name' => ['required', 'between:1,21'],
+            'password' => ['required', 'between:1,21']
         ]);
 
         $success = auth()->attempt([
