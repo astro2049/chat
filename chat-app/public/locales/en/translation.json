@@ -97,7 +97,8 @@
             "wrongPassword": "The username or password is incorrect"
         },
         "signUp": {
-            "success": "Account Created"
+            "success": "Account Created",
+            "23": "Oops, this nickname is already taken"
         },
         "addFriend": {
             "success": "New friend added"
