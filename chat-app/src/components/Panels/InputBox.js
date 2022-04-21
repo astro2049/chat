@@ -122,7 +122,10 @@ export default function CustomizedInputBase(props) {
             })
             .catch((e) => {
                 if (e.response.status === 403) {
-                    displaySnackbar(e.response.data.message, "warning");
+                    displaySnackbar(
+                        t(`operations.addFriend.${e.response.data.message}`),
+                        "warning"
+                    );
                 } else if (e.response.status === 404) {
                     displaySnackbar(code404Message, "warning");
                 } else {

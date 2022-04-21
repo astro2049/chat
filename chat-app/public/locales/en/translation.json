@@ -101,7 +101,9 @@
             "23": "Oops, this nickname is already taken"
         },
         "addFriend": {
-            "success": "New friend added"
+            "success": "New friend added",
+            "Leaf": "Adding oneself is not yet supported...",
+            "Wheel": "Already friends"
         },
         "createGroupChat": {
             "success": "Success"

@@ -101,7 +101,9 @@
             "23": "啊哦，这个昵称已经被注册了"
         },
         "addFriend": {
-            "success": "已添加好友"
+            "success": "已添加好友",
+            "Leaf": "暂不支持添加自己...",
+            "Wheel": "已经是好友了"
         },
         "createGroupChat": {
             "success": "成功"

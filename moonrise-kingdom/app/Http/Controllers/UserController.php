@@ -51,14 +51,14 @@ class UserController extends Controller
         $this->authorize('operatingOnMyself', $user);
 
         if ($user->name == $friend->name) {
-            abort(403, 'nah');
+            abort(403, 'Leaf');
         }
 
         $friendPivots = $this->findFriendPivots($user, $friend);
 
         // abort if friendship is already established
         if ($friendPivots->isNotEmpty()) {
-            abort(403, 'already friends :)');
+            abort(403, 'Wheel');
         }
 
         /** @var FriendPivot $newFriendPivot0 */
