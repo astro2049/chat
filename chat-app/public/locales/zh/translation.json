@@ -64,30 +64,25 @@
                     "leave": "离开"
                 }
             }
-        },
-        "operations": {
-            "failure": "出了点小问题..."
         }
     },
     "operations": {
+        "404": "抱歉，我们没有找到匹配的结果",
+        "failure": "出了点小问题...",
         "signIn": {
             "wrongPassword": "账号或密码错误"
         },
         "signUp": {
-            "success": "注册成功",
-            "failure": "出了点小问题..."
+            "success": "注册成功"
         },
         "addFriend": {
-            "success": "已添加好友",
-            "failure": "抱歉，没有找到相应用户"
+            "success": "已添加好友"
         },
         "createGroupChat": {
-            "success": "成功",
-            "failure": "出了点小问题..."
+            "success": "成功"
         },
         "joinGroupChat": {
-            "success": "成功",
-            "failure": "出了点小问题..."
+            "success": "成功"
         }
     }
 }

@@ -89,7 +89,7 @@ export default function MessageZone(props) {
                 setChatrooms();
             })
             .catch(() => {
-                displaySnackbar(t("MessageZone.operations.failure"), "warning");
+                displaySnackbar(t("operations.failure"), "warning");
             });
     };
 
@@ -115,7 +115,7 @@ export default function MessageZone(props) {
                 setChatrooms();
             })
             .catch(() => {
-                displaySnackbar(t("MessageZone.operations.failure"), "warning");
+                displaySnackbar(t("operations.failure"), "warning");
             });
     };
 

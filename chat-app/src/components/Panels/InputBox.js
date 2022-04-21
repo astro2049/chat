@@ -45,6 +45,24 @@ export default function CustomizedInputBase(props) {
         },
     });
 
+    const buttonDisabled = () => {
+        if (!pageIsReady) {
+            return true;
+        }
+        let inputText = options[`${activeOption}`].inputText;
+        switch (activeOption) {
+            case "CREATE_CHATROOM":
+                return !(inputText.length >= 1 && inputText.length <= 21);
+            case "JOIN_CHATROOM":
+                let chatRoomId = Number(inputText);
+                return !(Number.isInteger(chatRoomId) && chatRoomId > 0);
+            case "ADD_FRIEND":
+                return !(inputText.length >= 1 && inputText.length <= 21);
+            default:
+                return;
+        }
+    };
+
     useEffect(() => {
         switch (activeOption) {
             case "CREATE_CHATROOM":
@@ -72,23 +90,21 @@ export default function CustomizedInputBase(props) {
         let method = "POST";
         let data = {};
         let successMessage;
-        let failureMessage;
+        let code404Message = t("operations.404");
+        let failureMessage = t("operations.failure");
         switch (activeOption) {
             case "ADD_FRIEND":
                 route = "/users/" + userId + "/friends/" + inputText;
                 successMessage = t("operations.addFriend.success");
-                failureMessage = t("operations.addFriend.failure");
                 break;
             case "JOIN_CHATROOM":
                 route = "/chatRooms/" + inputText + "/members";
                 successMessage = t("operations.joinGroupChat.success");
-                failureMessage = t("operations.joinGroupChat.failure");
                 break;
             case "CREATE_CHATROOM":
                 route = "/chatRooms";
                 data["name"] = inputText;
                 successMessage = t("operations.createGroupChat.success");
-                failureMessage = t("operations.createGroupChat.failure");
                 break;
             default:
                 break;
@@ -105,7 +121,13 @@ export default function CustomizedInputBase(props) {
                 setChatrooms();
             })
             .catch((e) => {
-                displaySnackbar(failureMessage, "warning");
+                if (e.response.status === 403) {
+                    displaySnackbar(e.response.data.message, "warning");
+                } else if (e.response.status === 404) {
+                    displaySnackbar(code404Message, "warning");
+                } else {
+                    displaySnackbar(failureMessage, "warning");
+                }
             });
     };
 
@@ -136,7 +158,7 @@ export default function CustomizedInputBase(props) {
                     type="submit"
                     style={{ padding: 10 }}
                     aria-label="search"
-                    disabled={!pageIsReady}
+                    disabled={buttonDisabled()}
                 >
                     <ArrowForwardIcon />
                 </IconButton>
