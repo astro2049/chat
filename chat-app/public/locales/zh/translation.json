@@ -1,8 +1,20 @@
 {
     "name": "中文",
     "signIn": {
-        "username": "用户名",
-        "password": "密码",
+        "username": {
+            "name": "用户名",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
+        "password": {
+            "name": "密码",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
         "signInButton": "登录",
         "goToSignUp": "还没有账号？注册",
         "contact": "联系"

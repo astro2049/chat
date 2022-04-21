@@ -1,8 +1,20 @@
 {
     "name": "English",
     "signIn": {
-        "username": "Username",
-        "password": "Password",
+        "username": {
+            "name": "Username",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
+        "password": {
+            "name": "Password",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
         "signInButton": "sign in",
         "goToSignUp": "Don't have an account? Sign Up",
         "contact": "Contact"
