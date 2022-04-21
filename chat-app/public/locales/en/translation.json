@@ -21,8 +21,20 @@
     },
     "signUp": {
         "title": "Sign up",
-        "nickname": "Nickname",
-        "password": "Password",
+        "nickname": {
+            "name": "Nickname",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
+        "password": {
+            "name": "Password",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
         "signUpButton": "sign up",
         "goToSignIn": "Already have an account? Sign in",
         "contact": "Contact"

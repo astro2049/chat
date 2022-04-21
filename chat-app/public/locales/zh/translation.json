@@ -21,8 +21,20 @@
     },
     "signUp": {
         "title": "注册",
-        "nickname": "昵称",
-        "password": "密码",
+        "nickname": {
+            "name": "昵称",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
+        "password": {
+            "name": "密码",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
         "signUpButton": "注册",
         "goToSignIn": "已经有账号了？登录",
         "contact": "联系"

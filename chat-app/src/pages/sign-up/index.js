@@ -70,8 +70,40 @@ export default function SignUp(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const [fillingForThe1stTime, setFillingForThe1stTime] = useState(true);
+    const usernameIsInvalid = !(username.length >= 1 && username.length <= 21);
+    const passwordIsInvalid = !(password.length >= 1 && password.length <= 21);
+    const usernameHelperText = () => {
+        if (!usernameIsInvalid) {
+            return "";
+        } else {
+            if (username.length === 0) {
+                return t("signIn.username.helperText.isRequired");
+            } else {
+                return t("signIn.username.helperText.requirement");
+            }
+        }
+    };
+    const passwordHelperText = () => {
+        if (!passwordIsInvalid) {
+            return "";
+        } else {
+            if (password.length === 0) {
+                return t("signIn.password.helperText.isRequired");
+            } else {
+                return t("signIn.password.helperText.requirement");
+            }
+        }
+    };
+
     const onSubmit = async (e) => {
         e.preventDefault();
+
+        setFillingForThe1stTime(false);
+        if (usernameIsInvalid || passwordIsInvalid) {
+            return;
+        }
+
         axios
             .post(global.PROFILE_SERVER_ADDRESS + "/users", {
                 name: username,
@@ -84,7 +116,7 @@ export default function SignUp(props) {
                 setPage("sign-in");
             })
             .catch((e) => {
-                displaySnackbar(t("operations.signUp.failure"), "warning");
+                displaySnackbar(t("operations.failure"), "warning");
             });
     };
 
@@ -105,11 +137,15 @@ export default function SignUp(props) {
                         required
                         fullWidth
                         id="username"
-                        label={t("signUp.nickname")}
+                        label={t("signUp.nickname.name")}
                         name="username"
                         autoComplete="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        error={fillingForThe1stTime ? false : usernameIsInvalid}
+                        helperText={
+                            fillingForThe1stTime ? "" : usernameHelperText()
+                        }
                     />
                     <TextField
                         variant="outlined"
@@ -117,12 +153,16 @@ export default function SignUp(props) {
                         required
                         fullWidth
                         name="password"
-                        label={t("signUp.password")}
+                        label={t("signUp.password.name")}
                         type="password"
                         id="password"
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        error={fillingForThe1stTime ? false : passwordIsInvalid}
+                        helperText={
+                            fillingForThe1stTime ? "" : passwordHelperText()
+                        }
                     />
                     <Button
                         type="submit"
