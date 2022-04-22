@@ -33,15 +33,11 @@ export default function SimpleBreadcrumbs(props) {
 
     const setChatrooms = props.setChatrooms;
     const pageIsReady = props.pageIsReady;
-    const [activeOption, setActiveOption] = useState("");
+    const [activeOption, setActiveOption] = useState("ADD_FRIEND");
 
-    const createChatroomIsActive = activeOption === "Create Chatroom";
-    const joinChatroomIsActive = activeOption === "Join Chatroom";
-    const addNewFriendIsActive = activeOption === "New Friend";
-
-    useEffect(() => {
-        setActiveOption("New Friend");
-    }, []);
+    const createChatroomIsActive = activeOption === "CREATE_CHATROOM";
+    const joinChatroomIsActive = activeOption === "JOIN_CHATROOM";
+    const addNewFriendIsActive = activeOption === "ADD_FRIEND";
 
     function handleSwitchOption(value) {
         setActiveOption(value);
@@ -63,7 +59,7 @@ export default function SimpleBreadcrumbs(props) {
                                 createChatroomIsActive ? "none" : "hover"
                             }
                             onClick={(e) =>
-                                handleSwitchOption("Create Chatroom")
+                                handleSwitchOption("CREATE_CHATROOM")
                             }
                         >
                             {t("chat.panels.createChatroom.name")}
@@ -73,7 +69,7 @@ export default function SimpleBreadcrumbs(props) {
                                 joinChatroomIsActive ? "secondary" : "inherit"
                             }
                             underline={joinChatroomIsActive ? "none" : "hover"}
-                            onClick={(e) => handleSwitchOption("Join Chatroom")}
+                            onClick={(e) => handleSwitchOption("JOIN_CHATROOM")}
                         >
                             {t("chat.panels.joinChatroom.name")}
                         </Link>
@@ -82,7 +78,7 @@ export default function SimpleBreadcrumbs(props) {
                                 addNewFriendIsActive ? "secondary" : "inherit"
                             }
                             underline={addNewFriendIsActive ? "none" : "hover"}
-                            onClick={(e) => handleSwitchOption("New Friend")}
+                            onClick={(e) => handleSwitchOption("ADD_FRIEND")}
                         >
                             {t("chat.panels.newFriend.name")}
                         </Link>
@@ -94,7 +90,7 @@ export default function SimpleBreadcrumbs(props) {
                     userId={props.userId}
                     setChatrooms={setChatrooms}
                     pageIsReady={pageIsReady}
-                    setSnackbar={props.setSnackbar}
+                    pleaseRerender={props.pleaseRerender}
                 />
             </div>
         </div>

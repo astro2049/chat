@@ -13,8 +13,6 @@ import {
     Select,
     MenuItem,
     Skeleton,
-    Snackbar,
-    Alert,
 } from "@mui/material";
 import Panels from "../../components/Panels/index";
 import axios from "axios";
@@ -158,7 +156,6 @@ export default function Chat(props) {
         useState(false);
     const [pageIsReady, setPageIsReady] = useState(false);
     const [skeletonsCount, setSkeletonsCount] = useState();
-    const [snackbar, setSnackbar] = useState({ open: false });
 
     const [rerender, setRerender] = useState(false);
     const rerenderRef = useRef();
@@ -364,6 +361,7 @@ export default function Chat(props) {
                 room.messages.push(message);
                 pleaseRerender();
                 if (
+                    !activeChatRef.current.display_info &&
                     room.id === activeChatRef.current.id &&
                     room.type === activeChatRef.current.type
                 ) {
@@ -416,14 +414,6 @@ export default function Chat(props) {
         }
     };
 
-    const handleClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-
-        setSnackbar({ open: false });
-    };
-
     return (
         <div>
             <CssBaseline />
@@ -472,7 +462,7 @@ export default function Chat(props) {
                         userId={userId}
                         setChatrooms={setChatrooms}
                         pageIsReady={pageIsReady}
-                        setSnackbar={setSnackbar}
+                        pleaseRerender={pleaseRerender}
                     />
 
                     <div
@@ -616,19 +606,6 @@ export default function Chat(props) {
                     />
                 </div>
             </Drawer>
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={3000}
-                onClose={handleClose}
-            >
-                <Alert
-                    onClose={handleClose}
-                    severity={snackbar.type}
-                    sx={{ width: "100%" }}
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
         </div>
     );
 }

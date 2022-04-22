@@ -1,16 +1,40 @@
 {
     "name": "中文",
     "signIn": {
-        "username": "用户名",
-        "password": "密码",
+        "username": {
+            "name": "用户名",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
+        "password": {
+            "name": "密码",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
         "signInButton": "登录",
         "goToSignUp": "还没有账号？注册",
         "contact": "联系"
     },
     "signUp": {
         "title": "注册",
-        "nickname": "昵称",
-        "password": "密码",
+        "nickname": {
+            "name": "昵称",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
+        "password": {
+            "name": "密码",
+            "helperText": {
+                "isRequired": "请填写此字段",
+                "requirement": "<= 21 个字符"
+            }
+        },
         "signUpButton": "注册",
         "goToSignIn": "已经有账号了？登录",
         "contact": "联系"
@@ -67,17 +91,25 @@
         }
     },
     "operations": {
+        "404": "抱歉，我们没有找到匹配的结果",
+        "failure": "出了点小问题...",
+        "signIn": {
+            "wrongPassword": "账号或密码错误"
+        },
+        "signUp": {
+            "success": "注册成功",
+            "23": "啊哦，这个昵称已经被注册了"
+        },
         "addFriend": {
-            "success": "已添加好友 :)",
-            "failure": "抱歉，我们没有找到相应用户"
+            "success": "已添加好友",
+            "Leaf": "暂不支持添加自己...",
+            "Wheel": "已经是好友了"
         },
         "createGroupChat": {
-            "success": "成功",
-            "failure": "噢..."
+            "success": "成功"
         },
         "joinGroupChat": {
-            "success": "成功",
-            "failure": "噢..."
+            "success": "成功"
         }
     }
 }

@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Validation\Rules\Unique;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -23,9 +22,13 @@ class UserController extends Controller
     public function store(Request $request): Model|Builder
     {
         $this->validate($request, [
-            'name' => ['required', 'between:2,21', (new Unique('users'))->withoutTrashed()],
-            'password' => ['required', 'between:2,21']
+            'name' => ['required', 'between:1,21'],
+            'password' => ['required', 'between:1,21']
         ]);
+
+        if (User::query()->where('name', $request->get('name'))->exists()) {
+            abort(403, '23');
+        }
 
         return User::query()->create([
             'name' => $request->get('name'),
@@ -48,14 +51,14 @@ class UserController extends Controller
         $this->authorize('operatingOnMyself', $user);
 
         if ($user->name == $friend->name) {
-            abort(403, 'nah');
+            abort(403, 'Leaf');
         }
 
         $friendPivots = $this->findFriendPivots($user, $friend);
 
         // abort if friendship is already established
         if ($friendPivots->isNotEmpty()) {
-            abort(403, 'already friends :)');
+            abort(403, 'Wheel');
         }
 
         /** @var FriendPivot $newFriendPivot0 */

@@ -16,7 +16,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->realTextBetween(2, 21),
+            'name' => $this->faker->realTextBetween(1, 21),
             'password' => Hash::make('Savage'),
             'remember_token' => Str::random(10),
         ];

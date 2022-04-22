@@ -6,6 +6,7 @@ import { Paper, TextField } from "@material-ui/core";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import global from "../../utils/globalVars";
+import displaySnackbar from "../Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -30,57 +31,80 @@ export default function CustomizedInputBase(props) {
     const activeOption = props.activeOption;
     const setChatrooms = props.setChatrooms;
     const pageIsReady = props.pageIsReady;
-    const setSnackbar = props.setSnackbar;
+    const pleaseRerender = props.pleaseRerender;
     const [inputPlaceholder, setInputPlaceholder] = useState("");
-    const [inputText, setInputText] = useState("");
+    const [options] = useState({
+        CREATE_CHATROOM: {
+            inputText: "",
+        },
+        JOIN_CHATROOM: {
+            inputText: "",
+        },
+        ADD_FRIEND: {
+            inputText: "",
+        },
+    });
+
+    const buttonDisabled = () => {
+        if (!pageIsReady) {
+            return true;
+        }
+        let inputText = options[`${activeOption}`].inputText;
+        switch (activeOption) {
+            case "CREATE_CHATROOM":
+                return !(inputText.length >= 1 && inputText.length <= 21);
+            case "JOIN_CHATROOM":
+                let chatRoomId = Number(inputText);
+                return !(Number.isInteger(chatRoomId) && chatRoomId > 0);
+            case "ADD_FRIEND":
+                return !(inputText.length >= 1 && inputText.length <= 21);
+            default:
+                return;
+        }
+    };
 
     useEffect(() => {
         switch (activeOption) {
-            case "Create Chatroom":
+            case "CREATE_CHATROOM":
                 setInputPlaceholder(t("chat.panels.createChatroom.promptText"));
                 break;
-            case "Join Chatroom":
+            case "JOIN_CHATROOM":
                 setInputPlaceholder(t("chat.panels.joinChatroom.promptText"));
                 break;
-            case "New Friend":
+            case "ADD_FRIEND":
                 setInputPlaceholder(t("chat.panels.newFriend.promptText"));
                 break;
             default:
                 break;
         }
-        setInputText("");
-    }, [activeOption, i18n.language, t]);
+    }, [activeOption, i18n.language]);
 
     const onSubmit = (e) => {
         e.preventDefault();
+        let inputText = options[`${activeOption}`].inputText;
         if (inputText.length === 0) {
             return;
         }
 
         let route;
-        let method;
+        let method = "POST";
         let data = {};
         let successMessage;
-        let failureMessage;
+        let code404Message = t("operations.404");
+        let failureMessage = t("operations.failure");
         switch (activeOption) {
-            case "New Friend":
+            case "ADD_FRIEND":
                 route = "/users/" + userId + "/friends/" + inputText;
-                method = "POST";
                 successMessage = t("operations.addFriend.success");
-                failureMessage = t("operations.addFriend.failure");
                 break;
-            case "Join Chatroom":
+            case "JOIN_CHATROOM":
                 route = "/chatRooms/" + inputText + "/members";
-                method = "POST";
                 successMessage = t("operations.joinGroupChat.success");
-                failureMessage = t("operations.joinGroupChat.failure");
                 break;
-            case "Create Chatroom":
+            case "CREATE_CHATROOM":
                 route = "/chatRooms";
-                method = "POST";
                 data["name"] = inputText;
                 successMessage = t("operations.createGroupChat.success");
-                failureMessage = t("operations.createGroupChat.failure");
                 break;
             default:
                 break;
@@ -92,21 +116,22 @@ export default function CustomizedInputBase(props) {
                 data: data,
             })
             .then(() => {
-                setSnackbar({
-                    open: true,
-                    message: successMessage,
-                    type: "success",
-                });
+                options[`${activeOption}`].inputText = "";
+                displaySnackbar(successMessage, "success");
                 setChatrooms();
             })
             .catch((e) => {
-                setSnackbar({
-                    open: true,
-                    message: failureMessage,
-                    type: "warning",
-                });
+                if (e.response.status === 403) {
+                    displaySnackbar(
+                        t(`operations.addFriend.${e.response.data.message}`),
+                        "warning"
+                    );
+                } else if (e.response.status === 404) {
+                    displaySnackbar(code404Message, "warning");
+                } else {
+                    displaySnackbar(failureMessage, "warning");
+                }
             });
-        setInputText("");
     };
 
     return (
@@ -125,15 +150,18 @@ export default function CustomizedInputBase(props) {
                 <TextField
                     className={classes.input}
                     placeholder={inputPlaceholder}
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
+                    value={options[`${activeOption}`].inputText}
+                    onChange={(e) => {
+                        options[`${activeOption}`].inputText = e.target.value;
+                        pleaseRerender();
+                    }}
                     disabled={!pageIsReady}
                 />
                 <IconButton
                     type="submit"
                     style={{ padding: 10 }}
                     aria-label="search"
-                    disabled={!pageIsReady}
+                    disabled={buttonDisabled()}
                 >
                     <ArrowForwardIcon />
                 </IconButton>

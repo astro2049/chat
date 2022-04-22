@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import MessageBox from "../Message";
 import global from "../../utils/globalVars";
+import displaySnackbar from "../Snackbar";
 
 const appBarHeight = 80;
 const inputContainerHeight = 258;
@@ -84,10 +85,11 @@ export default function MessageZone(props) {
                 method: "DELETE",
             })
             .then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    setActiveChat(undefined);
-                    setChatrooms();
-                }
+                setActiveChat(undefined);
+                setChatrooms();
+            })
+            .catch(() => {
+                displaySnackbar(t("operations.failure"), "warning");
             });
     };
 
@@ -109,10 +111,11 @@ export default function MessageZone(props) {
                 method: "DELETE",
             })
             .then((response) => {
-                if (response.status >= 200 && response.status < 300) {
-                    setActiveChat(undefined);
-                    setChatrooms();
-                }
+                setActiveChat(undefined);
+                setChatrooms();
+            })
+            .catch(() => {
+                displaySnackbar(t("operations.failure"), "warning");
             });
     };
 

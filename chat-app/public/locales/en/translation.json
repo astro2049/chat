@@ -1,16 +1,40 @@
 {
     "name": "English",
     "signIn": {
-        "username": "Username",
-        "password": "Password",
+        "username": {
+            "name": "Username",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
+        "password": {
+            "name": "Password",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
         "signInButton": "sign in",
         "goToSignUp": "Don't have an account? Sign Up",
         "contact": "Contact"
     },
     "signUp": {
         "title": "Sign up",
-        "nickname": "Nickname",
-        "password": "Password",
+        "nickname": {
+            "name": "Nickname",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
+        "password": {
+            "name": "Password",
+            "helperText": {
+                "isRequired": "Please fill in this field",
+                "requirement": "Must be <= 21 characters"
+            }
+        },
         "signUpButton": "sign up",
         "goToSignIn": "Already have an account? Sign in",
         "contact": "Contact"
@@ -20,7 +44,7 @@
         "panels": {
             "createChatroom": {
                 "name": "Create Chatroom",
-                "promptText": "New chat room will be..."
+                "promptText": "The new chat room is called..."
             },
             "joinChatroom": {
                 "name": "Join Chatroom",
@@ -67,17 +91,25 @@
         }
     },
     "operations": {
+        "404": "Sorry, we didn't find any matches",
+        "failure": "Sorry, something went wrong",
+        "signIn": {
+            "wrongPassword": "The username or password is incorrect"
+        },
+        "signUp": {
+            "success": "Account Created",
+            "23": "Oops, this nickname is already taken"
+        },
         "addFriend": {
-            "success": "friend added :)",
-            "failure": "sorry, we didn't find a matching user"
+            "success": "New friend added",
+            "Leaf": "Adding oneself is not yet supported...",
+            "Wheel": "Already friends"
         },
         "createGroupChat": {
-            "success": "success",
-            "failure": "what..."
+            "success": "Success"
         },
         "joinGroupChat": {
-            "success": "success",
-            "failure": "what..."
+            "success": "Success"
         }
     }
 }
