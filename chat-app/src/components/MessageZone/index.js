@@ -76,6 +76,8 @@ export default function MessageZone(props) {
     };
 
     const deleteGroupChat = () => {
+        let successMessage =
+            t("operations.disbandGroupChat.success") + activeChat.name;
         axios
             .request({
                 url:
@@ -85,6 +87,7 @@ export default function MessageZone(props) {
                 method: "DELETE",
             })
             .then((response) => {
+                displaySnackbar(successMessage, "success");
                 setActiveChat(undefined);
                 setChatrooms();
             })
@@ -95,12 +98,17 @@ export default function MessageZone(props) {
 
     const deleteChat = () => {
         let route;
+        let successMessage;
         switch (activeChat.type) {
             case global.CHAT_TYPE_FRIEND:
                 route = "/users/" + userId + "/friends/" + activeChat.name;
+                successMessage =
+                    t("operations.deleteFriend.success") + activeChat.name;
                 break;
             case global.CHAT_TYPE_GROUP_CHAT:
                 route = "/chatRooms/" + activeChat.id + "/members";
+                successMessage =
+                    t("operations.leaveGroupChat.success") + activeChat.name;
                 break;
             default:
                 break;
@@ -111,6 +119,7 @@ export default function MessageZone(props) {
                 method: "DELETE",
             })
             .then((response) => {
+                displaySnackbar(successMessage, "success");
                 setActiveChat(undefined);
                 setChatrooms();
             })

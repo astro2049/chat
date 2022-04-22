@@ -91,8 +91,6 @@
         }
     },
     "operations": {
-        "404": "Sorry, we didn't find any matches",
-        "failure": "Sorry, something went wrong",
         "signIn": {
             "wrongPassword": "The username or password is incorrect"
         },
@@ -105,11 +103,22 @@
             "Leaf": "Adding oneself is not yet supported...",
             "Wheel": "Already friends"
         },
+        "deleteFriend": {
+            "success": "Unfriended "
+        },
         "createGroupChat": {
             "success": "Success"
         },
+        "disbandGroupChat": {
+            "success": "Disbanded "
+        },
+        "leaveGroupChat": {
+            "success": "Left "
+        },
         "joinGroupChat": {
             "success": "Success"
-        }
+        },
+        "404": "Sorry, we didn't find any matches",
+        "failure": "Sorry, something went wrong"
     }
 }
