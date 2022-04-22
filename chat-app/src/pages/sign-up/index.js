@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: theme.spacing(1, 0, 2),
     },
     blankDiv10PercentHeight: {
         height: "20%",
@@ -75,7 +75,7 @@ export default function SignUp(props) {
     const passwordIsInvalid = !(password.length >= 1 && password.length <= 21);
     const usernameHelperText = () => {
         if (!usernameIsInvalid) {
-            return "";
+            return " ";
         } else {
             if (username.length === 0) {
                 return t("signIn.username.helperText.isRequired");
@@ -86,7 +86,7 @@ export default function SignUp(props) {
     };
     const passwordHelperText = () => {
         if (!passwordIsInvalid) {
-            return "";
+            return " ";
         } else {
             if (password.length === 0) {
                 return t("signIn.password.helperText.isRequired");
@@ -116,11 +116,13 @@ export default function SignUp(props) {
                 setPage("sign-in");
             })
             .catch((e) => {
-                if (e.response.status === 403) {
-                    displaySnackbar(
-                        t(`operations.signUp.${e.response.data.message}`),
-                        "warning"
-                    );
+                if (e.response) {
+                    if (e.response.status === 403) {
+                        displaySnackbar(
+                            t(`operations.signUp.${e.response.data.message}`),
+                            "warning"
+                        );
+                    }
                 } else {
                     displaySnackbar(t("operations.failure"), "warning");
                 }
@@ -141,6 +143,9 @@ export default function SignUp(props) {
                     <TextField
                         variant="outlined"
                         margin="normal"
+                        style={{
+                            marginBottom: "0px",
+                        }}
                         required
                         fullWidth
                         id="username"
@@ -151,12 +156,16 @@ export default function SignUp(props) {
                         onChange={(e) => setUsername(e.target.value)}
                         error={fillingForThe1stTime ? false : usernameIsInvalid}
                         helperText={
-                            fillingForThe1stTime ? "" : usernameHelperText()
+                            fillingForThe1stTime ? " " : usernameHelperText()
                         }
                     />
                     <TextField
                         variant="outlined"
                         margin="normal"
+                        style={{
+                            marginTop: "6px",
+                            marginBottom: "2px",
+                        }}
                         required
                         fullWidth
                         name="password"
@@ -168,7 +177,7 @@ export default function SignUp(props) {
                         onChange={(e) => setPassword(e.target.value)}
                         error={fillingForThe1stTime ? false : passwordIsInvalid}
                         helperText={
-                            fillingForThe1stTime ? "" : passwordHelperText()
+                            fillingForThe1stTime ? " " : passwordHelperText()
                         }
                     />
                     <Button
