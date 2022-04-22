@@ -116,11 +116,13 @@ export default function SignIn(props) {
                 setToken(response.data.token);
             })
             .catch((e) => {
-                if (e.response.status === 401) {
-                    displaySnackbar(
-                        t("operations.signIn.wrongPassword"),
-                        "warning"
-                    );
+                if (e.response) {
+                    if (e.response.status === 401) {
+                        displaySnackbar(
+                            t("operations.signIn.wrongPassword"),
+                            "warning"
+                        );
+                    }
                 } else {
                     displaySnackbar(t("operations.failure"), "warning");
                 }

@@ -116,11 +116,13 @@ export default function SignUp(props) {
                 setPage("sign-in");
             })
             .catch((e) => {
-                if (e.response.status === 403) {
-                    displaySnackbar(
-                        t(`operations.signUp.${e.response.data.message}`),
-                        "warning"
-                    );
+                if (e.response) {
+                    if (e.response.status === 403) {
+                        displaySnackbar(
+                            t(`operations.signUp.${e.response.data.message}`),
+                            "warning"
+                        );
+                    }
                 } else {
                     displaySnackbar(t("operations.failure"), "warning");
                 }
