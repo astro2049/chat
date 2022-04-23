@@ -401,9 +401,11 @@ export default function Chat(props) {
     };
 
     const deliverMessageToChat = (message) => {
-        for (const room of rooms) {
+        let roomIndex = 0;
+        for (const room of roomsRef.current) {
             if (message.chatId === room.id && message.type === room.type) {
                 room.messages.push(message);
+                moveThisRoomToTheFront(roomIndex);
                 pleaseRerender();
                 if (
                     !activeChatRef.current.display_info &&
@@ -414,7 +416,16 @@ export default function Chat(props) {
                 }
                 break;
             }
+            roomIndex++;
         }
+    };
+
+    const moveThisRoomToTheFront = (roomIndex) => {
+        roomsIndexMapForChatList.splice(
+            roomsIndexMapForChatList.indexOf(roomIndex),
+            1
+        );
+        roomsIndexMapForChatList.unshift(roomIndex);
     };
 
     const onError = (err) => {
