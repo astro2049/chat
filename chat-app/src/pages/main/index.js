@@ -210,6 +210,7 @@ export default function Chat(props) {
                         messages: [],
                         chatText: "",
                         subscribed: false,
+                        subscription: null,
                     });
                 }
                 for (const groupChat of comeAndGoGroupChats.comers) {
@@ -222,6 +223,7 @@ export default function Chat(props) {
                         messages: [],
                         chatText: "",
                         subscribed: false,
+                        subscription: null,
                     });
                 }
 
@@ -283,10 +285,9 @@ export default function Chat(props) {
         }
     };
 
-    const unsubscribeChats = (goers) => {
-        for (const goer of goers) {
-            // TODO
-            // unsubscribe this goer chat
+    const unsubscribeChats = (leavers) => {
+        for (const leaver of leavers) {
+            leaver.subscription.unsubscribe();
         }
     };
 
@@ -373,19 +374,15 @@ export default function Chat(props) {
                 return;
             }
 
+            let topic;
             if (type === global.CHAT_TYPE_FRIEND) {
-                stompClient.subscribe(
-                    "/topic/friends." + id,
-                    onMessageReceived
-                );
-                room.subscribed = true;
+                topic = "/topic/friends." + id;
             } else if (type === global.CHAT_TYPE_GROUP_CHAT) {
-                stompClient.subscribe(
-                    "/topic/chatrooms." + id,
-                    onMessageReceived
-                );
-                room.subscribed = true;
+                topic = "/topic/chatrooms." + id;
             }
+            let subscription = stompClient.subscribe(topic, onMessageReceived);
+            room.subscribed = true;
+            room.subscription = subscription;
         });
     };
 
