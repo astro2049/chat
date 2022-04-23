@@ -119,7 +119,10 @@ const getComeAndGoChats = (chats, incomingChats, type) => {
 };
 
 const scrollToDialogBoxBottom = () => {
-    var element = document.getElementById("dialogBox");
+    let element = document.getElementById("dialogBox");
+    if (!element) {
+        return;
+    }
     element.scrollTop = element.scrollHeight;
 };
 
@@ -146,6 +149,11 @@ export default function Chat(props) {
     const [rooms, setRooms] = useState();
     const roomsRef = useRef();
     roomsRef.current = rooms;
+    const [roomsIndexMapForChatList, setRoomsIndexMapForChatList] = useState(
+        []
+    );
+    const roomsIndexMapForChatListRef = useRef();
+    roomsIndexMapForChatListRef.current = roomsIndexMapForChatList;
     const [roomsCount, setRoomsCount] = useState();
     const [activeChat, setActiveChat] = useState();
     const activeChatRef = useRef();
@@ -204,7 +212,9 @@ export default function Chat(props) {
                         display_info: false,
                         messages: [],
                         chatText: "",
+                        unreadMessagesCount: 0,
                         subscribed: false,
+                        subscription: null,
                     });
                 }
                 for (const groupChat of comeAndGoGroupChats.comers) {
@@ -216,7 +226,9 @@ export default function Chat(props) {
                         display_info: false,
                         messages: [],
                         chatText: "",
+                        unreadMessagesCount: 0,
                         subscribed: false,
+                        subscription: null,
                     });
                 }
 
@@ -234,14 +246,53 @@ export default function Chat(props) {
                         )
                 );
 
+                removeLeaversFromChatsIndexMap(goers);
+                addComersToChatsIndexMap(comers);
+
                 setRooms([...survivors, ...comers]);
             });
     };
 
-    const unsubscribeChats = (goers) => {
-        for (const goer of goers) {
-            // TODO
-            // unsubscribe this goer chat
+    const addComersToChatsIndexMap = (comers) => {
+        comers.map((comer) => {
+            roomsIndexMapForChatList.unshift(
+                roomsIndexMapForChatListRef.current.length
+            );
+        });
+    };
+
+    const removeLeaversFromChatsIndexMap = (leavers) => {
+        let roomsIndexMap = roomsIndexMapForChatListRef.current;
+        let minus = new Array(roomsIndexMap.length).fill(0);
+        let roomsIndexMapLeaverIndexes = [];
+
+        leavers.map((leaver) => {
+            let roomIndex = roomsRef.current.findIndex((room) => {
+                return room.id === leaver.id && room.type === leaver.type;
+            });
+
+            for (let i = 0; i < roomsIndexMap.length; i++) {
+                if (roomsIndexMap[i] < roomIndex) {
+                    continue;
+                } else if (roomsIndexMap[i] > roomIndex) {
+                    minus[i]++;
+                } else {
+                    roomsIndexMapLeaverIndexes.push(i);
+                }
+            }
+        });
+
+        for (let i = 0; i < roomsIndexMap.length; i++) {
+            roomsIndexMapForChatList[i] -= minus[i];
+        }
+        for (const index of roomsIndexMapLeaverIndexes) {
+            roomsIndexMapForChatList.splice(index, 1);
+        }
+    };
+
+    const unsubscribeChats = (leavers) => {
+        for (const leaver of leavers) {
+            leaver.subscription.unsubscribe();
         }
     };
 
@@ -328,19 +379,15 @@ export default function Chat(props) {
                 return;
             }
 
+            let topic;
             if (type === global.CHAT_TYPE_FRIEND) {
-                stompClient.subscribe(
-                    "/topic/friends." + id,
-                    onMessageReceived
-                );
-                room.subscribed = true;
+                topic = "/topic/friends." + id;
             } else if (type === global.CHAT_TYPE_GROUP_CHAT) {
-                stompClient.subscribe(
-                    "/topic/chatrooms." + id,
-                    onMessageReceived
-                );
-                room.subscribed = true;
+                topic = "/topic/chatrooms." + id;
             }
+            let subscription = stompClient.subscribe(topic, onMessageReceived);
+            room.subscribed = true;
+            room.subscription = subscription;
         });
     };
 
@@ -356,20 +403,35 @@ export default function Chat(props) {
     };
 
     const deliverMessageToChat = (message) => {
-        for (const room of rooms) {
+        let roomIndex = 0;
+        for (const room of roomsRef.current) {
             if (message.chatId === room.id && message.type === room.type) {
                 room.messages.push(message);
+                moveThisRoomToTheFront(roomIndex);
                 pleaseRerender();
                 if (
-                    !activeChatRef.current.display_info &&
                     room.id === activeChatRef.current.id &&
                     room.type === activeChatRef.current.type
                 ) {
-                    scrollToDialogBoxBottom();
+                    if (!activeChatRef.current.display_info) {
+                        scrollToDialogBoxBottom();
+                    }
+                } else {
+                    room.unreadMessagesCount++;
+                    pleaseRerender();
                 }
                 break;
             }
+            roomIndex++;
         }
+    };
+
+    const moveThisRoomToTheFront = (roomIndex) => {
+        roomsIndexMapForChatList.splice(
+            roomsIndexMapForChatList.indexOf(roomIndex),
+            1
+        );
+        roomsIndexMapForChatList.unshift(roomIndex);
     };
 
     const onError = (err) => {
@@ -451,6 +513,7 @@ export default function Chat(props) {
                     <div className={classes.chatRooms}>
                         <ChatProfileCards
                             chats={rooms}
+                            chatsIndexMap={roomsIndexMapForChatList}
                             activeChat={activeChat}
                             setActiveChat={setActiveChat}
                             pageIsReady={pageIsReady}

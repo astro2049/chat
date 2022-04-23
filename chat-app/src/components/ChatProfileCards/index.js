@@ -10,6 +10,7 @@ import {
     Typography,
     Chip,
     Skeleton,
+    Badge,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import global from "../../utils/globalVars";
@@ -50,12 +51,13 @@ export default function ChatProfileCards(props) {
     const { t } = useTranslation();
 
     const chats = props.chats;
+    const chatsIndexMap = props.chatsIndexMap;
     const activeChat = props.activeChat;
     const setActiveChat = props.setActiveChat;
     const pageIsReady = props.pageIsReady;
     const skeletonsCount = props.skeletonsCount;
 
-    const renderChatList = pageIsReady && chats;
+    const renderChatList = pageIsReady && chatsIndexMap;
 
     const skeletons = () => {
         let chatSkeletons = [];
@@ -130,115 +132,128 @@ export default function ChatProfileCards(props) {
                     </Typography>
                 </div>
             ) : (
-                chats.map((chat, index) => (
-                    <ListItem
-                        sx={{ height: 82 }}
-                        key={index}
-                        disablePadding
-                        divider
-                    >
-                        <ListItemButton
-                            sx={{ height: "100%" }}
-                            alignItems="space-between"
-                            onClick={() => setActiveChat(chat)}
-                            selected={
-                                activeChat &&
-                                activeChat.id === chat.id &&
-                                activeChat.type === chat.type
-                            }
+                chatsIndexMap.map((chatIndex, index) => {
+                    let chat = chats[chatIndex];
+                    return (
+                        <ListItem
+                            sx={{ height: 82 }}
+                            key={index}
+                            disablePadding
+                            divider
                         >
-                            <ListItemAvatar
-                                sx={{
-                                    marginLeft: 1,
-                                    paddingLeft: "3px",
-                                    paddingRight: "3px",
+                            <ListItemButton
+                                sx={{ height: "100%" }}
+                                alignItems="space-between"
+                                onClick={() => {
+                                    chat.unreadMessagesCount = 0;
+                                    setActiveChat(chat);
                                 }}
+                                selected={
+                                    activeChat &&
+                                    activeChat.id === chat.id &&
+                                    activeChat.type === chat.type
+                                }
                             >
-                                <Avatar
+                                <ListItemAvatar
                                     sx={{
-                                        bgcolor: stringToColor(chat.name),
+                                        marginLeft: 1,
+                                        paddingLeft: "3px",
+                                        paddingRight: "3px",
                                     }}
-                                    alt={chat.name}
                                 >
-                                    {getNameAbbreviation(chat.name)}
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                                disableTypography
-                                primary={
-                                    <React.Fragment>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                alignItems: "center",
+                                    <Badge
+                                        badgeContent={chat.unreadMessagesCount}
+                                        color="warning"
+                                    >
+                                        <Avatar
+                                            sx={{
+                                                bgcolor: stringToColor(
+                                                    chat.name
+                                                ),
                                             }}
+                                            alt={chat.name}
                                         >
-                                            <Typography variant="h5" noWrap>
-                                                {chat.name}
-                                            </Typography>
-                                            <Chip
-                                                variant="outlined"
-                                                label={
-                                                    chat.type ===
-                                                    global.CHAT_TYPE_FRIEND
-                                                        ? t(
-                                                              "ChatProfileCards.chatRoomType.friend"
-                                                          )
-                                                        : t(
-                                                              "ChatProfileCards.chatRoomType.group_chat"
-                                                          )
-                                                }
-                                                color={
-                                                    chat.type ===
-                                                    global.CHAT_TYPE_FRIEND
-                                                        ? "primary"
-                                                        : "secondary"
-                                                }
-                                                sx={{ ml: 1 }}
-                                                size="small"
-                                            />
-                                        </div>
-                                    </React.Fragment>
-                                }
-                                secondary={
-                                    <React.Fragment>
-                                        <div style={{ height: "30px" }}>
-                                            {chat.messages.length > 0 ? (
-                                                <Typography
-                                                    noWrap
-                                                    sx={{
-                                                        color: "gray",
-                                                        lineHeight: "30px",
-                                                    }}
-                                                >
-                                                    {
-                                                        chat.messages.at(
-                                                            chat.messages
-                                                                .length - 1
-                                                        ).content
+                                            {getNameAbbreviation(chat.name)}
+                                        </Avatar>
+                                    </Badge>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    disableTypography
+                                    primary={
+                                        <React.Fragment>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <Typography variant="h5" noWrap>
+                                                    {chat.name}
+                                                </Typography>
+                                                <Chip
+                                                    variant="outlined"
+                                                    label={
+                                                        chat.type ===
+                                                        global.CHAT_TYPE_FRIEND
+                                                            ? t(
+                                                                  "ChatProfileCards.chatRoomType.friend"
+                                                              )
+                                                            : t(
+                                                                  "ChatProfileCards.chatRoomType.group_chat"
+                                                              )
                                                     }
-                                                </Typography>
-                                            ) : (
-                                                <Typography
-                                                    noWrap
-                                                    sx={{
-                                                        color: "gray",
-                                                        fontStyle: "italic",
-                                                    }}
-                                                    variant="caption"
-                                                >
-                                                    {t(
-                                                        "ChatProfileCards.noMessages"
-                                                    )}
-                                                </Typography>
-                                            )}
-                                        </div>
-                                    </React.Fragment>
-                                }
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                ))
+                                                    color={
+                                                        chat.type ===
+                                                        global.CHAT_TYPE_FRIEND
+                                                            ? "primary"
+                                                            : "secondary"
+                                                    }
+                                                    sx={{ ml: 1 }}
+                                                    size="small"
+                                                />
+                                            </div>
+                                        </React.Fragment>
+                                    }
+                                    secondary={
+                                        <React.Fragment>
+                                            <div style={{ height: "30px" }}>
+                                                {chat.messages.length > 0 ? (
+                                                    <Typography
+                                                        noWrap
+                                                        sx={{
+                                                            color: "gray",
+                                                            lineHeight: "30px",
+                                                        }}
+                                                    >
+                                                        {
+                                                            chat.messages.at(
+                                                                chat.messages
+                                                                    .length - 1
+                                                            ).content
+                                                        }
+                                                    </Typography>
+                                                ) : (
+                                                    <Typography
+                                                        noWrap
+                                                        sx={{
+                                                            color: "gray",
+                                                            fontStyle: "italic",
+                                                        }}
+                                                        variant="caption"
+                                                    >
+                                                        {t(
+                                                            "ChatProfileCards.noMessages"
+                                                        )}
+                                                    </Typography>
+                                                )}
+                                            </div>
+                                        </React.Fragment>
+                                    }
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    );
+                })
             )}
         </List>
     );
