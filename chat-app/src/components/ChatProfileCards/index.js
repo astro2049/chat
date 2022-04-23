@@ -10,6 +10,7 @@ import {
     Typography,
     Chip,
     Skeleton,
+    Badge,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import global from "../../utils/globalVars";
@@ -143,7 +144,10 @@ export default function ChatProfileCards(props) {
                             <ListItemButton
                                 sx={{ height: "100%" }}
                                 alignItems="space-between"
-                                onClick={() => setActiveChat(chat)}
+                                onClick={() => {
+                                    chat.unreadMessagesCount = 0;
+                                    setActiveChat(chat);
+                                }}
                                 selected={
                                     activeChat &&
                                     activeChat.id === chat.id &&
@@ -157,14 +161,21 @@ export default function ChatProfileCards(props) {
                                         paddingRight: "3px",
                                     }}
                                 >
-                                    <Avatar
-                                        sx={{
-                                            bgcolor: stringToColor(chat.name),
-                                        }}
-                                        alt={chat.name}
+                                    <Badge
+                                        badgeContent={chat.unreadMessagesCount}
+                                        color="warning"
                                     >
-                                        {getNameAbbreviation(chat.name)}
-                                    </Avatar>
+                                        <Avatar
+                                            sx={{
+                                                bgcolor: stringToColor(
+                                                    chat.name
+                                                ),
+                                            }}
+                                            alt={chat.name}
+                                        >
+                                            {getNameAbbreviation(chat.name)}
+                                        </Avatar>
+                                    </Badge>
                                 </ListItemAvatar>
                                 <ListItemText
                                     disableTypography

@@ -119,7 +119,10 @@ const getComeAndGoChats = (chats, incomingChats, type) => {
 };
 
 const scrollToDialogBoxBottom = () => {
-    var element = document.getElementById("dialogBox");
+    let element = document.getElementById("dialogBox");
+    if (!element) {
+        return;
+    }
     element.scrollTop = element.scrollHeight;
 };
 
@@ -209,6 +212,7 @@ export default function Chat(props) {
                         display_info: false,
                         messages: [],
                         chatText: "",
+                        unreadMessagesCount: 0,
                         subscribed: false,
                         subscription: null,
                     });
@@ -222,6 +226,7 @@ export default function Chat(props) {
                         display_info: false,
                         messages: [],
                         chatText: "",
+                        unreadMessagesCount: 0,
                         subscribed: false,
                         subscription: null,
                     });
@@ -405,11 +410,15 @@ export default function Chat(props) {
                 moveThisRoomToTheFront(roomIndex);
                 pleaseRerender();
                 if (
-                    !activeChatRef.current.display_info &&
                     room.id === activeChatRef.current.id &&
                     room.type === activeChatRef.current.type
                 ) {
-                    scrollToDialogBoxBottom();
+                    if (!activeChatRef.current.display_info) {
+                        scrollToDialogBoxBottom();
+                    }
+                } else {
+                    room.unreadMessagesCount++;
+                    pleaseRerender();
                 }
                 break;
             }
