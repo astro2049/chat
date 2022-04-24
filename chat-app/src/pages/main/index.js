@@ -14,7 +14,7 @@ import {
     MenuItem,
     Skeleton,
 } from "@mui/material";
-import Panels from "../../components/Panels/index";
+import Panel from "../../components/Panel/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import ChatCards from "../../components/ChatCards";
@@ -519,7 +519,7 @@ export default function Chat(props) {
                         />
                     </div>
 
-                    <Panels
+                    <Panel
                         userId={userId}
                         setChatrooms={setChatrooms}
                         pageIsReady={pageIsReady}
