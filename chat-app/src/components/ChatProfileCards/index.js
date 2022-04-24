@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
     Avatar,
     List,
@@ -42,11 +41,7 @@ const getNameAbbreviation = (name) => {
     }
 };
 
-const useStyles = makeStyles((theme) => ({}));
-
 export default function ChatProfileCards(props) {
-    const classes = useStyles();
-
     // i18n
     const { t } = useTranslation();
 
