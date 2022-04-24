@@ -57,7 +57,7 @@
         },
         "sendButton": "发送"
     },
-    "ChatProfileCards": {
+    "ChatCards": {
         "letsChat": "没有聊天",
         "chatRoomType": {
             "friend": "好友",

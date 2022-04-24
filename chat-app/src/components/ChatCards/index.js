@@ -41,7 +41,7 @@ const getNameAbbreviation = (name) => {
     }
 };
 
-export default function ChatProfileCards(props) {
+export default function ChatCards(props) {
     // i18n
     const { t } = useTranslation();
 
@@ -123,7 +123,7 @@ export default function ChatProfileCards(props) {
                 >
                     <ChatIcon />
                     <Typography variant="overline" sx={{ ml: 1, fontSize: 20 }}>
-                        {t("ChatProfileCards.letsChat")}
+                        {t("ChatCards.letsChat")}
                     </Typography>
                 </div>
             ) : (
@@ -191,10 +191,10 @@ export default function ChatProfileCards(props) {
                                                         chat.type ===
                                                         global.CHAT_TYPE_FRIEND
                                                             ? t(
-                                                                  "ChatProfileCards.chatRoomType.friend"
+                                                                  "ChatCards.chatRoomType.friend"
                                                               )
                                                             : t(
-                                                                  "ChatProfileCards.chatRoomType.group_chat"
+                                                                  "ChatCards.chatRoomType.group_chat"
                                                               )
                                                     }
                                                     color={
@@ -237,7 +237,7 @@ export default function ChatProfileCards(props) {
                                                         variant="caption"
                                                     >
                                                         {t(
-                                                            "ChatProfileCards.noMessages"
+                                                            "ChatCards.noMessages"
                                                         )}
                                                     </Typography>
                                                 )}

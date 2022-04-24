@@ -57,7 +57,7 @@
         },
         "sendButton": "Send"
     },
-    "ChatProfileCards": {
+    "ChatCards": {
         "letsChat": "No Chats",
         "chatRoomType": {
             "friend": "friend",

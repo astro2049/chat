@@ -17,7 +17,7 @@ import {
 import Panels from "../../components/Panels/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import ChatProfileCards from "../../components/ChatProfileCards";
+import ChatCards from "../../components/ChatCards";
 import ChatIcon from "@mui/icons-material/Chat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentInput from "../../components/ContentInput";
@@ -509,7 +509,7 @@ export default function Chat(props) {
                     <Divider />
 
                     <div className={classes.chatRooms}>
-                        <ChatProfileCards
+                        <ChatCards
                             chats={rooms}
                             chatsIndexMap={roomsIndexMapForChatList}
                             activeChat={activeChat}
