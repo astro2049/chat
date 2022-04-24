@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function MessageZone(props) {
+export default function DialogBox(props) {
     const classes = useStyles();
 
     // i18n
@@ -135,14 +135,14 @@ export default function MessageZone(props) {
                     <List
                         subheader={
                             <ListSubheader component="div">
-                                {t("MessageZone.chatInfo.header")}
+                                {t("DialogBox.chatInfo.header")}
                             </ListSubheader>
                         }
                     >
                         <ListItem>
                             <ListItemIcon>
                                 <Typography variant="body1">
-                                    {t("MessageZone.chatInfo.type")}
+                                    {t("DialogBox.chatInfo.type")}
                                 </Typography>
                             </ListItemIcon>
                             <Chip
@@ -176,7 +176,7 @@ export default function MessageZone(props) {
                                         subheader={
                                             <ListSubheader component="div">
                                                 {t(
-                                                    "MessageZone.chatInfo.creatorAbilities.title"
+                                                    "DialogBox.chatInfo.creatorAbilities.title"
                                                 )}
                                             </ListSubheader>
                                         }
@@ -194,7 +194,7 @@ export default function MessageZone(props) {
                                                     }
                                                 >
                                                     {t(
-                                                        "MessageZone.chatInfo.dangerZone.group_chat.disband.buttonText"
+                                                        "DialogBox.chatInfo.dangerZone.group_chat.disband.buttonText"
                                                     ) +
                                                         " " +
                                                         activeChat.name}
@@ -204,7 +204,7 @@ export default function MessageZone(props) {
                                             <ListItemIcon>
                                                 <Typography variant="body1">
                                                     {t(
-                                                        "MessageZone.chatInfo.dangerZone.group_chat.disband.title"
+                                                        "DialogBox.chatInfo.dangerZone.group_chat.disband.title"
                                                     )}
                                                 </Typography>
                                             </ListItemIcon>
@@ -216,7 +216,7 @@ export default function MessageZone(props) {
                         <List
                             subheader={
                                 <ListSubheader component="div">
-                                    {t("MessageZone.chatInfo.dangerZone.title")}
+                                    {t("DialogBox.chatInfo.dangerZone.title")}
                                 </ListSubheader>
                             }
                         >
@@ -234,7 +234,7 @@ export default function MessageZone(props) {
                                         onClick={() => deleteChat()}
                                     >
                                         {t(
-                                            `MessageZone.chatInfo.dangerZone.${
+                                            `DialogBox.chatInfo.dangerZone.${
                                                 activeChat.type ===
                                                 global.CHAT_TYPE_FRIEND
                                                     ? "friend.delete.buttonText"
@@ -249,7 +249,7 @@ export default function MessageZone(props) {
                                 <ListItemIcon>
                                     <Typography variant="body1">
                                         {t(
-                                            `MessageZone.chatInfo.dangerZone.${
+                                            `DialogBox.chatInfo.dangerZone.${
                                                 activeChat.type ===
                                                 global.CHAT_TYPE_FRIEND
                                                     ? "friend.delete.title"

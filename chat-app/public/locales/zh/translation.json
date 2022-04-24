@@ -65,7 +65,7 @@
         },
         "noMessages": "- 没有消息 -"
     },
-    "MessageZone": {
+    "DialogBox": {
         "chatInfo": {
             "header": "聊天信息",
             "type": "类型",

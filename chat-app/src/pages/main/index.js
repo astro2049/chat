@@ -21,7 +21,7 @@ import ChatCards from "../../components/ChatCards";
 import ChatIcon from "@mui/icons-material/Chat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentInput from "../../components/ContentInput";
-import MessageZone from "../../components/MessageZone";
+import DialogBox from "../../components/DialogBox";
 import global from "../../utils/globalVars";
 
 const appBarHeight = 80;
@@ -651,7 +651,7 @@ export default function Chat(props) {
                         </Toolbar>
                     </AppBar>
 
-                    <MessageZone
+                    <DialogBox
                         activeChat={activeChat}
                         userId={userId}
                         setChatrooms={setChatrooms}

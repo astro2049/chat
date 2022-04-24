@@ -65,7 +65,7 @@
         },
         "noMessages": "- no messages -"
     },
-    "MessageZone": {
+    "DialogBox": {
         "chatInfo": {
             "header": "Chat Information",
             "type": "Type",
