@@ -14,14 +14,14 @@ import {
     MenuItem,
     Skeleton,
 } from "@mui/material";
-import Panels from "../../components/Panels/index";
+import Panel from "../../components/Panel/index";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import ChatProfileCards from "../../components/ChatProfileCards";
+import ChatCards from "../../components/ChatCards";
 import ChatIcon from "@mui/icons-material/Chat";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ContentInput from "../../components/ContentInput";
-import MessageZone from "../../components/MessageZone";
+import DialogBox from "../../components/DialogBox";
 import global from "../../utils/globalVars";
 
 const appBarHeight = 80;
@@ -149,9 +149,7 @@ export default function Chat(props) {
     const [rooms, setRooms] = useState();
     const roomsRef = useRef();
     roomsRef.current = rooms;
-    const [roomsIndexMapForChatList, setRoomsIndexMapForChatList] = useState(
-        []
-    );
+    const [roomsIndexMapForChatList] = useState([]);
     const roomsIndexMapForChatListRef = useRef();
     roomsIndexMapForChatListRef.current = roomsIndexMapForChatList;
     const [roomsCount, setRoomsCount] = useState();
@@ -254,7 +252,7 @@ export default function Chat(props) {
     };
 
     const addComersToChatsIndexMap = (comers) => {
-        comers.map((comer) => {
+        comers.forEach(() => {
             roomsIndexMapForChatList.unshift(
                 roomsIndexMapForChatListRef.current.length
             );
@@ -266,7 +264,7 @@ export default function Chat(props) {
         let minus = new Array(roomsIndexMap.length).fill(0);
         let roomsIndexMapLeaverIndexes = [];
 
-        leavers.map((leaver) => {
+        leavers.forEach((leaver) => {
             let roomIndex = roomsRef.current.findIndex((room) => {
                 return room.id === leaver.id && room.type === leaver.type;
             });
@@ -511,7 +509,7 @@ export default function Chat(props) {
                     <Divider />
 
                     <div className={classes.chatRooms}>
-                        <ChatProfileCards
+                        <ChatCards
                             chats={rooms}
                             chatsIndexMap={roomsIndexMapForChatList}
                             activeChat={activeChat}
@@ -521,7 +519,7 @@ export default function Chat(props) {
                         />
                     </div>
 
-                    <Panels
+                    <Panel
                         userId={userId}
                         setChatrooms={setChatrooms}
                         pageIsReady={pageIsReady}
@@ -653,7 +651,7 @@ export default function Chat(props) {
                         </Toolbar>
                     </AppBar>
 
-                    <MessageZone
+                    <DialogBox
                         activeChat={activeChat}
                         userId={userId}
                         setChatrooms={setChatrooms}

@@ -57,7 +57,7 @@
         },
         "sendButton": "Send"
     },
-    "ChatProfileCards": {
+    "ChatCards": {
         "letsChat": "No Chats",
         "chatRoomType": {
             "friend": "friend",
@@ -65,7 +65,7 @@
         },
         "noMessages": "- no messages -"
     },
-    "MessageZone": {
+    "DialogBox": {
         "chatInfo": {
             "header": "Chat Information",
             "type": "Type",

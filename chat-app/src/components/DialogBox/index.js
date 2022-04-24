@@ -16,6 +16,7 @@ import axios from "axios";
 import MessageBox from "../Message";
 import global from "../../utils/globalVars";
 import displaySnackbar from "../Snackbar";
+import dayjs from "dayjs";
 
 const appBarHeight = 80;
 const inputContainerHeight = 258;
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     dialogContainer: {
         width: "100%",
         height: "100%",
-        paddingTop: 20,
+        paddingTop: 15,
         paddingLeft: 20,
         paddingRight: 20,
         paddingBottom: 25,
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function MessageZone(props) {
+export default function DialogBox(props) {
     const classes = useStyles();
 
     // i18n
@@ -135,14 +136,14 @@ export default function MessageZone(props) {
                     <List
                         subheader={
                             <ListSubheader component="div">
-                                {t("MessageZone.chatInfo.header")}
+                                {t("DialogBox.chatInfo.header")}
                             </ListSubheader>
                         }
                     >
                         <ListItem>
                             <ListItemIcon>
                                 <Typography variant="body1">
-                                    {t("MessageZone.chatInfo.type")}
+                                    {t("DialogBox.chatInfo.type")}
                                 </Typography>
                             </ListItemIcon>
                             <Chip
@@ -176,7 +177,7 @@ export default function MessageZone(props) {
                                         subheader={
                                             <ListSubheader component="div">
                                                 {t(
-                                                    "MessageZone.chatInfo.creatorAbilities.title"
+                                                    "DialogBox.chatInfo.creatorAbilities.title"
                                                 )}
                                             </ListSubheader>
                                         }
@@ -194,7 +195,7 @@ export default function MessageZone(props) {
                                                     }
                                                 >
                                                     {t(
-                                                        "MessageZone.chatInfo.dangerZone.group_chat.disband.buttonText"
+                                                        "DialogBox.chatInfo.dangerZone.group_chat.disband.buttonText"
                                                     ) +
                                                         " " +
                                                         activeChat.name}
@@ -204,7 +205,7 @@ export default function MessageZone(props) {
                                             <ListItemIcon>
                                                 <Typography variant="body1">
                                                     {t(
-                                                        "MessageZone.chatInfo.dangerZone.group_chat.disband.title"
+                                                        "DialogBox.chatInfo.dangerZone.group_chat.disband.title"
                                                     )}
                                                 </Typography>
                                             </ListItemIcon>
@@ -216,7 +217,7 @@ export default function MessageZone(props) {
                         <List
                             subheader={
                                 <ListSubheader component="div">
-                                    {t("MessageZone.chatInfo.dangerZone.title")}
+                                    {t("DialogBox.chatInfo.dangerZone.title")}
                                 </ListSubheader>
                             }
                         >
@@ -234,7 +235,7 @@ export default function MessageZone(props) {
                                         onClick={() => deleteChat()}
                                     >
                                         {t(
-                                            `MessageZone.chatInfo.dangerZone.${
+                                            `DialogBox.chatInfo.dangerZone.${
                                                 activeChat.type ===
                                                 global.CHAT_TYPE_FRIEND
                                                     ? "friend.delete.buttonText"
@@ -249,7 +250,7 @@ export default function MessageZone(props) {
                                 <ListItemIcon>
                                     <Typography variant="body1">
                                         {t(
-                                            `MessageZone.chatInfo.dangerZone.${
+                                            `DialogBox.chatInfo.dangerZone.${
                                                 activeChat.type ===
                                                 global.CHAT_TYPE_FRIEND
                                                     ? "friend.delete.title"
@@ -267,18 +268,49 @@ export default function MessageZone(props) {
     };
 
     const dialogBox = () => {
+        let dialog = [];
+        if (activeChat) {
+            for (let i = 0; i < activeChat.messages.length; i++) {
+                let message = activeChat.messages[i];
+                let addTimeChip = false;
+                if (i === 0) {
+                    addTimeChip = true;
+                } else {
+                    let previousMessage = activeChat.messages[i - 1];
+                    if (
+                        new dayjs(previousMessage.time).isBefore(
+                            new dayjs(message.time).subtract(3, "minute")
+                        )
+                    ) {
+                        addTimeChip = true;
+                    }
+                }
+                if (addTimeChip) {
+                    dialog.push(
+                        <div style={{ alignSelf: "center", marginTop: 10 }}>
+                            <Chip
+                                label={message.time.substring(16, 21)}
+                                size="small"
+                                variant="outlined"
+                                color="secondary"
+                            />
+                        </div>
+                    );
+                }
+                dialog.push(
+                    <MessageBox
+                        key={i}
+                        username={message.sender}
+                        content={message.content}
+                        time={message.time}
+                        mine={message.mine}
+                    />
+                );
+            }
+        }
         return (
             <div id="dialogBox" className={classes.dialogContainer}>
-                {activeChat &&
-                    activeChat.messages.map((message, index) => (
-                        <MessageBox
-                            key={index}
-                            username={message.sender}
-                            content={message.content}
-                            time={message.time}
-                            mine={message.mine}
-                        />
-                    ))}
+                {dialog}
             </div>
         );
     };
