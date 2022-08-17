@@ -2,8 +2,6 @@
 
 Chat! is an online chat site with private & group chat :tent:
 
-Now at https://www.astro.ski/ !
-
 ## Notes:
 
 - [chat-app](https://github.com/astro2049/chat/tree/main/chat-app): **React app**, Web client
